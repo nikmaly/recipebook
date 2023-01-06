@@ -1,0 +1,9 @@
+{
+  "name": "Lambda_RMC_API_Authorizer",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "aws-jwt-verify": "^3.2.0"
+  },
+  "scripts": {}
+}

@@ -1,0 +1,10 @@
+<svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="20" 
+    height="20" 
+    viewBox="0 0 20 20">
+    <path 
+        d="M0 8.6h20v2.8H0V8.6z" 
+        fill="#c80000">
+    </path>
+</svg>

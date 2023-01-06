@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css?family=Poiret+One");
+@import url("https://fonts.googleapis.com/css?family=Comfortaa");
+@import url("https://fonts.googleapis.com/css?family=Muli");
+
+h1, h2, h3, h4, h5, h6,
+.font-primary {
+	font-family: "Poiret One", 'Courier New';
+}
+
+html,
+.font-secondary {
+	font-family: "Comfortaa", 'Courier New';
+	font-size: 16px;
+	line-height: 24px;
+}
+
+.font-text {
+	font-family: "Muli", sans-serif;
+}
+
+html,
+.root,
+.root > * {
+	background-color: #F5F5F5;
+}
+
+html {
+	height: 100%;
+}
+
+html,
+html * {
+	box-sizing: border-box;
+	outline: none;
+}
+
+body {
+	display: flex;
+	margin: 0;
+	min-height: 100vh;
+}
+
+.root {
+	display: flex;
+	flex-flow: column nowrap;
+	width: 100%;
+}
+
+.root > * {
+	flex: 0 0 auto;
+}
+
+.app-wrapper {
+	display: flex;
+	flex-direction: row;
+	flex: 1 1 auto;
+}
+
+@media only screen and (max-width: 600px) {
+	.app-wrapper {
+		flex-direction: column;
+	}
+}
+
+.v-hidden {
+	color: transparent;
+	display: inline;
+}
