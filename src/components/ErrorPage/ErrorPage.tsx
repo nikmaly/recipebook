@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import { NavBar } from '../NavBar';
 import { StylesContext } from '../../context/StylesContext';
 /** @jsxImportSource @emotion/react */
 import { errorPageStyles } from './ErrorPage.styles';
@@ -25,21 +26,25 @@ const ErrorPage: React.FunctionComponent<IErrorProps> = ({
 	const { styles } = useContext(StylesContext);
 
 	return (
-		<div css={errorPageStyles(styles)}>
-			<h1>{code}</h1>
+		<>
+			<NavBar />
 
-			<h3>{title}</h3>
+			<main css={errorPageStyles(styles)}>
+				<h1>{code}</h1>
 
-			<p>{description?.toString()}</p>
+				<h3>{title}</h3>
 
-			{content && content}
+				<p>{description?.toString()}</p>
 
-			<p>
-				Try pressing back or go to the homepage
-				{' '}
-				<NavLink to="/">here</NavLink>
-			</p>
-		</div>
+				{content && content}
+
+				<p>
+					Try pressing back or go to the homepage
+					{' '}
+					<NavLink to="/">here</NavLink>
+				</p>
+			</main>
+		</>
 	);
 };
 

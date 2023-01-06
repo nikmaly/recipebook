@@ -9,7 +9,7 @@ const Dev = () => {
 
 	return (
 		<div className="pg-home" css={devStyles(styles)}>
-			<NavBar isLanding />
+			<NavBar />
 		</div>
 	);
 };

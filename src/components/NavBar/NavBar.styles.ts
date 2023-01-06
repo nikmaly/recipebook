@@ -1,71 +1,32 @@
 import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from '../../context/Styles';
 
-const linkPaddingHorizontal = 30;
-
 export const navbarStyles = (
 	styles: TStyles,
-	isScrolled: boolean,
-	isLanding: boolean = false,
-	shouldFade: boolean = false,
+	isLanding: boolean,
 ): SerializedStyles => css`
+	${styles.typography.fontPrimary}
 	z-index: ${styles.z.navbar};
-	position: relative;
-	top: 0;
-	left: ${styles.components.header.borderWidth};
-	flex: 0 0 ${styles.components.header.headerContainerHeight};
-	width: calc(
-		100%
-		- ${styles.components.header.borderWidth}
-		- ${styles.components.header.borderWidth}
-	);
+	position: fixed;
+	height: ${styles.components.navbar.height};
+	width: 100%;
 	display: flex;
-	flex-flow: column;
+	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
 	background-color: transparent;
 	transition: background 1s;
-	${styles.typography.fontPrimary}
-
-	${shouldFade && `
-		display: flex;
-	`}
 
 	${isLanding && `
-		position: fixed;
-		flex-flow: row nowrap;
-		border-top: ${styles.components.header.borderWidth} solid ${styles.colors.white[0]};
-		opacity: 0;
-		${styles.animations.headerFadeIn}
-		animation-delay: 4s;
-
-		&:before {
-			position: absolute;
-			display: block;
-			content: "";
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: ${styles.components.header.headerContainerHeight} + 10px;
-			opacity: 0;
-			background-color: transparent;
-			pointer-events: none;
-		}
-	`}
-
-	${isLanding && isScrolled && `
-		background-color: ${styles.colors.darkShade[3]};
-
-		&:before {
-			transition: opacity ${styles.animations.duration};
-			opacity: 1;
-		}
+		top: 50%;
+		transform: translateY(-59%);
 	`}
 `;
 
-export const navbarLogoStyles = (styles: TStyles, isLanding: boolean): SerializedStyles => css`
-	width: 70px;
-	height: 70px;
+export const navbarLogoStyles = (styles: TStyles): SerializedStyles => css`
+	height: ${styles.components.navbar.height};
+	width: ${styles.components.navbar.height};
+	padding: 4px;
 
 	a {
 		position: relative;
@@ -104,66 +65,58 @@ export const navbarLogoStyles = (styles: TStyles, isLanding: boolean): Serialize
 			}
 		}
 	}
+`;
 
-	${!isLanding && `
-		margin: 10px auto;
+const linkPaddingHorizontal = 30;
 
-		${styles.breakpoints.xs.min(`
-			margin: 20px auto 10px;
-		`)}
+export const navbarLinkStyles = (styles: TStyles): SerializedStyles => css`
+	${styles.mixins.resetList('')}
+	${styles.mixins.flexCentre('')}
+	height: ${styles.components.navbar.height};
+
+	li {
+		margin: 3px 0;
+	}
+
+	a {
+		padding: 10px 8px 6px;
+		font-size: 0.8em;
+		letter-spacing: 2px;
+		color: ${styles.colors.black.base};
+		text-transform: uppercase;
+		text-decoration: none;
+		${styles.typography.fontText}
+		${styles.mixins.linkDecorator('')}
 
 		${styles.breakpoints.s.min(`
-			margin: 30px auto 20px;
+		${styles.mixins.linkDecorator((linkPaddingHorizontal / 2).toString())}
+		padding: 10px ${linkPaddingHorizontal / 2}px 6px;
+			letter-spacing: 3px;
 		`)}
-	`}
 
-	${isLanding && `
-		width: 50px;
-		height: 50px;
-		margin: 0;
-
-		a {
-			&:after,
-			&:before {
-				background-size: 40px;
-			}
-
-			&:before {
-				background-image: url("/assets/images/logo-physys.png");
-				opacity: 1;
-			}
-
-			&:after {
-				background-image: url("/assets/images/logo-physys-wireframe.png");
-				opacity: 0.000001;
-			}
-		}
-	`}
+		${styles.breakpoints.ms.min(`
+			${styles.mixins.linkDecorator(linkPaddingHorizontal.toString())}
+			padding: 10px ${linkPaddingHorizontal}px 6px;
+			letter-spacing: 4px;
+		`)}
 `;
 
-export const navbarLinkMobileStyles = (styles: TStyles): SerializedStyles => css`
-	flex: 0 0
-		calc(
-			${styles.components.header.innerBorderSpacing}
-			- ${styles.components.header.borderWidth}
-		);
-	height: 50px;
-
-	${styles.breakpoints.ms.min(`
-		button,
-		nav {
-			display: none;
-		}
-	`)}
+export const navbarLinkMenuWrapperStyles = (
+	styles: TStyles,
+): SerializedStyles => css`
+	transition: background-image ${styles.animations.duration};
 `;
 
-export const navbarLinkMobileButtonStyles = (
+export const navbarLinkMenuButtonStyles = (
 	styles: TStyles,
 	isOpen: boolean,
+	isLanding: boolean,
 ): SerializedStyles => css`
 	${styles.mixins.resetButton('')}
-	height: ${styles.components.header.containerHeight};
-	width: ${styles.components.header.containerHeight};
+	z-index: ${styles.z.navbar + 2};
+	position: relative;
+	height: ${styles.components.navbar.height};
+	width: ${styles.components.navbar.height};
 	background-size: 50%;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -174,128 +127,60 @@ export const navbarLinkMobileButtonStyles = (
     text-indent: -200vw;
 
 	${isOpen
-		? 'background-image: url("/assets/images/svg/menu-close-white.svg")'
-		: 'background-image: url("/assets/images/svg/menu-white.svg")'
+		? `background-image: url("/assets/images/svg/menu-close-${isLanding ? 'white' : 'black'}.svg")`
+		: 'background-image: url("/assets/images/svg/menu-black.svg")'
 };
-
-	${styles.breakpoints.ms.min(`
-		display: none;
-	`)}
 `;
 
-export const navbarLinkMobileNavStyles = (
+export const navbarLinkMenuStyles = (
 	styles: TStyles,
 	isOpen: boolean,
+	isLanding: boolean,
 ): SerializedStyles => css`
+	${styles.mixins.resetList('')}
+	z-index: ${styles.z.navbar + 1};
 	display: flex;
 	position: absolute;
-	left: ${isOpen ? '0' : '110%'};
-	top: 0;
-	height: calc(100vh - 57px); // I'm sorrry future me, but it adds up, I promise
+	flex-flow: column wrap;
+	right: 0;
+	height: calc(100vh - ${styles.components.navbar.height});
 	width: 100%;
-	margin-top: ${styles.components.header.containerHeight};
-	transition: left 0.5s ease-in-out;
+	background: rgb(190, 135, 50);
+	transform: translate(100%, 0);
+	overflow: hidden;
+	transition: transform 1s;
 
-	${styles.breakpoints.ms.min(`
-		display: none;
+	${styles.breakpoints.s.min(`
+		justify-content: space-around;
+		height: 400px;
+		width: 200px;
+		transform: translate(100%, -57.5%);
 	`)}
 
-	ul {
-		flex: 1 0 auto;
-		display: flex;
-		flex-flow: column;
-		justify-content: space-around;
-		align-content: center;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		background: ${styles.colors.primary.a9};
-		text-align: center;
+	${!isLanding && `
+		top: 50vh;
+	`}
 
-		a {
-			display: inline-block;
-			margin: 0 30px;
-			padding: 10px 0;
-			font-size: 3em;
-			color: ${styles.colors.white.base};
-			font-weight: bold;
-			text-decoration: none;
-			letter-spacing: 5px;
-			border-bottom: 1px solid transparent;
-			transition: border-bottom ${styles.animations.duration};
+	${isOpen && `
+		transform: translate(0, 0);
 
-			&:hover {
-				border-bottom: 1px solid ${styles.colors.white.base};
-			}
-		}
-	}
-`;
-
-export const navbarLinkDesktopStyles = (styles: TStyles, isLanding: boolean): SerializedStyles => css`
-	flex: 1;
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
-	align-items: center;
-	padding: 0;
-	margin: 0;
-	list-style: none;
-
-	ul {
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: space-evenly;
-		align-items: center;
-		padding: 0;
-		margin: 0;
-		flex: 1 1 auto;
-		list-style: none;
-	}
-
-	li {
-		margin: 3px 0;
-	}
+		${styles.breakpoints.s.min(`
+			transform: translate(0, -57.5%);
+		`)}
+	`};
 
 	a {
-		position: relative;
+		${styles.mixins.resetLink('')}
 		display: block;
-		padding: 10px ${linkPaddingHorizontal}px 6px;
-		font-size: 0.8em;
-		letter-spacing: 4px;
-		color: ${isLanding ? styles.colors.white.base : styles.colors.black.base};
-		text-transform: uppercase;
-		text-decoration: none;
-		transition: color 0.5s;
-		${styles.typography.fontText}
+		margin: 10px 0;
+		padding: 10px;
+		color: ${styles.colors.white.base};
+		font-weight: bold;
+		font-size: 2em;
+		letter-spacing: 2px;
 
-		&:before {
-			${styles.mixins.pseudoDisplay('')}
-			left: ${linkPaddingHorizontal}px;
-			width: calc(100% - ${linkPaddingHorizontal * 2}px);
-			border-bottom: 1px solid ${isLanding ? styles.colors.white.base : styles.colors.black.base};
-			transition: transform 0.5s;
-			transform: scaleX(0);
-		}
-
-		&:hover,
-		&:focus,
-		&:active {
-			&:before {
-				transform: scaleX(0.99);
-			}
+		&:hover {
+			text-decoration: underline;
 		}
 	}
-
-	${isLanding && `
-		display: none;
-
-		${styles.breakpoints.ms.min(`
-			display: flex;
-		`)}
-
-		ul {
-			flex-flow: row nowrap;
-			justify-content: center;
-		}
-	`}
 `;

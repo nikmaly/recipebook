@@ -8,7 +8,7 @@ const Contact = () => {
 	const { styles } = useContext(StylesContext);
 
 	return (
-		<ContentPage title="Contact" navFadeIn>
+		<ContentPage title="Contact">
 			<div css={contactStyles(styles)}>
 				<h2>Please don&apos;t.</h2>
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import type { TRouteData } from '../../App';
-import { GalleryLandingPage } from '../LandingPage';
-import { GalleryController } from '../GalleryController';
+import { RecipePage } from '../RecipePage';
 
 // Pages
 import { Landing } from '../../pages/Landing';
@@ -14,11 +12,7 @@ import Error405 from '../ErrorPage/Errors/405';
 import { Test } from '../../pages/Test';
 import { Dev } from '../../pages/Dev';
 
-type TRoutesControllerProps = {
-	routes: TRouteData[];
-};
-
-const RoutesController: React.FunctionComponent<TRoutesControllerProps> = ({ routes }) => (
+const RoutesController: React.FunctionComponent = () => (
 	<Routes>
 		<Route
 			path="/"
@@ -35,7 +29,7 @@ const RoutesController: React.FunctionComponent<TRoutesControllerProps> = ({ rou
 			element={<Contact />}
 		/>
 
-		<Route
+		{/* <Route
 			path="/recipe"
 			element={(
 				<GalleryLandingPage
@@ -44,14 +38,12 @@ const RoutesController: React.FunctionComponent<TRoutesControllerProps> = ({ rou
 					isSecure={false}
 				/>
 			)}
-		/>
+		/> */}
 
 		<Route
 			path="/recipe/:id"
 			element={(
-				<GalleryController
-					data={routes.filter((route) => route.routeType === 'gallery')}
-				/>
+				<RecipePage />
 			)}
 		/>
 

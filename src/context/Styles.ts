@@ -219,7 +219,7 @@ const Styles: TStyles = {
 		`,
 	},
 	z: {
-		navbar: 999,
+		navbar: 900,
 	},
 	components: {},
 	mixins: {},
@@ -237,8 +237,8 @@ Styles.components = {
 		colorSpinnerFeature: Styles.colors.grey[1],
 		colorTrackFeature: Styles.colors.grey[3],
 	},
-	header: {
-		containerHeight: '50px',
+	navbar: {
+		height: '50px',
 		borderWidth: '7px',
 		innerBorderSpacing: '55px',
 	},
@@ -288,11 +288,36 @@ Styles.mixins = {
 		width: 100%;
 		height: 100%;
 	`,
+	absoluteCentre: () => `
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	`,
+	flexCentre: () => `
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: center;
+		align-items: center;
+	`,
 	resetButton: () => `
 		border: none;
 		background: none;
 		cursor: pointer;
 		outline: none;
+	`,
+	resetLink: () => `
+		color: inherit;
+		text-decoration: none;
+	`,
+	resetList: () => `
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	`,
+	visiblyHideText: () => `
+		font-size: 0;
+		color: transparent;
 	`,
 	headerDecorator: () => `
 		display: inline-block;
@@ -307,6 +332,28 @@ Styles.mixins = {
 			left: 10%;
 			bottom: 5%;
 			z-index: 0;
+		}
+	`,
+	linkDecorator: (parentPadding = '0') => `
+		position: relative;
+		display: block;
+		transition: color 0.5s;
+
+		&:before {
+			${Styles.mixins.pseudoDisplay('')}
+			left: ${parentPadding}px;
+			width: calc(100% - ${parseInt(parentPadding, 10) * 2}px);
+			border-bottom: 1px solid ${Styles.colors.black.base};
+			transition: transform 0.5s;
+			transform: scaleX(0);
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			&:before {
+				transform: scaleX(0.99);
+			}
 		}
 	`,
 	fadeIn: (duration = '0.1s') => `

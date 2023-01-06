@@ -5,26 +5,18 @@ import { StylesContext } from '../../context/StylesContext';
 import {
 	navbarStyles,
 	navbarLogoStyles,
-	navbarLinkDesktopStyles,
-	navbarLinkMobileStyles,
-	navbarLinkMobileButtonStyles,
-	navbarLinkMobileNavStyles,
+	// navbarLinkStyles,
+	navbarLinkMenuWrapperStyles,
+	navbarLinkMenuButtonStyles,
+	navbarLinkMenuStyles,
 } from './NavBar.styles';
 
-type NavbarProps = {
-	isLanding?: boolean
-	shouldFadeIn?: boolean
-}
-
-const NavBar: React.FunctionComponent<NavbarProps> = ({
-	isLanding = false,
-	shouldFadeIn = false,
-}) => {
+const NavBar: React.FunctionComponent = () => {
 	const { styles } = useContext(StylesContext);
 	const [isMenuOpen, setMenuOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
 	const { pathname } = useLocation();
-	const sanitisedIsLanding: boolean = pathname === '/' || isLanding;
+	const isLanding: boolean = pathname === '/';
 
 	const handleScroll = () => {
 		const scrolled = window.pageYOffset > (window.innerHeight - 50) * 0.35;
@@ -50,87 +42,65 @@ const NavBar: React.FunctionComponent<NavbarProps> = ({
 		return () => { window.removeEventListener('scroll', handleScroll); };
 	}, []);
 
-	const linkData: Record<string, string>[] = [
-		{
-			title: 'Gallery',
-			path: '/gallery',
-		},
-		{
-			title: 'Prints',
-			path: '/prints',
-		},
-		{
-			title: 'Contact',
-			path: '/contact',
-		},
+	// const heroLinks: string[] = [
+	// 	'discover',
+	// 	'search',
+	// 	'random',
+	// ];
+
+	const menuLinks: string[] = [
+		'login',
+		'settings',
+		'contact',
 	];
 
-	const buildLink = (link: Record<string, string>, key: number) => (
+	const buildLink = (link: string, key: number) => (
 		<li key={key}>
 			<NavLink
-				to={link.path}
+				to={`/${link}`}
 				onClick={() => setMenuOpen(false)}
 			>
-				{link.title}
+				{link}
 			</NavLink>
 		</li>
 	);
 
-	const links = (
-		<ul>
-			{ linkData.map((link, i) => buildLink(link, i)) }
-
-			<li>
-				<a
-					href="https://nik.malyaris.com"
-					target="_blank"
-					rel="noreferrer"
-				>
-					About
-				</a>
-			</li>
-		</ul>
-	);
-
 	return (
 		<nav
-			css={navbarStyles(styles, isScrolled, sanitisedIsLanding, shouldFadeIn)}
+			css={navbarStyles(styles, isLanding)}
 			id="floating-navbar"
 		>
 			{/* Navbar Logo / Home */}
-			<div css={navbarLogoStyles(styles, sanitisedIsLanding)}>
-				{/* <NavLink to="/" /> */}
-				<a href="https://photography.malyaris.com" className="v-hidden">
+			<div css={navbarLogoStyles(styles)}>
+				<NavLink
+					to="/"
+					className="v-hidden"
+				>
 					Home Icon Link
-				</a>
+				</NavLink>
 			</div>
 
-			{/* Navbar Links - Desktop */}
-			<div css={navbarLinkDesktopStyles(styles, sanitisedIsLanding)}>
-				{links}
+			{/* Navbar Links - non Landing */}
+			{/* { !isLanding && (
+				<ul css={navbarLinkStyles(styles)}>
+					{ heroLinks.map((link, i) => buildLink(link, i)) }
+				</ul>
+			)} */}
+
+			{/* Navbar Menu */}
+			<div css={navbarLinkMenuWrapperStyles(styles)}>
+				<button
+					type="button"
+					css={navbarLinkMenuButtonStyles(styles, isMenuOpen, isLanding)}
+					onClick={() => setMenuOpen(!isMenuOpen)}
+				>
+					Open Menu
+				</button>
+
+				<ul css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}>
+					{ menuLinks.map((link, i) => buildLink(link, i)) }
+				</ul>
 			</div>
-
-			{/*
-				Navbar Links - Mobile
-				We use the desktop links on non-landing pages
-			*/}
-			{sanitisedIsLanding && (
-				<div css={navbarLinkMobileStyles(styles)}>
-					<nav
-						css={navbarLinkMobileNavStyles(styles, isMenuOpen)}
-					>
-						{links}
-					</nav>
-
-					<button
-						type="button"
-						css={navbarLinkMobileButtonStyles(styles, isMenuOpen)}
-						onClick={() => setMenuOpen(!isMenuOpen)}
-					>
-						Open Menu
-					</button>
-				</div>
-			)}
 		</nav>
 	);
 };

@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { SerializedStyles } from '@emotion/react';
-import { NavBar } from '../NavBar';
 import { Header } from '../Header';
-import { ContentWrapper } from '.';
+import { NavBar } from '../NavBar';
 
 type ContentProps = {
 	title: string;
@@ -20,9 +19,9 @@ const Content: React.FunctionComponent<ContentProps> = ({
 		<NavBar />
 		<Header content={<>{title}</>} />
 
-		<ContentWrapper stylesProp={stylesProp}>
+		<main css={stylesProp}>
 			{children}
-		</ContentWrapper>
+		</main>
 	</>
 );
 
