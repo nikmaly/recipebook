@@ -112,18 +112,20 @@ const Styles: TStyles = {
 		3: '16px',
 		4: '20px',
 	},
+	// 146
 	colors: {
 		brand: {
-			primary: 'rgba(200, 180, 170, 1)',
-			secondary: 'rgba(010, 040, 070, 1)',
-			tertiary: 'rgba(060, 120, 180, 1)',
+			primary: 'rgba(130, 125, 220, 1)',
+			secondary: 'rgba(245, 160, 80, 1)',
 		},
 		primary: {
-			base: 'rgba(200, 180, 170, 1)',
-			a9: 'rgba(200, 180, 170, 0.9)',
+			base: 'rgba(130, 125, 220, 1)',
+			mid: 'rgba(180, 180, 255, 1)',
+			light: 'rgba(230, 230, 250, 1)',
 		},
 		secondary: {
-			base: 'rgba(010, 040, 070, 1)',
+			base: 'rgba(245, 160, 80, 1)',
+			light: 'rgba(251, 234, 192, 1)',
 		},
 		tertiary: {
 			base: 'rgba(060, 120, 180, 1)',
@@ -184,15 +186,8 @@ const Styles: TStyles = {
 		},
 	},
 	typography: {
-		fontPrimary: `
-			font-family: 'Poiret One', 'Courier New';
-		`,
-		fontSecondary: `
-			font-family: 'Comfortaa', 'Courier New';
-		`,
-		fontText: `
-			font-family: 'Muli', 'Courier New';
-		`,
+		fontHeader: '\'Poiret One\', \'Courier New\'',
+		fontText: '\'Comfortaa\', \'Courier New\'',
 	},
 	animations: {
 		duration: '0.2s',
@@ -280,6 +275,12 @@ Styles.mixins = {
 			width: ${Styles.breakpoints.ml.val}px
 		`)}
 	`,
+	fontHeader: () => `
+		font-family: ${Styles.typography.fontHeader};
+	`,
+	fontText: () => `
+		font-family: ${Styles.typography.fontText};
+	`,
 	pseudoDisplay: () => `
 		position: absolute;
 		content: '';
@@ -302,6 +303,7 @@ Styles.mixins = {
 	`,
 	resetButton: () => `
 		border: none;
+		padding: 0;
 		background: none;
 		cursor: pointer;
 		outline: none;
@@ -315,7 +317,7 @@ Styles.mixins = {
 		padding: 0;
 		margin: 0;
 	`,
-	visiblyHideText: () => `
+	visuallyHideText: () => `
 		font-size: 0;
 		color: transparent;
 	`,
@@ -355,6 +357,11 @@ Styles.mixins = {
 				transform: scaleX(0.99);
 			}
 		}
+	`,
+	panelise: () => `
+		padding: 10px 15px;
+		border: 1px solid ${Styles.colors.grey[0]};
+		box-shadow: ${Styles.spacing[0]} ${Styles.spacing[0]} ${Styles.spacing[1]} -${Styles.spacing[0]} ${Styles.colors.darkShade[5]};
 	`,
 	fadeIn: (duration = '0.1s') => `
 		opacity: 0;

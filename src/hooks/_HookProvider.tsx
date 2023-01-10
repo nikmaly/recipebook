@@ -12,7 +12,9 @@ export const HookContext = createContext({
 
 export const HookProvider: React.FunctionComponent<HookProviderProps> = ({ children }) => {
 	const { viewportWidth, viewportHeight } = useViewportLogic();
-	const memoisedContext = React.useMemo(() => ({ viewportWidth, viewportHeight }), []);
+	const memoisedContext = React.useMemo(() => (
+		{ viewportWidth, viewportHeight }
+	), [viewportWidth, viewportHeight]);
 
 	return (
 		<HookContext.Provider value={memoisedContext}>

@@ -30,7 +30,7 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 	li {
 		a {
 			${styles.mixins.resetLink('')}
-			${styles.mixins.visiblyHideText('')}
+			${styles.mixins.visuallyHideText('')}
 			display: block;
 			position: relative;
 			height: 100%;
@@ -70,25 +70,25 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 		}
 
 		${styles.breakpoints.ms.min(`
-			&:nth-child(1) a {
+			&:nth-of-type(1) a {
 				transform-origin: 100% 100%;
 				border-top-right-radius: 100px;
 				border-bottom-left-radius: 100px;
 			}
 
-			&:nth-child(2) a {
+			&:nth-of-type(2) a {
 				transform-origin: 0 100%;
 				border-top-left-radius: 100px;
 				border-bottom-right-radius: 100px;
 			}
 
-			&:nth-child(3) a {
+			&:nth-of-type(3) a {
 				transform-origin: 100% 0;
 				border-top-left-radius: 100px;
 				border-bottom-right-radius: 100px;
 			}
 
-			&:nth-child(4) a {
+			&:nth-of-type(4) a {
 				transform-origin: 0 0;
 				border-top-right-radius: 100px;
 				border-bottom-left-radius: 100px;

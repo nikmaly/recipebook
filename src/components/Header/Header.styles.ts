@@ -2,14 +2,14 @@ import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from '../../context/Styles';
 
 export const headerStyles = (styles: TStyles): SerializedStyles => css`
-	${styles.typography.fontPrimary};
+	${styles.mixins.fontHeader('')};
 	position: relative;
 	width: 100%;
 	overflow: hidden;
 `;
 
 export const headerContentTextStyles = (styles: TStyles): SerializedStyles => css`
-	${styles.typography.fontPrimary};
+	${styles.mixins.fontHeader('')};
 	${styles.mixins.fadeIn(styles.animations.durationFade)};
 	padding: 20px;
 	color: ${styles.colors.black.base};

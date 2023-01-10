@@ -13,7 +13,7 @@ export const useViewportLogic = () => {
 	React.useEffect(() => {
 		window.addEventListener('resize', handleWindowResize);
 		return () => window.removeEventListener('resize', handleWindowResize);
-	}, []);
+	});
 
 	return { viewportWidth, viewportHeight };
 };

@@ -5,7 +5,7 @@ export const navbarStyles = (
 	styles: TStyles,
 	isLanding: boolean,
 ): SerializedStyles => css`
-	${styles.typography.fontPrimary}
+	${styles.mixins.fontHeader('')}
 	z-index: ${styles.z.navbar};
 	position: fixed;
 	height: ${styles.components.navbar.height};
@@ -85,7 +85,7 @@ export const navbarLinkStyles = (styles: TStyles): SerializedStyles => css`
 		color: ${styles.colors.black.base};
 		text-transform: uppercase;
 		text-decoration: none;
-		${styles.typography.fontText}
+		${styles.mixins.fontText('')}
 		${styles.mixins.linkDecorator('')}
 
 		${styles.breakpoints.s.min(`
@@ -172,7 +172,7 @@ export const navbarLinkMenuStyles = (
 	a {
 		${styles.mixins.resetLink('')}
 		display: block;
-		margin: 10px 0;
+		margin: 10px 10px 10px 20px;
 		padding: 10px;
 		color: ${styles.colors.white.base};
 		font-weight: bold;
