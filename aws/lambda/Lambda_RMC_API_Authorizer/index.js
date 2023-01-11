@@ -23,7 +23,6 @@ export const handler = async function (event, context, callback) {
 
 	// Verify programmatically
 	const accessToken = await jwtTokenVerifier.verify(token);
-	// console.log('accessToken:', accessToken);
 
 	// Check Token is not expired
 	valid = valid && Date.now() > accessToken.exp;

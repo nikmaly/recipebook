@@ -1,11 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 /** @jsxImportSource @emotion/react */
-import React, { useContext } from 'react';
+import React from 'react';
 import MuiAccordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { StylesContext } from '../../context/StylesContext';
+import { StylesContext } from '../../context/Styles';
 import {
 	accordionStyles,
 	accordionWrapperStyles,
@@ -27,7 +27,7 @@ const Accordion: React.FunctionComponent<IAccordionProps> = ({
 	title,
 	content,
 }) => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 
 	const accordionBuilder = () => (
 		content.map((item: IAccordionContent, i: number) => {

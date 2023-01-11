@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
-import { StylesContext } from '../../context/StylesContext';
+import React from 'react';
+import { StylesContext } from '../../context/Styles';
 import { ContentPage } from '../../components/ContentPage';
 /** @jsxImportSource @emotion/react */
 import { contactStyles } from './Contact.styles';
 
 const Contact = () => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 
 	return (
 		<ContentPage title="Contact">

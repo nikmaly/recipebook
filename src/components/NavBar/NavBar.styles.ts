@@ -20,49 +20,73 @@ export const navbarStyles = (
 	${isLanding && `
 		top: 50%;
 		transform: translateY(-59%);
+		padding: 40px 0;
 	`}
 `;
 
 export const navbarLogoStyles = (styles: TStyles): SerializedStyles => css`
+	position: relative;
 	height: ${styles.components.navbar.height};
 	width: ${styles.components.navbar.height};
 	padding: 4px;
 
-	a {
-		position: relative;
-		display: block;
-		height: 100%;
-		width: 100%;
+	&:before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: -4px;
+		transform: scaleX(0.001) translate(0, -50%);
+		height: 100px;
+		width: 55px;
+		background: ${styles.colors.grey[0]};
+		transform-origin: left center;
+		transition: transform 0.2s;
+		--mask:
+			radial-gradient(32px at calc(100% - 32.00px) 50%,#000 99%,#0000 103%) 0 calc(50% - 0px)/100% 120px,
+			radial-gradient(28px at calc(100% + 3.00px) 50%,#0000 99%,#000 103%) calc(100% - 30px) 350%/100% 120px repeat-y;
 
-		&:after,
-		&:before {
-			${styles.mixins.pseudoDisplay('')}
-			background-size: 100%;
-			background-repeat: no-repeat;
-			background-position: center;
-			transition: opacity 0.5s;
-		}
+		mask: var(--mask);
+	}
 
+	&:hover:before {
+		transform: scaleX(1.1) translate(0, -50%);
+	}
+`;
+
+export const navbarLogoLinkStyles = (styles: TStyles): SerializedStyles => css`
+	position: relative;
+	display: block;
+	height: 100%;
+	width: 100%;
+
+	&:after,
+	&:before {
+		${styles.mixins.pseudoDisplay('')}
+		background-size: 100%;
+		background-repeat: no-repeat;
+		background-position: center;
+		transition: opacity 0.5s;
+	}
+
+	&:before {
+		background-image: url("/assets/images/logo-physys-dark.png");
+		opacity: 1;
+	}
+
+	&:after {
+		background-image: url("/assets/images/logo-physys-dark-wireframe.png");
+		opacity: 0.000001;
+	}
+
+	&:hover,
+	&:focus,
+	&:active {
 		&:before {
-			background-image: url("/assets/images/logo-physys-dark.png");
-			opacity: 1;
+			opacity: 0;
 		}
 
 		&:after {
-			background-image: url("/assets/images/logo-physys-dark-wireframe.png");
-			opacity: 0.000001;
-		}
-
-		&:hover,
-		&:focus,
-		&:active {
-			&:before {
-				opacity: 0;
-			}
-
-			&:after {
-				opacity: 1;
-			}
+			opacity: 1;
 		}
 	}
 `;
@@ -117,19 +141,44 @@ export const navbarLinkMenuButtonStyles = (
 	position: relative;
 	height: ${styles.components.navbar.height};
 	width: ${styles.components.navbar.height};
-	background-size: 50%;
-	background-repeat: no-repeat;
-	background-position: center;
-	transition: background-image ${styles.animations.duration};
 	font-size: 1px;
     color: transparent;
-	overflow: hidden;
     text-indent: -200vw;
 
-	${isOpen
-		? `background-image: url("/assets/images/svg/menu-close-${isLanding ? 'white' : 'black'}.svg")`
-		: 'background-image: url("/assets/images/svg/menu-black.svg")'
-};
+	&:before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 100%;
+		transform: rotate(180deg) scaleX(0.001) translate(0, 50%);
+		height: 100px;
+		width: 55px;
+		background: ${styles.colors.grey[0]};
+		transform-origin: left center;
+		transition: transform 0.2s;
+		--mask:
+			radial-gradient(32px at calc(100% - 32.00px) 50%,#000 99%,#0000 103%) 0 calc(50% - 0px)/100% 120px,
+			radial-gradient(28px at calc(100% + 3.00px) 50%,#0000 99%,#000 103%) calc(100% - 30px) 350%/100% 120px repeat-y;
+
+		mask: var(--mask);
+	}
+
+	&:hover:before {
+		transform: rotate(180deg) scaleX(1) translate(0, 50%);
+	}
+
+	&:after {
+		${styles.mixins.pseudoDisplay('')}
+		background-size: 50%;
+		background-repeat: no-repeat;
+		background-position: center;
+		transition: background-image ${styles.animations.duration};
+
+		${isOpen
+		? `background-image: url("/assets/images/svg/menu-close-${isLanding ? 'black' : 'black'}.svg");`
+		: 'background-image: url("/assets/images/svg/menu-black.svg");'
+}
+	}
 `;
 
 export const navbarLinkMenuStyles = (

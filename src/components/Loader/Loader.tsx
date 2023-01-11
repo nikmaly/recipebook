@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, { useContext } from 'react';
-import { StylesContext } from '../../context/StylesContext';
+import React from 'react';
+import { StylesContext } from '../../context/Styles';
 import { loaderStyles } from './Loader.styles';
 
 type TLoaderProps = {
@@ -10,7 +10,7 @@ type TLoaderProps = {
 const Loader: React.FunctionComponent<TLoaderProps> = ({
 	isFullScreen = false,
 }) => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 
 	return (
 		<section css={loaderStyles(styles, isFullScreen)}>

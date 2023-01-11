@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, { useContext } from 'react';
-import { StylesContext } from '../../context/StylesContext';
+import React from 'react';
+import { StylesContext } from '../../context/Styles';
 import {
 	headerStyles,
 	headerContentTextStyles,
@@ -13,7 +13,7 @@ export type IHeaderProps = {
 const Header: React.FunctionComponent<IHeaderProps> = ({
 	content,
 }) => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 
 	return (
 		<section

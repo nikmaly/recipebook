@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { NavBar } from '../NavBar';
-import { StylesContext } from '../../context/StylesContext';
+import { StylesContext } from '../../context/Styles';
 /** @jsxImportSource @emotion/react */
 import { errorPageStyles } from './ErrorPage.styles';
 
@@ -23,7 +23,7 @@ const ErrorPage: React.FunctionComponent<IErrorProps> = ({
 	description,
 	content,
 }) => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 
 	return (
 		<>

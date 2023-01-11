@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { StylesContext } from '../../context/StylesContext';
+import { StylesContext } from '../../context/Styles';
 /** @jsxImportSource @emotion/react */
 import {
 	navbarStyles,
 	navbarLogoStyles,
-	// navbarLinkStyles,
+	navbarLogoLinkStyles,
 	navbarLinkMenuWrapperStyles,
 	navbarLinkMenuButtonStyles,
 	navbarLinkMenuStyles,
 } from './NavBar.styles';
 
 const NavBar: React.FunctionComponent = () => {
-	const { styles } = useContext(StylesContext);
-	const [isMenuOpen, setMenuOpen] = useState(false);
-	const [isScrolled, setIsScrolled] = useState(false);
+	const { styles } = React.useContext(StylesContext);
+	const [isMenuOpen, setMenuOpen] = React.useState(false);
+	const [isScrolled, setIsScrolled] = React.useState(false);
 	const { pathname } = useLocation();
 	const isLanding: boolean = pathname === '/';
 
@@ -30,7 +30,7 @@ const NavBar: React.FunctionComponent = () => {
 		}
 	};
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const floatingHeader = document.getElementById('floating-navbar');
 
 		if (floatingHeader) {
@@ -42,29 +42,6 @@ const NavBar: React.FunctionComponent = () => {
 		return () => { window.removeEventListener('scroll', handleScroll); };
 	}, []);
 
-	// const heroLinks: string[] = [
-	// 	'discover',
-	// 	'search',
-	// 	'random',
-	// ];
-
-	const menuLinks: string[] = [
-		'login',
-		'settings',
-		'contact',
-	];
-
-	const buildLink = (link: string, key: number) => (
-		<li key={key}>
-			<NavLink
-				to={`/${link}`}
-				onClick={() => setMenuOpen(false)}
-			>
-				{link}
-			</NavLink>
-		</li>
-	);
-
 	return (
 		<nav
 			css={navbarStyles(styles, isLanding)}
@@ -73,19 +50,13 @@ const NavBar: React.FunctionComponent = () => {
 			{/* Navbar Logo / Home */}
 			<div css={navbarLogoStyles(styles)}>
 				<NavLink
+					css={navbarLogoLinkStyles(styles)}
 					to="/"
 					className="v-hidden"
 				>
 					Home Icon Link
 				</NavLink>
 			</div>
-
-			{/* Navbar Links - non Landing */}
-			{/* { !isLanding && (
-				<ul css={navbarLinkStyles(styles)}>
-					{ heroLinks.map((link, i) => buildLink(link, i)) }
-				</ul>
-			)} */}
 
 			{/* Navbar Menu */}
 			<div css={navbarLinkMenuWrapperStyles(styles)}>
@@ -98,7 +69,27 @@ const NavBar: React.FunctionComponent = () => {
 				</button>
 
 				<ul css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}>
-					{ menuLinks.map((link, i) => buildLink(link, i)) }
+					<li>
+						<NavLink
+							to="/login"
+							onClick={() => setMenuOpen(false)}
+						>
+							Login
+						</NavLink>
+					</li>
+					<li>
+						<NavLink
+							to="/settings"
+							onClick={() => setMenuOpen(false)}
+						>
+							Settings
+						</NavLink>
+					</li>
+					<li>
+						<a href="https://nik.malyaris.com">
+							Contact
+						</a>
+					</li>
 				</ul>
 			</div>
 		</nav>

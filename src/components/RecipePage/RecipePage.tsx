@@ -1,14 +1,18 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { DynamoDB } from 'aws-sdk';
+import Recoil from 'recoil';
+import { atomApi } from '../../atoms/atomApi';
+import { atomRecipeNames, TRecipeNames } from '../../atoms/atomRecipeNames';
 import { NavBar } from '../NavBar';
 import { Pill } from '../Pill';
 import { Accordion } from '../Accordion';
 import { Tab } from '../Tab';
 import { Loader } from '../Loader';
-import { StylesContext } from '../../context/StylesContext';
+import { StylesContext } from '../../context/Styles';
 import {
 	recipePageStyles,
 	recipePageNextLinkStyles,
@@ -48,7 +52,7 @@ type RecipeStepSections = {
 };
 
 type RecipeData = {
-	recipeId: string;
+	recipeName: string;
 	title: string;
 	description: string[];
 	data: RecipeInfo;
@@ -60,14 +64,16 @@ type RecipeData = {
 };
 
 const RecipePage: React.FunctionComponent = () => {
+	const recipeNames: TRecipeNames = Recoil.useRecoilValue(atomRecipeNames);
+	const api = Recoil.useRecoilValue(atomApi);
+	const [isLoading, setLoading] = React.useState(true);
 	const { styles } = React.useContext(StylesContext);
-	const [isLoading, setLoading] = React.useState<boolean>(true);
-	const [errors, setErrors] = React.useState([]);
+	const [errors, setErrors] = React.useState<string[]>([]);
 	const [recipeData, setRecipeData] = React.useState<RecipeData>();
-	const { id } = useParams();
+	const { recipeName } = useParams();
 
 	const fetchRecipe = () => {
-		fetch(`https://0hgyyrn329.execute-api.ap-southeast-2.amazonaws.com/v1/recipes/${id}`)
+		fetch(`${api.uri}/${api.version}/${api.endpoints.getRecipe}/${recipeName}`)
 			.then((response) => response.json())
 			.then((data) => (async () => {
 				await new Promise((resolve) => { setTimeout(resolve, 1000); });
@@ -80,10 +86,17 @@ const RecipePage: React.FunctionComponent = () => {
 	};
 
 	React.useEffect(() => {
-		fetchRecipe();
+		setLoading(true);
+		if (recipeNames.includes(recipeName || '')) {
+			fetchRecipe();
+		}
+		// } else {
+		// 	setErrors(['This recipe doesnt exist']);
+		// 	setLoading(false);
+		// }
 	}, []);
 
-	console.log('recipedata', recipeData);
+	console.log('recipeData', !!recipeData, recipeData);
 
 	const tabContent = [
 		{
@@ -142,27 +155,14 @@ const RecipePage: React.FunctionComponent = () => {
 		},
 	];
 
+	console.log('rendering recipe page');
+
 	return (
 		<>
 			<NavBar />
 
 			<main css={recipePageStyles(styles)}>
-				{ isLoading && (
-					<Loader />
-				)}
-
-				{ !isLoading && (errors.length !== 0 || !recipeData) && (
-					<>
-						<h3>Uh-oh, an error has happened.</h3>
-						{
-							errors.length > 0
-								? errors.forEach((error) => <p>{error}</p>)
-								: <p>Could not find this recipe.</p>
-						}
-					</>
-				)}
-
-				{ !isLoading && errors.length < 1 && recipeData && (
+				{ recipeData && (
 					<>
 						<section css={recipePagePanelLeftStyles(styles)}>
 							<article>
@@ -229,7 +229,7 @@ const RecipePage: React.FunctionComponent = () => {
 
 						<section css={recipePagePanelRightStyles(styles)}>
 							<NavLink
-								to={`/recipe/${id || 0 + 1}`}
+								to={`/recipe/${recipeName || 0 + 1}`}
 								className="next-recipe-link"
 								css={recipePageNextLinkStyles(styles)}
 							>

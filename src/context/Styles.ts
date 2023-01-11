@@ -1,3 +1,4 @@
+import React from 'react';
 /* eslint-disable no-unused-vars */
 /* fixes a TS issue thinking the enum is undefined */
 export enum TTheme {
@@ -5,10 +6,9 @@ export enum TTheme {
     Light = 'Light',
 }
 
-// eslint-disable-next-line no-unused-vars
-export type TCssFunction = (content: string) => string;
+type TCssFunction = (content: string) => string;
 
-export type TBreakpoint = {
+type TBreakpoint = {
 	description: string;
 	val: string;
 	min: TCssFunction;
@@ -26,7 +26,7 @@ export type TStyles = {
 	mixins: Record<string, TCssFunction>;
 };
 
-const Styles: TStyles = {
+export const Styles: TStyles = {
 	theme: TTheme.Light,
 	breakpoints: {
 		// Mobile Sizes
@@ -374,4 +374,18 @@ Styles.mixins = {
 	`,
 };
 
-export default Styles;
+export type StylesContextType = {
+    styles: TStyles;
+    setTheme: (Theme: TTheme) => void;
+};
+
+const defaultStylesContext = {
+	styles: {
+		...Styles,
+		theme: TTheme.Light,
+	},
+	setTheme: () => null,
+};
+
+export const StylesContext = React.createContext<StylesContextType>(defaultStylesContext);
+export const useTheme = () => React.useContext(StylesContext);

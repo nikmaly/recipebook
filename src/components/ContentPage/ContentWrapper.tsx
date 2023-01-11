@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import React, { useContext } from 'react';
+import React from 'react';
 import { SerializedStyles } from '@emotion/react';
-import { StylesContext } from '../../context/StylesContext';
+import { StylesContext } from '../../context/Styles';
 import { contentWrapperStyles } from './ContentWrapper.styles';
 
 type ContentWrapperProps = {
@@ -13,7 +13,7 @@ const ContentWrapper: React.FunctionComponent<ContentWrapperProps> = ({
 	children,
 	stylesProp,
 }) => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 
 	return (
 		<main css={[stylesProp, contentWrapperStyles(styles)]}>

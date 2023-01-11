@@ -1,11 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 /** @jsxImportSource @emotion/react */
-import React, { useContext } from 'react';
+import React from 'react';
 import MuiTab from '@mui/material/Tab';
 import MuiTabContext from '@mui/lab/TabContext';
 import MuiTabList from '@mui/lab/TabList';
 import MuiTabPanel from '@mui/lab/TabPanel';
-import { StylesContext } from '../../context/StylesContext';
+import { StylesContext } from '../../context/Styles';
 import {
 	tabStyles,
 	tabButtonStyles,
@@ -27,7 +27,7 @@ const Tab: React.FunctionComponent<ITabProps> = ({
 	title,
 	content,
 }) => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 	const [currentTab, setCurrentTab] = React.useState<string>('0');
 
 	const handleTabChange = (

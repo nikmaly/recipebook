@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { NavBar } from '../../components/NavBar';
-import { StylesContext } from '../../context/StylesContext';
+import { StylesContext } from '../../context/Styles';
 /** @jsxImportSource @emotion/react */
 import {
 	landingStyles,
@@ -14,7 +14,7 @@ import Die from '../../assets/icons/die-color.svg';
 import Search from '../../assets/icons/search-color.svg';
 
 const Landing = () => {
-	const { styles } = useContext(StylesContext);
+	const { styles } = React.useContext(StylesContext);
 
 	return (
 		<div className="pg-home" css={landingStyles(styles)}>
@@ -41,10 +41,10 @@ const Landing = () => {
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to="/contact">
+						<a href="https://nik.malyaris.com">
 							contact
 							<img src={Compass} alt="search-icon-telescope" />
-						</NavLink>
+						</a>
 					</li>
 				</ul>
 			</main>

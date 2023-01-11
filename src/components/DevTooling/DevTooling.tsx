@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
-import { StylesContext } from '../../context/StylesContext';
+import { TStyles, StylesContext } from '../../context/Styles';
 import { useViewport } from '../../hooks';
 
 export const devToolingStyles = (styles: TStyles): SerializedStyles => css`

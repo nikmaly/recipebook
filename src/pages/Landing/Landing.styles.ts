@@ -17,14 +17,14 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-template-rows: 1fr 1fr 1fr 1fr;
-	column-gap: 20px;
-	row-gap: 20px;
-	padding: 10px 20px 20px 20px;
 	overflow: hidden;
 
 	${styles.breakpoints.ms.min(`
 		grid-template-columns: 1fr 1fr;
 		grid-template-rows: 1fr 1fr;
+		column-gap: 20px;
+		row-gap: 20px;
+		padding: 10px 20px 20px 20px;
 	`)}
 
 	li {
