@@ -7,11 +7,11 @@ import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
 import { atomApi } from '../../atoms/atomApi';
 import { atomRecipeNames, TRecipeNames } from '../../atoms/atomRecipeNames';
+import { TRecipeData } from '../DataLayer';
 import { NavBar } from '../NavBar';
 import { Pill } from '../Pill';
 import { Accordion } from '../Accordion';
-import { Tab } from '../Tab';
-import { Loader } from '../Loader';
+import { Tab, ITabContent } from '../Tab';
 import { StylesContext } from '../../context/Styles';
 import {
 	recipePageStyles,
@@ -29,47 +29,13 @@ import IngredientSvg from '../../assets/icons/groceries.svg';
 import StepsSvg from '../../assets/icons/list.svg';
 import DetailedStepsSvg from '../../assets/icons/complex.svg';
 
-type RecipeInfo = {
-	prepTime: string,
-	cookTime: string,
-	difficulty: string,
-};
-
-type RecipeIngredients = {
-	ingredient: string,
-	unit: string,
-	amount: string,
-};
-
-type RecipeIngredientSections = {
-	sectionName: string;
-	sectionIngredients: RecipeIngredients[];
-};
-
-type RecipeStepSections = {
-	sectionName: string;
-	sectionSteps: string[];
-};
-
-type RecipeData = {
-	recipeName: string;
-	title: string;
-	description: string[];
-	data: RecipeInfo;
-	tags: string[];
-	ingredients: RecipeIngredientSections[];
-	stepsSimple: RecipeStepSections[];
-	stepsDetailed: RecipeStepSections[];
-	furtherInfo: string[];
-};
-
 const RecipePage: React.FunctionComponent = () => {
 	const recipeNames: TRecipeNames = Recoil.useRecoilValue(atomRecipeNames);
 	const api = Recoil.useRecoilValue(atomApi);
 	const [isLoading, setLoading] = React.useState(true);
 	const { styles } = React.useContext(StylesContext);
 	const [errors, setErrors] = React.useState<string[]>([]);
-	const [recipeData, setRecipeData] = React.useState<RecipeData>();
+	const [recipeData, setRecipeData] = React.useState<TRecipeData>();
 	const { recipeName } = useParams();
 
 	const fetchRecipe = () => {
@@ -90,18 +56,13 @@ const RecipePage: React.FunctionComponent = () => {
 		if (recipeNames.includes(recipeName || '')) {
 			fetchRecipe();
 		}
-		// } else {
-		// 	setErrors(['This recipe doesnt exist']);
-		// 	setLoading(false);
-		// }
 	}, []);
 
-	console.log('recipeData', !!recipeData, recipeData);
-
-	const tabContent = [
+	const tabContent: ITabContent[] = [
 		{
 			tabTitle: 'Ingredients',
 			tabIcon: <img src={IngredientSvg} alt="ingredient icon" />,
+			tabSplit: true,
 			tabContent: recipeData && (
 				recipeData.ingredients.map((section, i) => (
 					<div key={i}>
@@ -154,8 +115,6 @@ const RecipePage: React.FunctionComponent = () => {
 			),
 		},
 	];
-
-	console.log('rendering recipe page');
 
 	return (
 		<>
@@ -235,8 +194,8 @@ const RecipePage: React.FunctionComponent = () => {
 							>
 								Next Recipe
 								<img
-									src="https://cdn.donnahaycdn.com.au/images/content-images/all-in-one_crispy_baked_tacos.jpg"
-									alt="a good name"
+									src={recipeData.image}
+									alt={`${recipeData.title} result`}
 								/>
 							</NavLink>
 						</section>

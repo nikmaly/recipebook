@@ -1,31 +1,20 @@
 @import url("https://fonts.googleapis.com/css?family=Poiret+One");
 @import url("https://fonts.googleapis.com/css?family=Comfortaa");
-@import url("https://fonts.googleapis.com/css?family=Muli");
+
+*,
+.font-text {
+	font-family: "Comfortaa", 'Courier New';
+}
 
 h1, h2, h3, h4, h5, h6,
-.font-primary {
+.font-header {
 	font-family: "Poiret One", 'Courier New';
-}
-
-html,
-.font-secondary {
-	font-family: "Comfortaa", 'Courier New';
-	font-size: 16px;
-	line-height: 24px;
-}
-
-.font-text {
-	font-family: "Muli", sans-serif;
-}
-
-html,
-.root,
-.root > * {
-	background-color: #F5F5F5;
 }
 
 html {
 	height: 100%;
+	font-size: 16px;
+	line-height: 24px;
 }
 
 html,

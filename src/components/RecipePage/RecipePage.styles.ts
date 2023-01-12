@@ -129,10 +129,10 @@ export const recipePageInfoDataStyles = (styles: TStyles): SerializedStyles => c
 		flex-flow: row wrap;
 
 		li {
+			${styles.mixins.panelise('')}
 			margin-right: ${styles.spacing[3]};
 			padding: ${styles.spacing[0]} ${styles.spacing[1]};
 			border-radius: 2px;
-			box-shadow: ${styles.spacing[0]} ${styles.spacing[0]} ${styles.spacing[1]} -${styles.spacing[0]} ${styles.colors.darkShade[5]};
 
 			&:last-child {
 				margin-right: 0;

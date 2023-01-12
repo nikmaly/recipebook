@@ -15,6 +15,7 @@ type TPillProps = {
 	onClick?: () => void;
 	isExternalLink?: boolean;
 	isListItem?: boolean;
+	compact?: boolean;
 }
 
 const Pill: React.FunctionComponent<TPillProps> = ({
@@ -23,6 +24,7 @@ const Pill: React.FunctionComponent<TPillProps> = ({
 	href,
 	onClick,
 	isListItem = false,
+	compact = false,
 }) => {
 	const { styles } = React.useContext(StylesContext);
 	let ElementType: React.ElementType = 'div';
@@ -37,7 +39,7 @@ const Pill: React.FunctionComponent<TPillProps> = ({
 
 	const tagFactory = () => (
 		<ElementType
-			css={pillStyles(styles, theme)}
+			css={pillStyles(styles, theme, compact)}
 			href={href}
 		>
 			{text}

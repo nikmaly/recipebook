@@ -10,18 +10,20 @@ import {
 	tabStyles,
 	tabButtonStyles,
 	tabContentStyles,
+	tabContentWrapperStyles,
 } from './Tab.styles';
 
 export type ITabContent = {
 	tabTitle: string;
 	tabContent: React.ReactNode;
 	tabIcon: React.ReactNode;
-}
+	tabSplit?: boolean;
+};
 
 export type ITabProps = {
 	title?: string
 	content: ITabContent[];
-}
+};
 
 const Tab: React.FunctionComponent<ITabProps> = ({
 	title,
@@ -68,7 +70,9 @@ const Tab: React.FunctionComponent<ITabProps> = ({
 							css={tabContentStyles(styles)}
 							key={`tab-panel-${i}`}
 						>
-							{tab.tabContent}
+							<div css={tabContentWrapperStyles(styles, !!tab.tabSplit)}>
+								{tab.tabContent}
+							</div>
 						</MuiTabPanel>
 					))}
 				</MuiTabContext>

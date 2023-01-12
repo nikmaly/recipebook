@@ -12,6 +12,7 @@ type TBreakpoint = {
 	description: string;
 	val: string;
 	min: TCssFunction;
+	max: TCssFunction;
 };
 
 export type TStyles = {
@@ -38,6 +39,11 @@ export const Styles: TStyles = {
 					${content}
 				}
 			`,
+			max: (content) => `
+				@media (max-width: 320px) {
+					${content}
+				}
+			`,
 		},
 		xs: {
 			description: 'smaller ipones and galaxy devices',
@@ -47,12 +53,22 @@ export const Styles: TStyles = {
 					${content}
 				}
 			`,
+			max: (content) => `
+				@media (max-width: 360px) {
+					${content}
+				}
+			`,
 		},
 		s: {
 			description: 'transition from mobile to tablet',
 			val: '400',
 			min: (content) => `
 				@media (min-width: 400px) {
+					${content}
+				}
+			`,
+			max: (content) => `
+				@media (max-width: 400px) {
 					${content}
 				}
 			`,
@@ -66,6 +82,11 @@ export const Styles: TStyles = {
 					${content}
 				}
 			`,
+			max: (content) => `
+				@media (max-width: 768px) {
+					${content}
+				}
+			`,
 		},
 		m: {
 			description: 'iPad Horizontal',
@@ -75,12 +96,22 @@ export const Styles: TStyles = {
 					${content}
 				}
 			`,
+			max: (content) => `
+				@media (max-width: 1024px) {
+					${content}
+				}
+			`,
 		},
 		ml: {
 			description: 'iPad Pro',
 			val: '1668',
 			min: (content) => `
 				@media (min-width: 1668px) {
+					${content}
+				}
+			`,
+			max: (content) => `
+				@media (max-width: 1688px) {
 					${content}
 				}
 			`,
@@ -94,12 +125,22 @@ export const Styles: TStyles = {
 					${content}
 				}
 			`,
+			max: (content) => `
+				@media (max-width: 1920px) {
+					${content}
+				}
+			`,
 		},
 		xl: {
 			description: '1440p',
 			val: '2560',
 			min: (content) => `
 				@media (min-width: 2560px) {
+					${content}
+				}
+			`,
+			max: (content) => `
+				@media (max-width: 2560px) {
 					${content}
 				}
 			`,
@@ -120,12 +161,15 @@ export const Styles: TStyles = {
 		},
 		primary: {
 			base: 'rgba(130, 125, 220, 1)',
-			mid: 'rgba(180, 180, 255, 1)',
 			light: 'rgba(230, 230, 250, 1)',
+			mid: 'rgba(180, 180, 255, 1)',
+			dark: 'rgba(95, 95, 155, 1)',
 		},
 		secondary: {
 			base: 'rgba(245, 160, 80, 1)',
 			light: 'rgba(251, 234, 192, 1)',
+			mid: 'rgba(181, 111, 31, 1)',
+			dark: 'rgba(166, 105, 36)',
 		},
 		tertiary: {
 			base: 'rgba(060, 120, 180, 1)',
@@ -188,6 +232,22 @@ export const Styles: TStyles = {
 	typography: {
 		fontHeader: '\'Poiret One\', \'Courier New\'',
 		fontText: '\'Comfortaa\', \'Courier New\'',
+		h1: `
+			font-family: 'Poiret One', 'Courier New';
+			font-size: 2em;
+		`,
+		h2: `
+			font-family: 'Poiret One', 'Courier New';
+			font-size: 1.7em;
+		`,
+		h3: `
+			font-family: 'Poiret One', 'Courier New';
+			font-size: 1.5em;
+		`,
+		h4: `
+			font-family: 'Poiret One', 'Courier New';
+			font-size: 1.3em;
+		`,
 	},
 	animations: {
 		duration: '0.2s',
@@ -358,8 +418,10 @@ Styles.mixins = {
 			}
 		}
 	`,
+	shadow: () => `
+		box-shadow: ${Styles.spacing[0]} ${Styles.spacing[0]} ${Styles.spacing[1]} -${Styles.spacing[0]} ${Styles.colors.darkShade[5]};
+	`,
 	panelise: () => `
-		padding: 10px 15px;
 		border: 1px solid ${Styles.colors.grey[0]};
 		box-shadow: ${Styles.spacing[0]} ${Styles.spacing[0]} ${Styles.spacing[1]} -${Styles.spacing[0]} ${Styles.colors.darkShade[5]};
 	`,

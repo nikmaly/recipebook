@@ -3,7 +3,6 @@ import {
 	Routes,
 	Route,
 	Navigate,
-	// useLocation,
 } from 'react-router-dom';
 import Recoil from 'recoil';
 import { atomRecipeNames } from '../../atoms/atomRecipeNames';
@@ -11,6 +10,7 @@ import { RecipePage } from '../RecipePage';
 
 // Pages
 import { Landing } from '../../pages/Landing';
+import { Search } from '../../pages/Search';
 import { Settings } from '../../pages/Settings';
 import Error404 from '../ErrorPage/Errors/404';
 import Error405 from '../ErrorPage/Errors/405';
@@ -23,6 +23,11 @@ const RoutesController: React.FunctionComponent = () => {
 			<Route
 				path="/"
 				element={<Landing />}
+			/>
+
+			<Route
+				path="/search"
+				element={<Search />}
 			/>
 
 			<Route

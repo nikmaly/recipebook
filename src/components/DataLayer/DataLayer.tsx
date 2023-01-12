@@ -5,6 +5,42 @@ import { atomApi } from '../../atoms/atomApi';
 import { atomRecipeNames } from '../../atoms/atomRecipeNames';
 import { Loader } from '../Loader';
 
+type RecipeInfo = {
+	prepTime: string,
+	cookTime: string,
+	difficulty: string,
+};
+
+type RecipeIngredients = {
+	ingredient: string,
+	unit: string,
+	amount: string,
+};
+
+type RecipeIngredientSections = {
+	sectionName: string;
+	sectionIngredients: RecipeIngredients[];
+};
+
+type RecipeStepSections = {
+	sectionName: string;
+	sectionSteps: string[];
+};
+
+export type TRecipeData = {
+	recipeName: string;
+	image: string;
+	title: string;
+	shortDescription: string;
+	description: string[];
+	data: RecipeInfo;
+	tags: string[];
+	ingredients: RecipeIngredientSections[];
+	stepsSimple: RecipeStepSections[];
+	stepsDetailed: RecipeStepSections[];
+	furtherInfo: string[];
+};
+
 type DataLayerProps = {
 	children: React.ReactNode;
 };
@@ -24,13 +60,11 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 			.then((data) => (async () => {
 				await new Promise((resolve) => { setTimeout(resolve, 1000); });
 				setLoading(false);
-				console.log(data);
 				setRecipeNames(data.Items.map((item: any) => (
 					DynamoDB.Converter.output({ M: item }).recipeName
 				)));
 			})()).catch((_error) => {
 				setLoading(false);
-				console.log('error', _error);
 				setErrors(_error);
 			});
 	};

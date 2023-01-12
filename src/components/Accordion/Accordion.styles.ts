@@ -2,9 +2,9 @@ import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from '../../context/Styles';
 
 export const accordionStyles = (styles: TStyles): SerializedStyles => css`
+	${styles.mixins.panelise('')}
 	color: ${styles.colors.black.base};
 	border: 1px solid ${styles.colors.grey[0]};
-	box-shadow: ${styles.spacing[0]} ${styles.spacing[0]} ${styles.spacing[1]} -${styles.spacing[0]} ${styles.colors.darkShade[5]};
 `;
 
 export const accordionWrapperStyles = (styles: TStyles): SerializedStyles => css`
