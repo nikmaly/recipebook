@@ -191,31 +191,21 @@ export const navbarLinkMenuStyles = (
 	display: flex;
 	position: absolute;
 	flex-flow: column wrap;
+	justify-content: space-around;
 	right: 0;
-	height: calc(100vh - ${styles.components.navbar.height});
-	width: 100%;
+	height: 400px;
+	width: 300px;
 	background: rgb(190, 135, 50);
-	transform: translate(100%, 0);
+	transform: translate(100%, -56.5%);
 	overflow: hidden;
 	transition: transform 1s;
-
-	${styles.breakpoints.s.min(`
-		justify-content: space-around;
-		height: 400px;
-		width: 200px;
-		transform: translate(100%, -57.5%);
-	`)}
 
 	${!isLanding && `
 		top: 50vh;
 	`}
 
 	${isOpen && `
-		transform: translate(0, 0);
-
-		${styles.breakpoints.s.min(`
-			transform: translate(0, -57.5%);
-		`)}
+		transform: translate(0, -56.5%);
 	`};
 
 	a {

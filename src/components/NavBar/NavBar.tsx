@@ -14,33 +14,27 @@ import {
 const NavBar: React.FunctionComponent = () => {
 	const { styles } = React.useContext(StylesContext);
 	const [isMenuOpen, setMenuOpen] = React.useState(false);
-	const [isScrolled, setIsScrolled] = React.useState(false);
+	const navMenuRef = React.useRef(null);
 	const { pathname } = useLocation();
 	const isLanding: boolean = pathname === '/';
 
-	const handleScroll = () => {
-		const scrolled = window.pageYOffset > (window.innerHeight - 50) * 0.35;
+	const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+		if (navMenuRef?.current) {
+			const el: Node = navMenuRef?.current;
 
-		if (scrolled) {
-			if (!isScrolled) {
-				setIsScrolled(true);
+			if (!el.contains(e.target as Node)) {
+				setMenuOpen(false);
 			}
-		} else if (isScrolled) {
-			setIsScrolled(false);
 		}
 	};
 
 	React.useEffect(() => {
-		const floatingHeader = document.getElementById('floating-navbar');
-
-		if (floatingHeader) {
-			// setHeaderOffset(floatingHeader.offsetTop);
-			window.addEventListener('scroll', handleScroll);
-			// TODO: update offset on resize
+		if (isMenuOpen) {
+			window.addEventListener('mousedown', handleClickOutside);
 		}
 
-		return () => { window.removeEventListener('scroll', handleScroll); };
-	}, []);
+		return () => { window.removeEventListener('mousedown', handleClickOutside); };
+	}, [isMenuOpen]);
 
 	return (
 		<nav
@@ -68,7 +62,10 @@ const NavBar: React.FunctionComponent = () => {
 					Open Menu
 				</button>
 
-				<ul css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}>
+				<ul
+					css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}
+					ref={navMenuRef}
+				>
 					<li>
 						<NavLink
 							to="/login"
