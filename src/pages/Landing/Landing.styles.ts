@@ -45,7 +45,8 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 				box-shadow 0.4s,
 				background 0.2s,
 				filter 0.8s,
-				transform 0.6s;
+				transform 0.6s,
+				border-color 0.6s;
 
 			${styles.breakpoints.ms.min(`
 				filter: grayscale(1);
@@ -74,24 +75,44 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 				transform-origin: 100% 100%;
 				border-top-right-radius: 100px;
 				border-bottom-left-radius: 100px;
+
+				&:hover {
+					border-bottom: 5px solid ${styles.colors.primary.base};
+					border-right: 5px solid ${styles.colors.primary.base};
+				}
 			}
 
 			&:nth-of-type(2) a {
 				transform-origin: 0 100%;
 				border-top-left-radius: 100px;
 				border-bottom-right-radius: 100px;
+
+				&:hover {
+					border-bottom: 5px solid ${styles.colors.secondary.base};
+					border-left: 5px solid ${styles.colors.secondary.base};
+				}
 			}
 
 			&:nth-of-type(3) a {
 				transform-origin: 100% 0;
 				border-top-left-radius: 100px;
 				border-bottom-right-radius: 100px;
+
+				&:hover {
+					border-top: 5px solid ${styles.colors.secondary.base};
+					border-right: 5px solid ${styles.colors.secondary.base};
+				}
 			}
 
 			&:nth-of-type(4) a {
 				transform-origin: 0 0;
 				border-top-right-radius: 100px;
 				border-bottom-left-radius: 100px;
+
+				&:hover {
+					border-top: 5px solid ${styles.colors.primary.base};
+					border-left: 5px solid ${styles.colors.primary.base};
+				}
 			}
 		`)}
 	}

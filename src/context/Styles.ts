@@ -61,14 +61,14 @@ export const Styles: TStyles = {
 		},
 		s: {
 			description: 'transition from mobile to tablet',
-			val: '400',
+			val: '440',
 			min: (content) => `
-				@media (min-width: 400px) {
+				@media (min-width: 440px) {
 					${content}
 				}
 			`,
 			max: (content) => `
-				@media (max-width: 400px) {
+				@media (max-width: 440px) {
 					${content}
 				}
 			`,
@@ -161,6 +161,7 @@ export const Styles: TStyles = {
 		},
 		primary: {
 			base: 'rgba(130, 125, 220, 1)',
+			transparent: 'rgba(230, 230, 250, 0.3)',
 			light: 'rgba(230, 230, 250, 1)',
 			mid: 'rgba(180, 180, 255, 1)',
 			dark: 'rgba(95, 95, 155, 1)',

@@ -6,20 +6,24 @@ export const headerStyles = (styles: TStyles): SerializedStyles => css`
 	position: relative;
 	width: 100%;
 	overflow: hidden;
+
+	${styles.breakpoints.ms.min(`
+		margin-top: 10px;
+	`)}
 `;
 
 export const headerContentTextStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.fontHeader('')};
 	${styles.mixins.fadeIn(styles.animations.durationFade)};
-	padding: 20px;
-	color: ${styles.colors.black.base};
+	margin-bottom: 5px;
+	padding: 15px 20px;
+	color: ${styles.colors.primary.dark};
 	font-size: 1.5em;
 	text-transform: uppercase;
 	text-align: center;
 	letter-spacing: 12px;
 
 	${styles.breakpoints.xs.min(`
-		padding: 20px;
 		font-size: 2em;
 	`)}
 

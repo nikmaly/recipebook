@@ -16,7 +16,7 @@ const ContentWrapper: React.FunctionComponent<ContentWrapperProps> = ({
 	const { styles } = React.useContext(StylesContext);
 
 	return (
-		<main css={[stylesProp, contentWrapperStyles(styles)]}>
+		<main css={[contentWrapperStyles(styles), stylesProp]}>
 			{children}
 		</main>
 	);

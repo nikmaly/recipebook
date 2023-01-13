@@ -6,7 +6,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
 import { atomApi } from '../../atoms/atomApi';
-import { atomRecipeNames, TRecipeNames } from '../../atoms/atomRecipeNames';
+import { atomRecipeNameList, TRecipeNameList } from '../../atoms/atomRecipeNameList';
 import { TRecipeData } from '../DataLayer';
 import { NavBar } from '../NavBar';
 import { Pill } from '../Pill';
@@ -30,7 +30,7 @@ import StepsSvg from '../../assets/icons/list.svg';
 import DetailedStepsSvg from '../../assets/icons/complex.svg';
 
 const RecipePage: React.FunctionComponent = () => {
-	const recipeNames: TRecipeNames = Recoil.useRecoilValue(atomRecipeNames);
+	const recipeNames: TRecipeNameList = Recoil.useRecoilValue(atomRecipeNameList);
 	const api = Recoil.useRecoilValue(atomApi);
 	const [isLoading, setLoading] = React.useState(true);
 	const { styles } = React.useContext(StylesContext);

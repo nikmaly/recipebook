@@ -2,7 +2,7 @@ import React from 'react';
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
 import { atomApi } from '../../atoms/atomApi';
-import { atomRecipeNames } from '../../atoms/atomRecipeNames';
+import { atomRecipeNameList } from '../../atoms/atomRecipeNameList';
 import { Loader } from '../Loader';
 
 type RecipeInfo = {
@@ -49,7 +49,7 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 	children,
 }) => {
 	// eslint-disable-next-line no-unused-vars
-	const [recipes, setRecipeNames] = Recoil.useRecoilState(atomRecipeNames);
+	const [recipeNameList, setRecipeNameList] = Recoil.useRecoilState(atomRecipeNameList);
 	const [isLoading, setLoading] = React.useState(true);
 	const api = Recoil.useRecoilValue(atomApi);
 	const [errors, setErrors] = React.useState([]);
@@ -60,7 +60,7 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 			.then((data) => (async () => {
 				await new Promise((resolve) => { setTimeout(resolve, 1000); });
 				setLoading(false);
-				setRecipeNames(data.Items.map((item: any) => (
+				setRecipeNameList(data.Items.map((item: any) => (
 					DynamoDB.Converter.output({ M: item }).recipeName
 				)));
 			})()).catch((_error) => {

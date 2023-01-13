@@ -12,12 +12,19 @@ export const recipeRowImageStyles = (
 	styles: TStyles,
 	image: string,
 ): SerializedStyles => css`
-	flex: 0 0 20%;
-	margin-right: 10px;
+	flex: 0 0 25%;
+	margin-right: 5px;
 	height: 100%;
+	min-height: 110px;
 	background-image: url(${image});
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position: center;
+
+	${styles.breakpoints.ms.min(`
+		flex: 0 0 20%;
+		margin-right: 10px;
+	`)}
 `;
 
 export const recipeRowContentStyles = (styles: TStyles): SerializedStyles => css`

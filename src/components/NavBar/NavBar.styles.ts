@@ -38,7 +38,7 @@ export const navbarLogoStyles = (styles: TStyles): SerializedStyles => css`
 		transform: scaleX(0.001) translate(0, -50%);
 		height: 100px;
 		width: 55px;
-		background: ${styles.colors.grey[0]};
+		background-color: ${styles.colors.primary.base};
 		transform-origin: left center;
 		transition: transform 0.2s;
 		--mask:
@@ -153,7 +153,7 @@ export const navbarLinkMenuButtonStyles = (
 		transform: rotate(180deg) scaleX(0.001) translate(0, 50%);
 		height: 100px;
 		width: 55px;
-		background: ${styles.colors.grey[0]};
+		background-color: ${styles.colors.secondary.base};
 		transform-origin: left center;
 		transition: transform 0.2s;
 		--mask:

@@ -5,18 +5,19 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import Recoil from 'recoil';
-import { atomRecipeNames } from '../../atoms/atomRecipeNames';
+import { atomRecipeNameList } from '../../atoms/atomRecipeNameList';
 import { RecipePage } from '../RecipePage';
 
 // Pages
 import { Landing } from '../../pages/Landing';
 import { Search } from '../../pages/Search';
 import { Settings } from '../../pages/Settings';
+import { Login } from '../../pages/Login';
 import Error404 from '../ErrorPage/Errors/404';
 import Error405 from '../ErrorPage/Errors/405';
 
 const RoutesController: React.FunctionComponent = () => {
-	const recipes: string[] = Recoil.useRecoilValue(atomRecipeNames);
+	const recipes: string[] = Recoil.useRecoilValue(atomRecipeNameList);
 
 	return (
 		<Routes>
@@ -43,16 +44,6 @@ const RoutesController: React.FunctionComponent = () => {
 			/>
 
 			<Route
-				path="/contact"
-				element={(
-					<Navigate
-						to="https://nik.malyaris.com/"
-						replace
-					/>
-				)}
-			/>
-
-			<Route
 				path="/recipe/:recipeName"
 				element={(
 					<RecipePage />
@@ -66,12 +57,7 @@ const RoutesController: React.FunctionComponent = () => {
 
 			<Route
 				path="/login"
-				element={(
-					<Navigate
-						to="https://auth.malyaris.com/oauth2/authorize?response_type=code&client_id=56u2njrnvps7r2dcirvk6otjnl&redirect_uri=https://recipes.malyaris.com"
-						replace
-					/>
-				)}
+				element={<Login />}
 			/>
 
 			<Route
