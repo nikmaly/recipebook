@@ -7,14 +7,13 @@ import { atomApi } from '../../atoms/atomApi';
 import { atomRecipeNameList, TRecipeNameList } from '../../atoms/atomRecipeNameList';
 import { TRecipeData } from '../../components/DataLayer';
 import { ContentPage } from '../../components/ContentPage';
-import { NavBar } from '../../components/NavBar';
+import { Field } from '../../components/Field';
 import { RecipeRow } from '../../components/RecipeRow';
 import { StylesContext } from '../../context/Styles';
 /** @jsxImportSource @emotion/react */
 import {
 	searchPageStyles,
 	searchPageFieldContainerStyles,
-	searchPageFieldStyles,
 	searchPageContentContainerStyles,
 } from './Search.styles';
 
@@ -83,11 +82,16 @@ const Search = () => {
 			stylesProp={searchPageStyles(styles)}
 		>
 			<div css={searchPageFieldContainerStyles(styles)}>
-				<input
-					css={searchPageFieldStyles(styles)}
-					value={inputVal}
-					onChange={(e) => handleSearchInput(e)}
-				/>
+				<Field
+					labelText="Search"
+					fieldName="search"
+					hasInput={!!inputVal}
+				>
+					<input
+						value={inputVal}
+						onChange={(e) => handleSearchInput(e)}
+					/>
+				</Field>
 			</div>
 
 			{ loadedRecipeData && loadedRecipeData.length > 0 && (

@@ -1,0 +1,103 @@
+{
+ "recipeName": "must-have-dashes-instead-of-spaces",
+ "data": {
+  "cookTime": "",
+  "difficulty": "",
+  "prepTime": ""
+ },
+ "description": [
+  "",
+  "",
+  ""
+ ],
+ "furtherInfo": [
+  "",
+  ""
+ ],
+ "image": "",
+ "ingredients": [
+  {
+   "sectionIngredients": [
+    {
+     "amount": "",
+     "ingredient": "",
+     "unit": ""
+    },
+    {
+     "amount": "",
+     "ingredient": "",
+     "unit": ""
+    }
+   ],
+   "sectionName": ""
+  },
+  {
+   "sectionIngredients": [
+    {
+     "amount": "",
+     "ingredient": "",
+     "unit": ""
+    },
+    {
+     "amount": "",
+     "ingredient": "",
+     "unit": ""
+    },
+    {
+     "amount": "",
+     "ingredient": "",
+     "unit": ""
+    }
+   ],
+   "sectionName": ""
+  }
+ ],
+ "shortDescription": "",
+ "stepsDetailed": [
+  {
+   "sectionName": "",
+   "sectionSteps": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  {
+   "sectionName": "",
+   "sectionSteps": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  }
+ ],
+ "stepsSimple": [
+  {
+   "sectionName": "",
+   "sectionSteps": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  {
+   "sectionName": "",
+   "sectionSteps": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  }
+ ],
+ "tags": [
+  ""
+ ],
+ "title": "can have space. is CaSe SenSiTivE"
+}
+
+This is JSON, NOT a js object, remmeber to use the correct syntax.
+¬

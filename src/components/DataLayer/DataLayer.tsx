@@ -5,24 +5,24 @@ import { atomApi } from '../../atoms/atomApi';
 import { atomRecipeNameList } from '../../atoms/atomRecipeNameList';
 import { Loader } from '../Loader';
 
-type RecipeInfo = {
+export type TRecipeInfo = {
 	prepTime: string,
 	cookTime: string,
 	difficulty: string,
 };
 
-type RecipeIngredients = {
+export type TRecipeIngredients = {
 	ingredient: string,
 	unit: string,
 	amount: string,
 };
 
-type RecipeIngredientSections = {
+export type TRecipeIngredientSections = {
 	sectionName: string;
-	sectionIngredients: RecipeIngredients[];
+	sectionIngredients: TRecipeIngredients[];
 };
 
-type RecipeStepSections = {
+export type TRecipeStepSections = {
 	sectionName: string;
 	sectionSteps: string[];
 };
@@ -33,11 +33,11 @@ export type TRecipeData = {
 	title: string;
 	shortDescription: string;
 	description: string[];
-	data: RecipeInfo;
+	data: TRecipeInfo;
 	tags: string[];
-	ingredients: RecipeIngredientSections[];
-	stepsSimple: RecipeStepSections[];
-	stepsDetailed: RecipeStepSections[];
+	ingredients: TRecipeIngredientSections[];
+	stepsSimple: TRecipeStepSections[];
+	stepsDetailed: TRecipeStepSections[];
 	furtherInfo: string[];
 };
 

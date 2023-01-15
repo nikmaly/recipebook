@@ -46,7 +46,7 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 				background 0.2s,
 				filter 0.8s,
 				transform 0.6s,
-				border-color 0.6s;
+				background 0.6s;
 
 			${styles.breakpoints.ms.min(`
 				filter: grayscale(1);
@@ -77,8 +77,7 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 				border-bottom-left-radius: 100px;
 
 				&:hover {
-					border-bottom: 5px solid ${styles.colors.primary.base};
-					border-right: 5px solid ${styles.colors.primary.base};
+					background: ${styles.colors.primary.light};
 				}
 			}
 
@@ -88,8 +87,7 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 				border-bottom-right-radius: 100px;
 
 				&:hover {
-					border-bottom: 5px solid ${styles.colors.secondary.base};
-					border-left: 5px solid ${styles.colors.secondary.base};
+					background: ${styles.colors.secondary.light};
 				}
 			}
 
@@ -99,8 +97,7 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 				border-bottom-right-radius: 100px;
 
 				&:hover {
-					border-top: 5px solid ${styles.colors.secondary.base};
-					border-right: 5px solid ${styles.colors.secondary.base};
+					background: ${styles.colors.secondary.light};
 				}
 			}
 
@@ -110,8 +107,7 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 				border-bottom-left-radius: 100px;
 
 				&:hover {
-					border-top: 5px solid ${styles.colors.primary.base};
-					border-left: 5px solid ${styles.colors.primary.base};
+					background: ${styles.colors.primary.light};
 				}
 			}
 		`)}

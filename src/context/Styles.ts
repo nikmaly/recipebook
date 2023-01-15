@@ -155,10 +155,6 @@ export const Styles: TStyles = {
 	},
 	// 146
 	colors: {
-		brand: {
-			primary: 'rgba(130, 125, 220, 1)',
-			secondary: 'rgba(245, 160, 80, 1)',
-		},
 		primary: {
 			base: 'rgba(130, 125, 220, 1)',
 			transparent: 'rgba(230, 230, 250, 0.3)',
@@ -171,15 +167,6 @@ export const Styles: TStyles = {
 			light: 'rgba(251, 234, 192, 1)',
 			mid: 'rgba(181, 111, 31, 1)',
 			dark: 'rgba(166, 105, 36)',
-		},
-		tertiary: {
-			base: 'rgba(060, 120, 180, 1)',
-		},
-		highlight: {
-			base: 'rgba(200, 180, 190, 0.6)',
-		},
-		lowlight: {
-			base: 'rgba(100, 000, 000, 1)',
 		},
 		misc: {
 			coral: 'rgba(255, 100, 100, 1)',
@@ -228,6 +215,9 @@ export const Styles: TStyles = {
 			8: 'rgba(255, 255, 255, 0.8)',
 			9: 'rgba(255, 255, 255, 0.9)',
 			10: 'rgba(255, 255, 255, 1.0)',
+		},
+		type: {
+			error: '#b01b04',
 		},
 	},
 	typography: {
@@ -382,21 +372,6 @@ Styles.mixins = {
 		font-size: 0;
 		color: transparent;
 	`,
-	headerDecorator: () => `
-		display: inline-block;
-		position: relative;
-
-		&:before {
-			content: "";
-			position: absolute;
-			height: 10px;
-			width: 95%;
-			background: ${Styles.colors.brand.highlight};
-			left: 10%;
-			bottom: 5%;
-			z-index: 0;
-		}
-	`,
 	linkDecorator: (parentPadding = '0') => `
 		position: relative;
 		display: block;
@@ -425,6 +400,22 @@ Styles.mixins = {
 	panelise: () => `
 		border: 1px solid ${Styles.colors.grey[0]};
 		box-shadow: ${Styles.spacing[0]} ${Styles.spacing[0]} ${Styles.spacing[1]} -${Styles.spacing[0]} ${Styles.colors.darkShade[5]};
+	`,
+	fieldStyle: () => `
+		padding: 15px;
+		background-color: ${Styles.colors.white.base};
+		border: none;
+		border-bottom: 1px solid ${Styles.colors.secondary.base};
+		margin-bottom: 2px;
+		color: ${Styles.colors.grey[2]};
+		transition: border-bottom 0.2s, color 0.2s, margin-bottom 0.2s;
+
+		&:active,
+		&:focus {
+			border-bottom: 3px solid ${Styles.colors.secondary.base};
+			color: ${Styles.colors.primary.dark};
+			margin-bottom: 0px;
+		}
 	`,
 	fadeIn: (duration = '0.1s') => `
 		opacity: 0;

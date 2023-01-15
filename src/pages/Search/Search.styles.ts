@@ -20,27 +20,18 @@ export const searchPageFieldContainerStyles = (styles: TStyles): SerializedStyle
 	${styles.breakpoints.m.min(`
 		margin: 10px 0 35px;
 	`)}
-`;
 
-export const searchPageFieldStyles = (styles: TStyles): SerializedStyles => css`
-	width: 100%;
-	padding: 15px;
-	background-color: ${styles.colors.white.base};
-	border: none;
-	border-bottom: 1px solid ${styles.colors.secondary.base};
-	margin-bottom: 2px;
-	color: ${styles.colors.grey[2]};
-	transition: border-bottom 0.2s, color 0.2s, margin-bottom 0.2s;
+	label {
+		> input {
+			padding-left: 10px;
+			padding-left: 10px;
+			text-align: center;
+		}
 
-	${styles.breakpoints.s.min(`
-		width: 420px;
-	`)}
-
-	&:active,
-	&:focus {
-		border-bottom: 3px solid ${styles.colors.secondary.base};
-		color: ${styles.colors.primary.dark};
-		margin-bottom: 0px;
+		> span {
+			left: 50%;
+			transform: translate(-55%, 0);
+		}
 	}
 `;
 

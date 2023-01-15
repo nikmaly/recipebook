@@ -37,10 +37,10 @@ const App = () => {
 	const muiTheme = createTheme({
 		palette: {
 			primary: {
-				main: styles.colors.brand.primary,
+				main: styles.colors.primary.base,
 			},
 			secondary: {
-				main: styles.colors.brand.secondary,
+				main: styles.colors.secondary.base,
 			},
 		},
 		typography: {

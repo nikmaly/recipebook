@@ -53,7 +53,10 @@ const NavBar: React.FunctionComponent = () => {
 			</div>
 
 			{/* Navbar Menu */}
-			<div css={navbarLinkMenuWrapperStyles(styles)}>
+			<div
+				css={navbarLinkMenuWrapperStyles(styles)}
+				ref={navMenuRef}
+			>
 				<button
 					type="button"
 					css={navbarLinkMenuButtonStyles(styles, isMenuOpen, isLanding)}
@@ -64,7 +67,6 @@ const NavBar: React.FunctionComponent = () => {
 
 				<ul
 					css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}
-					ref={navMenuRef}
 				>
 					<li>
 						<NavLink

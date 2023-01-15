@@ -13,6 +13,7 @@ import { Landing } from '../../pages/Landing';
 import { Search } from '../../pages/Search';
 import { Settings } from '../../pages/Settings';
 import { Login } from '../../pages/Login';
+import { SubmitRecipe } from '../../pages/SubmitRecipe';
 import Error404 from '../ErrorPage/Errors/404';
 import Error405 from '../ErrorPage/Errors/405';
 
@@ -58,6 +59,11 @@ const RoutesController: React.FunctionComponent = () => {
 			<Route
 				path="/login"
 				element={<Login />}
+			/>
+
+			<Route
+				path="/submit-recipe"
+				element={<SubmitRecipe />}
 			/>
 
 			<Route

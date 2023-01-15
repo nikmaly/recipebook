@@ -40,7 +40,7 @@ const Accordion: React.FunctionComponent<IAccordionProps> = ({
 					css={accordionSummaryStyles(styles)}
 					sx={{
 						fontSize: '0.875em',
-						color: styles.colors.brand.primary,
+						color: styles.colors.primary.base,
 						textTransform: 'uppercase',
 					}}
 				>

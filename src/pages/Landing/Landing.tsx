@@ -25,13 +25,13 @@ const Landing = () => {
 					<li>
 						<NavLink to="/search">
 							Search
-							<img src={Search} alt="search-icon-telescope" />
+							<img src={Search} alt="search-icon-search" />
 						</NavLink>
 					</li>
 					<li>
 						<NavLink to="/random">
 							Random
-							<img src={Die} alt="search-icon-telescope" />
+							<img src={Die} alt="search-icon-dice" />
 						</NavLink>
 					</li>
 					<li>
@@ -41,10 +41,10 @@ const Landing = () => {
 						</NavLink>
 					</li>
 					<li>
-						<a href="https://nik.malyaris.com">
-							contact
-							<img src={Compass} alt="search-icon-telescope" />
-						</a>
+						<NavLink to="/submit-recipe">
+							Submit Recipe
+							<img src={Compass} alt="search-icon-compass" />
+						</NavLink>
 					</li>
 				</ul>
 			</main>
