@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from '../../context/Styles';
 
@@ -22,11 +23,20 @@ export const recipePagePanelLeftStyles = (styles: TStyles): SerializedStyles => 
     background-color: ${styles.colors.white.base};
     z-index: 1;
 
+	${styles.breakpoints.s.min(`
+		padding: ${styles.spacing[4]} ${styles.spacing[10]};
+	`)}
+
 	${styles.breakpoints.m.min(`
 		flex: 0 0 50vw;
 		margin-top: 0;
 		padding-top: 50px;
+		padding-right: ${styles.spacing[6]};
 	`)}
+
+	article {
+		position: relative;
+	}
 `;
 
 export const recipePagePanelRightStyles = (styles: TStyles): SerializedStyles => css`
@@ -94,10 +104,17 @@ export const recipePageNextLinkStyles = (styles: TStyles): SerializedStyles => c
 export const recipePageTitleStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.fontHeader('')}
 	margin: 0 0 0.5em;
+	padding-right: 40px;
 	font-size: 3em;
 	font-weight: 100;
 	letter-spacing: ${styles.spacing[0]};
 	line-height: 1em;
+`;
+
+export const recipePageFavouriteStyles = (styles: TStyles): SerializedStyles => css`
+position: absolute;
+right: 0;
+top: 8px;
 `;
 
 export const recipePageTagStyles = (styles: TStyles): SerializedStyles => css`
@@ -115,6 +132,7 @@ export const recipePageTagStyles = (styles: TStyles): SerializedStyles => css`
 export const recipePageDescriptionStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.panelise('')}
 	${styles.mixins.fontText('')}
+	padding: 0 ${styles.spacing[3]};
 	font-size: 0.8em;
 	line-height: 1.6em;
 	letter-spacing: 0.02em;

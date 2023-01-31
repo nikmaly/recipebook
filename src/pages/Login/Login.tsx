@@ -1,4 +1,7 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Recoil from 'recoil';
+import { atomAuthentication } from '../../atoms/atomAuthentication';
 import { StylesContext } from '../../context/Styles';
 import { ContentPage } from '../../components/ContentPage';
 /** @jsxImportSource @emotion/react */
@@ -6,15 +9,66 @@ import { loginStyles } from './Login.styles';
 
 const Login = () => {
 	const { styles } = React.useContext(StylesContext);
+	const [authData, setAuthData] = Recoil.useRecoilState(atomAuthentication);
+	const [searchParams] = useSearchParams();
+	const loginUrl = `${authData.url}/${authData.endpoints.login}&client_id=${authData.clientId}&redirect_uri=${process.env.NODE_ENV !== 'development' ? 'https://recipebook.malyaris.com/login' : 'http://localhost:3000/login'}`;
+
+	React.useEffect(() => {
+		const code = searchParams.get('code')?.toString() || '';
+		const tokenUrl = `${authData.url}/${authData.endpoints.token}`;
+		const tokenOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				Accept: '*/*',
+			},
+			body: `grant_type=authorization_code&client_id=${authData.clientId}&code=${code}&redirect_uri=${encodeURIComponent(process.env.NODE_ENV !== 'development' ? 'https://recipebook.malyaris.com/login' : 'http://localhost:3000/login')}`,
+		};
+
+		if (!code) { return; }
+		// If we're already logged in and the token hasn't expired, don't double up requests
+		if (authData.loginState && Date.now() < authData.authentication.valid_until) { return; }
+
+		fetch(tokenUrl, tokenOptions)
+			.then((response) => response.json())
+			.then((data) => (async () => {
+				const currentTime = Date.now();
+				await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+				if (data.error) {
+					throw new Error(data.error);
+				}
+
+				setAuthData({
+					...authData,
+					loginState: true,
+					authentication: {
+						...data,
+						auth_token: code,
+						valid_until: currentTime + data.expires_in,
+					},
+				});
+			})()).catch((err) => {
+				console.warn('error', err);
+				setAuthData({
+					...authData,
+					error: err || 'Unknown Error',
+				});
+			});
+	}, []);
 
 	return (
 		<ContentPage title="Login">
 			<div css={loginStyles(styles)}>
 				<h2>Coming Soon</h2>
-				{/*
-					Check if the right things are here detect login, if not show button, otherwise redirect
-				*/}
-				<a href="https://auth.malyaris.com/oauth2/authorize?response_type=code&client_id=56u2njrnvps7r2dcirvk6otjnl&redirect_uri=https://recipes.malyaris.com/login">Login</a>
+
+				{!authData.loginState ? (
+					<a href={loginUrl}>
+						Login
+					</a>
+				) : (
+					<p>Logged In.</p>
+				)}
 			</div>
 		</ContentPage>
 	);

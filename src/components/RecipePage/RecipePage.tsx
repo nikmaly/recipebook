@@ -7,11 +7,15 @@ import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
 import { atomApi } from '../../atoms/atomApi';
 import { atomRecipeNameList, TRecipeNameList } from '../../atoms/atomRecipeNameList';
+import { atomLoadedRecipes } from '../../atoms/atomLoadedRecipes';
+import { useLoadRecipes } from '../../hooks/useLoadRecipes';
 import { TRecipeData } from '../DataLayer';
+import { Loader } from '../Loader';
 import { NavBar } from '../NavBar';
 import { Pill } from '../Pill';
 import { Accordion } from '../Accordion';
 import { Tab, ITabContent } from '../Tab';
+import { FavouriteButton } from '../FavouriteButton';
 import { StylesContext } from '../../context/Styles';
 import {
 	recipePageStyles,
@@ -19,6 +23,7 @@ import {
 	recipePagePanelLeftStyles,
 	recipePagePanelRightStyles,
 	recipePageTitleStyles,
+	recipePageFavouriteStyles,
 	recipePageTagStyles,
 	recipePageDescriptionStyles,
 	recipePageInfoDataStyles,
@@ -31,31 +36,38 @@ import DetailedStepsSvg from '../../assets/icons/complex.svg';
 
 const RecipePage: React.FunctionComponent = () => {
 	const recipeNames: TRecipeNameList = Recoil.useRecoilValue(atomRecipeNameList);
-	const api = Recoil.useRecoilValue(atomApi);
+	const loadedRecipes = Recoil.useRecoilValue(atomLoadedRecipes);
+	const [recipeData, setRecipeData] = React.useState<TRecipeData>();
 	const [isLoading, setLoading] = React.useState(true);
 	const { styles } = React.useContext(StylesContext);
-	const [errors, setErrors] = React.useState<string[]>([]);
-	const [recipeData, setRecipeData] = React.useState<TRecipeData>();
+	const loadRecipes = useLoadRecipes();
 	const { recipeName } = useParams();
 
-	const fetchRecipe = () => {
-		fetch(`${api.uri}/${api.version}/${api.endpoints.getRecipe}/${recipeName}`)
-			.then((response) => response.json())
-			.then((data) => (async () => {
-				await new Promise((resolve) => { setTimeout(resolve, 1000); });
-				setLoading(false);
-				setRecipeData(data.Items.map((item: any) => DynamoDB.Converter.output({ M: item }))[0]);
-			})()).catch((_error) => {
-				setLoading(false);
-				setErrors(_error);
-			});
+	const findRecipe = (onLoad: boolean = false) => {
+		if (
+			recipeName
+			&& typeof recipeName === 'string'
+		) {
+			if (loadedRecipes.index.includes(recipeName)) {
+				const targetRecipe = loadedRecipes.data.find((item) => item.recipeName === recipeName);
+
+				if (targetRecipe) {
+					setRecipeData(targetRecipe);
+					setLoading(false);
+				}
+			} else if (onLoad) {
+				loadRecipes([recipeName]);
+			}
+		}
 	};
 
 	React.useEffect(() => {
+		findRecipe();
+	}, [loadedRecipes]);
+
+	React.useEffect(() => {
 		setLoading(true);
-		if (recipeNames.includes(recipeName || '')) {
-			fetchRecipe();
-		}
+		findRecipe(true);
 	}, []);
 
 	const tabContent: ITabContent[] = [
@@ -118,90 +130,100 @@ const RecipePage: React.FunctionComponent = () => {
 
 	return (
 		<>
-			<NavBar />
+			{isLoading ? (
+				<Loader />
+			) : (
+				<>
+					<NavBar />
 
-			<main css={recipePageStyles(styles)}>
-				{ recipeData && (
-					<>
-						<section css={recipePagePanelLeftStyles(styles)}>
-							<article>
-								<h1 css={recipePageTitleStyles(styles)}>
-									{recipeData.title}
-								</h1>
+					<main css={recipePageStyles(styles)}>
+						{ recipeData && (
+							<>
+								<section css={recipePagePanelLeftStyles(styles)}>
+									<article>
+										<h1 css={recipePageTitleStyles(styles)}>
+											{recipeData.title}
+										</h1>
 
-								<div css={recipePageTagStyles(styles)}>
-									<ul>
-										{
-											recipeData.tags.map((tag, i) => (
-												<Pill
-													key={tag}
-													text={tag}
-													href={`/tags/${tag}`}
-													theme={i % 2 ? 'secondary' : 'primary'}
-												/>
-											))
-										}
-									</ul>
-								</div>
+										<div css={recipePageFavouriteStyles(styles)}>
+											<FavouriteButton recipe={recipeName || ''} />
+										</div>
 
-								<div css={recipePageInfoDataStyles(styles)}>
-									<ul>
-										<li>
-											<p>Prep Time:</p>
-											<p>{recipeData.data.prepTime}</p>
-										</li>
-										<li>
-											<p>Cook Time:</p>
-											<p>{recipeData.data.cookTime}</p>
-										</li>
-										<li>
-											<p>Difficulty:</p>
-											<p>{recipeData.data.difficulty}</p>
-										</li>
-									</ul>
-								</div>
+										<div css={recipePageTagStyles(styles)}>
+											<ul>
+												{
+													recipeData.tags.map((tag, i) => (
+														<Pill
+															key={tag}
+															text={tag}
+															href={`/discover/${tag}`}
+															theme={i % 2 ? 'secondary' : 'primary'}
+														/>
+													))
+												}
+											</ul>
+										</div>
 
-								{recipeData.description && (
-									<div css={recipePageDescriptionStyles(styles)}>
-										{recipeData.description.map((item, i) => (
-											<p key={i}>{item}</p>
-										))}
-									</div>
-								)}
-							</article>
+										<div css={recipePageInfoDataStyles(styles)}>
+											<ul>
+												<li>
+													<p>Prep Time:</p>
+													<p>{recipeData.metaData.prepTime}</p>
+												</li>
+												<li>
+													<p>Cook Time:</p>
+													<p>{recipeData.metaData.cookTime}</p>
+												</li>
+												<li>
+													<p>Difficulty:</p>
+													<p>{recipeData.metaData.difficulty}</p>
+												</li>
+											</ul>
+										</div>
 
-							<article css={recipePageTabStyles(styles)}>
-								<Tab content={tabContent} />
-							</article>
+										{recipeData.description && (
+											<div css={recipePageDescriptionStyles(styles)}>
+												{recipeData.description.map((item, i) => (
+													<p key={i}>{item}</p>
+												))}
+											</div>
+										)}
+									</article>
 
-							<article>
-								{ recipeData.furtherInfo && recipeData.furtherInfo.length > 0 && (
-									<Accordion
-										content={[{
-											itemTitle: 'Further Information',
-											itemContent: recipeData.furtherInfo.map((item) => <p>{item}</p>),
-										}]}
-									/>
-								)}
-							</article>
-						</section>
+									<article css={recipePageTabStyles(styles)}>
+										<Tab content={tabContent} />
+									</article>
 
-						<section css={recipePagePanelRightStyles(styles)}>
-							<NavLink
-								to={`/recipe/${recipeName || 0 + 1}`}
-								className="next-recipe-link"
-								css={recipePageNextLinkStyles(styles)}
-							>
-								Next Recipe
-								<img
-									src={recipeData.image}
-									alt={`${recipeData.title} result`}
-								/>
-							</NavLink>
-						</section>
-					</>
-				)}
-			</main>
+									<article>
+										{ recipeData.furtherInfo && recipeData.furtherInfo.length > 0 && (
+											<Accordion
+												content={[{
+													itemTitle: 'Further Information',
+													itemContent: recipeData.furtherInfo.map((item) => <p>{item}</p>),
+												}]}
+											/>
+										)}
+									</article>
+								</section>
+
+								<section css={recipePagePanelRightStyles(styles)}>
+									<NavLink
+										to={`/recipe/${recipeName || 0 + 1}`}
+										className="next-recipe-link"
+										css={recipePageNextLinkStyles(styles)}
+									>
+										Next Recipe
+										<img
+											src={recipeData.image}
+											alt={`${recipeData.title} result`}
+										/>
+									</NavLink>
+								</section>
+							</>
+						)}
+					</main>
+				</>
+			)}
 		</>
 	);
 };

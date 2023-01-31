@@ -152,6 +152,12 @@ export const Styles: TStyles = {
 		2: '12px',
 		3: '16px',
 		4: '20px',
+		5: '24px',
+		6: '28px',
+		7: '32px',
+		8: '36px',
+		9: '40px',
+		10: '50px',
 	},
 	// 146
 	colors: {
@@ -166,7 +172,7 @@ export const Styles: TStyles = {
 			base: 'rgba(245, 160, 80, 1)',
 			light: 'rgba(251, 234, 192, 1)',
 			mid: 'rgba(181, 111, 31, 1)',
-			dark: 'rgba(166, 105, 36)',
+			dark: 'rgba(166, 105, 36, 1)',
 		},
 		misc: {
 			coral: 'rgba(255, 100, 100, 1)',
@@ -287,6 +293,11 @@ Styles.components = {
 		height: '50px',
 		borderWidth: '7px',
 		innerBorderSpacing: '55px',
+	},
+	header: {
+		height: '60px',
+		heightS: '90px',
+		heightMs: '100px',
 	},
 	landingHeader: {
 		logoSize: '50px',

@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
-import { atomApi } from '../../atoms/atomApi';
+import { atomLoadedRecipes } from '../../atoms/atomLoadedRecipes';
 import { atomRecipeNameList, TRecipeNameList } from '../../atoms/atomRecipeNameList';
+import { useLoadRecipes } from '../../hooks/useLoadRecipes';
 import { TRecipeData } from '../../components/DataLayer';
 import { ContentPage } from '../../components/ContentPage';
 import { Field } from '../../components/Field';
@@ -19,62 +19,31 @@ import {
 
 const Search = () => {
 	const { styles } = React.useContext(StylesContext);
-	const api = Recoil.useRecoilValue(atomApi);
 	const recipeNameList: TRecipeNameList = Recoil.useRecoilValue(atomRecipeNameList);
-	const [inputVal, setInputVal] = React.useState('');
-	const [loadedRecipeData, setLoadedRecipeData] = React.useState<TRecipeData[]>([]);
+	const loadedRecipes = Recoil.useRecoilValue(atomLoadedRecipes);
+	const [searchTerm, setSearchTerm] = React.useState<string>(sessionStorage.getItem('searchTerm') || '');
+	const [displayedRecipes, setDisplayedRecipes] = React.useState<TRecipeData[]>([]);
+	const loadRecipes = useLoadRecipes();
 
-	const fetchRecipes = (recipes: string[]) => {
-		Promise.all(
-			recipes.map((recipe) => (
-				fetch(`${api.uri}/${api.version}/${api.endpoints.getRecipe}/${recipe}`)
-					.then((response) => response.json())
-					.then((data) => (
-						async () => data.Items.map((item: any) => DynamoDB.Converter.output({ M: item }))[0]
-					)()).catch((error) => error)
-			)),
-		).then((returnedRecipes) => setLoadedRecipeData([
-			...loadedRecipeData,
-			...returnedRecipes,
-		]));
-	};
-
-	const handleSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
-		// TODO: debounce
-		const searchValue = e.currentTarget.value;
-		let matches: TRecipeNameList = [];
-		let matchesToQuery: TRecipeNameList = [];
-
-		setInputVal(searchValue);
-
-		// Check the recipe list for any matches against the search value
-		// Reminder that this is using the ID - recipeName, NOT title
-		matches = searchValue === ''
-			? []
-			: recipeNameList.filter((recipe) => recipe.includes(searchValue.replaceAll(' ', '-')));
-
-		// Remove any recipes in loadedRecipeData if they are no longer a match
-		const updatedRecipeData = matches.length > 0
-			? loadedRecipeData.filter((recipe) => (
-				matches.includes(recipe.recipeName)
-			)) : [];
-		setLoadedRecipeData(updatedRecipeData);
-
-		if (searchValue.length > 2 && matches.length > 0) {
-			// Filter out recipes in matches if it already exists in loadedRecipeData
-			matchesToQuery = loadedRecipeData.length > 0
-				? matchesToQuery = matches?.filter((match) => (
-					loadedRecipeData.filter((recipe) => (
-						recipe.recipeName === match
-					)).length === 0
-				)) : matches;
-
-			// If there are matches that don't exist in loadedRecipes, fetch them
-			if (matchesToQuery.length > 0) {
-				fetchRecipes(matchesToQuery);
-			}
+	React.useEffect(() => {
+		if (!searchTerm) {
+			setDisplayedRecipes([]);
+		} else if (searchTerm && searchTerm.length > 2) {
+			setDisplayedRecipes(
+				loadedRecipes.data.filter((recipe) => recipe.recipeName.includes(searchTerm)),
+			);
 		}
-	};
+	}, [loadedRecipes, searchTerm]);
+
+	React.useEffect(() => {
+		sessionStorage.setItem('searchTerm', searchTerm);
+
+		if (searchTerm.length > 2) {
+			const targets = recipeNameList.filter((recipeName) => recipeName.includes(searchTerm));
+
+			loadRecipes(targets);
+		}
+	}, [searchTerm]);
 
 	return (
 		<ContentPage
@@ -85,18 +54,18 @@ const Search = () => {
 				<Field
 					labelText="Search"
 					fieldName="search"
-					hasInput={!!inputVal}
+					hasInput={!!searchTerm}
 				>
 					<input
-						value={inputVal}
-						onChange={(e) => handleSearchInput(e)}
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.currentTarget.value)}
 					/>
 				</Field>
 			</div>
 
-			{ loadedRecipeData && loadedRecipeData.length > 0 && (
+			{ displayedRecipes && displayedRecipes.length > 0 && (
 				<div css={searchPageContentContainerStyles(styles)}>
-					{loadedRecipeData.map((recipe) => <RecipeRow {...recipe} key={recipe.recipeName} />)}
+					{displayedRecipes.map((recipe) => <RecipeRow {...recipe} key={recipe.recipeName} />)}
 				</div>
 			)}
 		</ContentPage>

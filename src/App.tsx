@@ -3,8 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { DynamoDB } from 'aws-sdk';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import Recoil from 'recoil';
-// import Store from "./store";
-import { HookProvider } from './hooks';
 import {
 	Styles,
 	StylesContext,
@@ -69,19 +67,17 @@ const App = () => {
 
 	return (
 		<Recoil.RecoilRoot>
-			<HookProvider>
-				<DataLayer>
-					<StylesContext.Provider value={memoisedContext}>
-						<MuiThemeProvider theme={muiTheme}>
-							<DevTooling display={shouldDisplay}>
-								<BrowserRouter>
-									<RoutesController />
-								</BrowserRouter>
-							</DevTooling>
-						</MuiThemeProvider>
-					</StylesContext.Provider>
-				</DataLayer>
-			</HookProvider>
+			<DataLayer>
+				<StylesContext.Provider value={memoisedContext}>
+					<MuiThemeProvider theme={muiTheme}>
+						<DevTooling display={shouldDisplay}>
+							<BrowserRouter>
+								<RoutesController />
+							</BrowserRouter>
+						</DevTooling>
+					</MuiThemeProvider>
+				</StylesContext.Provider>
+			</DataLayer>
 		</Recoil.RecoilRoot>
 	);
 };

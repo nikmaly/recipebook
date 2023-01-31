@@ -1,7 +1,7 @@
 export { default as DataLayer } from './DataLayer';
 export type {
 	TRecipeData,
-	TRecipeInfo,
+	TRecipeMetaData,
 	TRecipeIngredients,
 	TRecipeIngredientSections,
 	TRecipeStepSections,

@@ -85,6 +85,14 @@ const NavBar: React.FunctionComponent = () => {
 						</NavLink>
 					</li>
 					<li>
+						<NavLink
+							to="/submit-recipe"
+							onClick={() => setMenuOpen(false)}
+						>
+							Submit
+						</NavLink>
+					</li>
+					<li>
 						<a href="https://nik.malyaris.com">
 							Contact
 						</a>

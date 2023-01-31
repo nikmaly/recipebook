@@ -24,8 +24,9 @@ img {
 `;
 
 export const tabContentStyles = (styles: TStyles): SerializedStyles => css`
-	${styles.mixins.fontText('')}
-	background-color: ${styles.colors.grey[0]};
+${styles.mixins.fontText('')}
+background-color: ${styles.colors.grey[0]};
+padding: ${styles.spacing[3]};
 `;
 
 export const tabContentWrapperStyles = (

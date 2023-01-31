@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /** @jsxImportSource @emotion/react */
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { TRecipeData } from '../DataLayer';
 import { Pill } from '../Pill';
 import { StylesContext } from '../../context/Styles';
@@ -15,6 +16,7 @@ import {
 } from './RecipeRow.styles';
 
 const RecipeRow: React.FunctionComponent<TRecipeData> = ({
+	recipeName,
 	image,
 	title,
 	description,
@@ -24,9 +26,11 @@ const RecipeRow: React.FunctionComponent<TRecipeData> = ({
 	const { styles } = React.useContext(StylesContext);
 
 	return (
-		<div css={recipeRowStyles(styles)}>
+		<NavLink
+			css={recipeRowStyles(styles)}
+			to={`/recipe/${recipeName}`}
+		>
 			<div css={recipeRowImageStyles(styles, image)} />
-
 
 			<div css={recipeRowContentStyles(styles)}>
 				<div css={recipeRowHeaderStyles(styles)}>
@@ -39,7 +43,7 @@ const RecipeRow: React.FunctionComponent<TRecipeData> = ({
 									<Pill
 										key={tag}
 										text={tag}
-										href={`/tags/${tag}`}
+										href={`/discover/${tag}`}
 										theme={i % 2 ? 'secondary' : 'primary'}
 										compact
 									/>
@@ -51,7 +55,7 @@ const RecipeRow: React.FunctionComponent<TRecipeData> = ({
 
 				<p css={recipeRowDescriptionStyles(styles)}>{shortDescription || description[0]}</p>
 			</div>
-		</div>
+		</NavLink>
 	);
 };
 

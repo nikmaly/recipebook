@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { SerializedStyles } from '@emotion/react';
+import { StylesContext } from '../../context/Styles';
 import { NavBar } from '../NavBar';
 import { Header } from '../Header';
-import { ContentWrapper } from '.';
+import { contentPageContentStyles } from './ContentPage.styles';
 
 type ContentProps = {
 	title: string;
@@ -15,15 +16,19 @@ const Content: React.FunctionComponent<ContentProps> = ({
 	title,
 	children,
 	stylesProp,
-}) => (
-	<>
-		<NavBar />
-		<Header content={<>{title}</>} />
+}) => {
+	const { styles } = React.useContext(StylesContext);
 
-		<ContentWrapper stylesProp={stylesProp}>
-			{children}
-		</ContentWrapper>
-	</>
-);
+	return (
+		<>
+			<NavBar />
+			<Header content={<>{title}</>} />
+
+			<main css={[contentPageContentStyles(styles), stylesProp]}>
+				{children}
+			</main>
+		</>
+	);
+};
 
 export default Content;

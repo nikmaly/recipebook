@@ -5,7 +5,7 @@ import { atomApi } from '../../atoms/atomApi';
 import { atomRecipeNameList } from '../../atoms/atomRecipeNameList';
 import { Loader } from '../Loader';
 
-export type TRecipeInfo = {
+export type TRecipeMetaData = {
 	prepTime: string,
 	cookTime: string,
 	difficulty: string,
@@ -33,7 +33,7 @@ export type TRecipeData = {
 	title: string;
 	shortDescription: string;
 	description: string[];
-	data: TRecipeInfo;
+	metaData: TRecipeMetaData;
 	tags: string[];
 	ingredients: TRecipeIngredientSections[];
 	stepsSimple: TRecipeStepSections[];
@@ -55,7 +55,7 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 	const [errors, setErrors] = React.useState([]);
 
 	const fetchRecipeData = () => {
-		fetch(`${api.uri}/${api.version}/${api.endpoints.listNames}/`)
+		fetch(`${api.url}/${api.version}/${api.endpoints.listNames}/`)
 			.then((response) => response.json())
 			.then((data) => (async () => {
 				await new Promise((resolve) => { setTimeout(resolve, 1000); });

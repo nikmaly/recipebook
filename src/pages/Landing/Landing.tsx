@@ -37,13 +37,13 @@ const Landing = () => {
 					<li>
 						<NavLink to="/discover">
 							Discover
-							<img src={Telescope} alt="search-icon-telescope" />
+							<img src={Compass} alt="search-icon-compass" />
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to="/submit-recipe">
-							Submit Recipe
-							<img src={Compass} alt="search-icon-compass" />
+						<NavLink to="/favourites">
+							Favourites
+							<img src={Telescope} alt="search-icon-telescope" />
 						</NavLink>
 					</li>
 				</ul>

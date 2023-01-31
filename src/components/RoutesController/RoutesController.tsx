@@ -11,6 +11,8 @@ import { RecipePage } from '../RecipePage';
 // Pages
 import { Landing } from '../../pages/Landing';
 import { Search } from '../../pages/Search';
+import { Discover } from '../../pages/Discover';
+import { Favourites } from '../../pages/Favourites';
 import { Settings } from '../../pages/Settings';
 import { Login } from '../../pages/Login';
 import { SubmitRecipe } from '../../pages/SubmitRecipe';
@@ -30,6 +32,16 @@ const RoutesController: React.FunctionComponent = () => {
 			<Route
 				path="/search"
 				element={<Search />}
+			/>
+
+			<Route
+				path="/discover"
+				element={<Discover />}
+			/>
+
+			<Route
+				path="/favourites"
+				element={<Favourites />}
 			/>
 
 			<Route

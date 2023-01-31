@@ -6,6 +6,16 @@ export const recipeRowStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.panelise('')}
 	display: flex;
 	flex-flow: row nowrap;
+	text-decoration: none;
+	border: 1px solid transparent;
+	color: ${styles.colors.grey[3]};
+	transition: background-color 0.2s, transform 0.2s, color 0.2s;
+
+	&:hover {
+		transform: scale(1.02);
+		background-color: ${styles.colors.primary.light};
+		color: ${styles.colors.black.base};
+	}
 `;
 
 export const recipeRowImageStyles = (

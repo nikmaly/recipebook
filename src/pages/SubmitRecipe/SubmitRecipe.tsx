@@ -1,13 +1,19 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { StylesContext } from '../../context/Styles';
+// import { DynamoDB } from 'aws-sdk';
+import Recoil from 'recoil';
+import { atomApi } from '../../atoms/atomApi';
+import { atomAuthentication } from '../../atoms/atomAuthentication';
 import {
 	TRecipeData,
 	TRecipeIngredientSections,
 	TRecipeStepSections,
 } from '../../components/DataLayer';
+import { StylesContext } from '../../context/Styles';
 import { ContentPage } from '../../components/ContentPage';
+import { Loader } from '../../components/Loader';
 import { Field } from '../../components/Field';
 import { Button } from '../../components/Button';
 /** @jsxImportSource @emotion/react */
@@ -37,6 +43,9 @@ export type TRecipeFormData = {
 
 const SubmitRecipe = () => {
 	const { styles } = React.useContext(StylesContext);
+	const api = Recoil.useRecoilValue(atomApi);
+	const authData = Recoil.useRecoilValue(atomAuthentication);
+	const [isLoading, setLoading] = React.useState<boolean>(false);
 	const [outputData, setOutputData] = React.useState<TRecipeData>();
 	const {
 		register,
@@ -46,6 +55,41 @@ const SubmitRecipe = () => {
 			errors,
 		},
 	} = useForm<TRecipeFormData>();
+
+	const postRecipe = (recipe: TRecipeData) => {
+		const submissionUrl = `${api.url}/${api.version}/${api.endpoints.recipe}`;
+		const submissionOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				authorizationToken: authData.authentication.access_token,
+			},
+			body: JSON.stringify(recipe),
+		};
+
+		setLoading(true);
+
+		fetch(submissionUrl, submissionOptions)
+			.then((response) => response.json())
+			.then((data) => (async () => {
+				await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+				if (data.__type === 'com.amazon.coral.service#SerializationException') {
+					throw new Error(data.__type);
+				}
+
+				if (!data.error) {
+					console.log('Submitted');
+				}
+			})())
+			.catch((err) => {
+				console.error('error', err);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	};
 
 	const ingredientMapper = (ingredients: string): TRecipeIngredientSections[] => {
 		const ingredientSections = ingredients.split('!').filter((item) => !!item);
@@ -95,7 +139,7 @@ const SubmitRecipe = () => {
 			shortDescription: data.shortDescription.trim(),
 			description: data.description.trim().split('\n'),
 			tags: data.tags.trim().split(','),
-			data: {
+			metaData: {
 				prepTime: data.prepTime.trim(),
 				cookTime: data.cookTime.trim(),
 				difficulty: data.difficulty.trim(),
@@ -106,192 +150,208 @@ const SubmitRecipe = () => {
 			furtherInfo: data.furtherInfo.trim().split('\n'),
 		};
 
-		console.log('sanitisedData', sanitisedData);
 		setOutputData(sanitisedData);
+
+		// If the user is logged in
+		if (authData.loginState) {
+			postRecipe(sanitisedData);
+		}
 	};
 	// TODO: Validate schema with Yup
 
 	return (
 		<ContentPage title="Submit Recipe">
 			<div css={submitRecipeStyles(styles)}>
-				<div css={submitRecipeFormWrapperStyles(styles)}>
-					<form onSubmit={handleSubmit(onSubmit)}>
-						<div css={submitRecipeFormStyles(styles)}>
-							<Field
-								labelText="Recipe Title"
-								fieldName="title"
-								hasInput={!!watch('title')}
-								hasError={!!errors.title}
-							>
-								<input
-									placeholder="Name of the recipe"
-									{...register('title', { required: true })}
-								/>
-							</Field>
+				{isLoading ? (
+					<Loader />
+				) : (
+					<div css={submitRecipeFormWrapperStyles(styles)}>
+						<>
+							<form onSubmit={handleSubmit(onSubmit)}>
+								<div css={submitRecipeFormStyles(styles)}>
+									<Field
+										labelText="Recipe Title"
+										fieldName="title"
+										hasInput={!!watch('title')}
+										hasError={!!errors.title}
+									>
+										<input
+											placeholder="Name of the recipe"
+											{...register('title', { required: true })}
+										/>
+									</Field>
 
-							<Field
-								labelText="Image URL"
-								fieldName="image"
-								hasInput={!!watch('image')}
-								hasError={!!errors.image}
-							>
-								{/* <input
-									type="file"
-									accept="image/jpeg, image/png, image/jpg"
-									{...register('image', { required: true })}
-								/> */}
-								<input
-									placeholder="Image URL for the finished recipe product"
-									{...register('image', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Image URL"
+										fieldName="image"
+										hasInput={!!watch('image')}
+										hasError={!!errors.image}
+									>
+										{/* <input
+											type="file"
+											accept="image/jpeg, image/png, image/jpg"
+											{...register('image', { required: true })}
+										/> */}
+										<input
+											placeholder="Image URL for the finished recipe product"
+											{...register('image', { required: true })}
+										/>
+									</Field>
 
-							<Field
-								labelText="Short Description"
-								fieldName="shortDescription"
-								hasInput={!!watch('shortDescription')}
-								hasError={!!errors.shortDescription}
-							>
-								<input
-									placeholder="Describe the recipe in a single short paragraph"
-									{...register('shortDescription', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Short Description"
+										fieldName="shortDescription"
+										hasInput={!!watch('shortDescription')}
+										hasError={!!errors.shortDescription}
+									>
+										<input
+											placeholder="Describe the recipe in a single short paragraph"
+											{...register('shortDescription', { required: true })}
+										/>
+									</Field>
 
-							<Field
-								labelText="Full Description"
-								fieldName="description"
-								hasInput={!!watch('description')}
-								hasError={!!errors.description}
-							>
-								<textarea
-									rows={4}
-									placeholder="Describe the recipe fully"
-									{...register('description', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Full Description"
+										fieldName="description"
+										hasInput={!!watch('description')}
+										hasError={!!errors.description}
+									>
+										<textarea
+											rows={4}
+											placeholder="Describe the recipe fully"
+											{...register('description', { required: true })}
+										/>
+									</Field>
 
-							<div css={submitRecipeFormGroupStyles(styles)}>
-								<Field
-									labelText="Prep Time"
-									fieldName="prepTime"
-									hasInput={!!watch('prepTime')}
-									hasError={!!errors.prepTime}
-								>
-									<input
-										placeholder="1 hr"
-										{...register('prepTime', { required: true })}
-									/>
-								</Field>
+									<div css={submitRecipeFormGroupStyles(styles)}>
+										<Field
+											labelText="Prep Time"
+											fieldName="prepTime"
+											hasInput={!!watch('prepTime')}
+											hasError={!!errors.prepTime}
+										>
+											<input
+												placeholder="1 hr"
+												{...register('prepTime', { required: true })}
+											/>
+										</Field>
 
-								<Field
-									labelText="Cook Time"
-									fieldName="cookTime"
-									hasInput={!!watch('cookTime')}
-									hasError={!!errors.cookTime}
-								>
-									<input
-										placeholder="30 mins"
-										{...register('cookTime', { required: true })}
-									/>
-								</Field>
+										<Field
+											labelText="Cook Time"
+											fieldName="cookTime"
+											hasInput={!!watch('cookTime')}
+											hasError={!!errors.cookTime}
+										>
+											<input
+												placeholder="30 mins"
+												{...register('cookTime', { required: true })}
+											/>
+										</Field>
 
-								<Field
-									labelText="Difficulty"
-									fieldName="difficulty"
-									hasInput={!!watch('difficulty')}
-									hasError={!!errors.difficulty}
-								>
-									<input
-										placeholder="Easy"
-										{...register('difficulty', { required: true })}
-									/>
-								</Field>
-							</div>
+										<Field
+											labelText="Difficulty"
+											fieldName="difficulty"
+											hasInput={!!watch('difficulty')}
+											hasError={!!errors.difficulty}
+										>
+											<input
+												placeholder="Easy"
+												{...register('difficulty', { required: true })}
+											/>
+										</Field>
+									</div>
 
-							<Field
-								labelText="Tags"
-								fieldName="tags"
-								hasInput={!!watch('tags')}
-								hasError={!!errors.tags}
-							>
-								<textarea
-									rows={2}
-									placeholder="Cuisine,Meal,Other"
-									{...register('tags', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Tags"
+										fieldName="tags"
+										hasInput={!!watch('tags')}
+										hasError={!!errors.tags}
+									>
+										<textarea
+											rows={2}
+											placeholder="Cuisine,Meal,Other"
+											{...register('tags', { required: true })}
+										/>
+									</Field>
 
-							<Field
-								labelText="Ingredients"
-								fieldName="ingredients"
-								hasInput={!!watch('ingredients')}
-								hasError={!!errors.ingredients}
-							>
-								<textarea
-									rows={5}
-									placeholder={`!Recipe Section 1 Name
-500/grams/flour
-300/ml/water
-100/grams/cocoa powder`}
-									{...register('ingredients', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Ingredients"
+										fieldName="ingredients"
+										hasInput={!!watch('ingredients')}
+										hasError={!!errors.ingredients}
+									>
+										<textarea
+											rows={5}
+											placeholder={`!Recipe Section 1 Name
+		500/grams/flour
+		300/ml/water
+		100/grams/cocoa powder`}
+											{...register('ingredients', { required: true })}
+										/>
+									</Field>
 
-							<Field
-								labelText="Steps - Simplified"
-								fieldName="stepsSimple"
-								hasInput={!!watch('stepsSimple')}
-								hasError={!!errors.stepsSimple}
-							>
-								<textarea
-									rows={5}
-									placeholder={`!Recipe Section 1 Name
-500/grams/flour
-300/ml/water
-100/grams/cocoa powder`}
-									{...register('stepsSimple', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Steps - Simplified"
+										fieldName="stepsSimple"
+										hasInput={!!watch('stepsSimple')}
+										hasError={!!errors.stepsSimple}
+									>
+										<textarea
+											rows={5}
+											placeholder={`!Recipe Section 1 Name
+	500/grams/flour
+	300/ml/water
+	100/grams/cocoa powder`}
+											{...register('stepsSimple', { required: true })}
+										/>
+									</Field>
 
-							<Field
-								labelText="Steps - Detailed"
-								fieldName="stepsDetailed"
-								hasInput={!!watch('stepsDetailed')}
-								hasError={!!errors.stepsDetailed}
-							>
-								<textarea
-									rows={5}
-									placeholder={`!Step Section 1 Name
-This is the first step
-This is the second step
-This is the third step`}
-									{...register('stepsDetailed', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Steps - Detailed"
+										fieldName="stepsDetailed"
+										hasInput={!!watch('stepsDetailed')}
+										hasError={!!errors.stepsDetailed}
+									>
+										<textarea
+											rows={5}
+											placeholder={`!Step Section 1 Name
+	This is the first step
+	This is the second step
+	This is the third step`}
+											{...register('stepsDetailed', { required: true })}
+										/>
+									</Field>
 
-							<Field
-								labelText="Notes"
-								fieldName="furtherInfo"
-								hasInput={!!watch('furtherInfo')}
-								hasError={!!errors.furtherInfo}
-							>
-								<textarea
-									rows={5}
-									placeholder="Any other information for the recipe"
-									{...register('furtherInfo', { required: true })}
-								/>
-							</Field>
+									<Field
+										labelText="Notes"
+										fieldName="furtherInfo"
+										hasInput={!!watch('furtherInfo')}
+										hasError={!!errors.furtherInfo}
+									>
+										<textarea
+											rows={5}
+											placeholder="Any other information for the recipe"
+											{...register('furtherInfo', { required: true })}
+										/>
+									</Field>
 
-							<Button text="Submit" />
-						</div>
-					</form>
-				</div>
+									<Button text="Submit" />
+								</div>
+							</form>
+						</>
+					</div>
+				)}
 
 				{outputData && (
 					<div css={submitRecipeFormWrapperStyles(styles)}>
-						<h4>Send this to Nik:</h4>
-						<textarea value={JSON.stringify(outputData)} readOnly />
+						{authData.loginState ? (
+							<p>Recipe submitted.</p>
+						) : (
+							<>
+								<h4>Send this to Nik:</h4>
+								<textarea value={JSON.stringify(outputData)} readOnly />
+							</>
+						)}
 					</div>
 				)}
 			</div>
