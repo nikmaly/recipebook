@@ -2,13 +2,9 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Recoil from 'recoil';
 import { atomAuthentication } from '../../atoms/atomAuthentication';
-import { StylesContext } from '../../context/Styles';
-import { ContentPage } from '../../components/ContentPage';
-/** @jsxImportSource @emotion/react */
-import { loginStyles } from './Login.styles';
+import { LoginRenderer } from '.';
 
 const Login = () => {
-	const { styles } = React.useContext(StylesContext);
 	const [authData, setAuthData] = Recoil.useRecoilState(atomAuthentication);
 	const [searchParams] = useSearchParams();
 	const loginUrl = `${authData.url}/${authData.endpoints.login}&client_id=${authData.clientId}&redirect_uri=${process.env.NODE_ENV !== 'development' ? 'https://recipebook.malyaris.com/login' : 'http://localhost:3000/login'}`;
@@ -58,19 +54,9 @@ const Login = () => {
 	}, []);
 
 	return (
-		<ContentPage title="Login">
-			<div css={loginStyles(styles)}>
-				<h2>Coming Soon</h2>
-
-				{!authData.loginState ? (
-					<a href={loginUrl}>
-						Login
-					</a>
-				) : (
-					<p>Logged In.</p>
-				)}
-			</div>
-		</ContentPage>
+		<LoginRenderer
+			loginUrl={loginUrl}
+		/>
 	);
 };
 

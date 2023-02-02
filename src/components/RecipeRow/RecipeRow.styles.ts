@@ -25,7 +25,7 @@ export const recipeRowImageStyles = (
 	flex: 0 0 25%;
 	margin-right: 5px;
 	height: 100%;
-	min-height: 110px;
+	min-height: 100px;
 	background-image: url(${image});
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -33,6 +33,7 @@ export const recipeRowImageStyles = (
 
 	${styles.breakpoints.ms.min(`
 		flex: 0 0 20%;
+		min-height: 120px;
 		margin-right: 10px;
 	`)}
 `;
@@ -41,7 +42,7 @@ export const recipeRowContentStyles = (styles: TStyles): SerializedStyles => css
 	flex: 1 1 auto;
 	display: flex;
 	flex-flow: column nowrap;
-	padding: ${styles.spacing[1]};
+	padding: ${styles.spacing[0]};
 
 	${styles.breakpoints.ms.min(`
 		padding: ${styles.spacing[2]};
@@ -56,12 +57,13 @@ export const recipeRowHeaderStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.breakpoints.ms.min(`
 		flex-flow: row nowrap;
 		align-items: center;
+		margin-bottom: ${styles.spacing[1]};
 	`)}
 `;
 
 export const recipeRowTitleStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.typography.h4}
-	margin: 0 0 ${styles.spacing[0]};
+	margin: 0;
 `;
 
 export const recipeRowTagStyles = (styles: TStyles): SerializedStyles => css`
@@ -82,11 +84,11 @@ export const recipeRowTagStyles = (styles: TStyles): SerializedStyles => css`
 `;
 
 export const recipeRowDescriptionStyles = (styles: TStyles): SerializedStyles => css`
-	margin: 2px 0 -${styles.spacing[0]};
+	margin: ${styles.spacing[1]} 0 0;
 	font-size: 0.7em;
 	line-height: 1.2em;
 	overflow: hidden;
-    max-height: 40px;
+    max-height: 28px;
 
 	${styles.breakpoints.ms.min(`
 		margin: ${styles.spacing[0]} 0 -2px;
