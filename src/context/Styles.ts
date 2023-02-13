@@ -171,7 +171,7 @@ export const Styles: TStyles = {
 		secondary: {
 			base: 'rgba(245, 160, 80, 1)',
 			light: 'rgba(251, 234, 192, 1)',
-			mid: 'rgba(181, 111, 31, 1)',
+			mid: 'rgba(200, 130, 50, 1)',
 			dark: 'rgba(166, 105, 36, 1)',
 		},
 		misc: {

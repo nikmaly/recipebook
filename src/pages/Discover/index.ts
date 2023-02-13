@@ -1,3 +1,3 @@
 export { default as Discover } from './Discover';
-export { default as DiscoverRenderer } from './DiscoverRenderer';
-export * from './DiscoverRenderer.styles';
+export { default as PureDiscover } from './PureDiscover';
+export * from './Discover.styles';

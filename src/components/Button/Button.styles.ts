@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const buttonStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.resetButton('')}

@@ -1,6 +1,8 @@
+/* eslint-disable indent */
 /* eslint-disable no-unused-vars */
+import { lighten } from 'polished';
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 import HeartAdd from '../../assets/icons/heart-add.svg';
 import HeartAddAlt from '../../assets/icons/heart-add-secondary.svg';
 
@@ -12,21 +14,27 @@ export const favouriteButtonStyles = (
 	position: relative;
 	font-size: 0;
 	color: transparent;
-	height: 40px;
-	width: 40px;
-	border-radius: 40%;
-	transition: box-shadow 0.2s;
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	border: 2px dotted transparent;
+	transition:
+		box-shadow 0.45s,
+		border 0.2s;
 
 	&:before,
 	&:after {
 		${styles.mixins.pseudoDisplay('')}
-		height: 80%;
-		width: 80%;
-		left: 10%;
-		top: 10%;
+		height: 60%;
+		width: 60%;
+		left: 20%;
+		top: 20%;
 		background-size: contain;
 		background-repeat: no-repeat;
-		transition: opacity 0.2s;
+		transform: scale(0.9);
+		transition:
+			opacity 0.4s,
+			transform 0.4s;
 	}
 
 	&:before {
@@ -39,12 +47,28 @@ export const favouriteButtonStyles = (
 		opacity: 0.001;
 	}
 
-	&:hover,
-	&:focus {
-		box-shadow: 2px 2px 5px -1px rgba(0,0,0,0.75);
+	&:hover {
+		box-shadow:
+			0
+			0
+			20px
+			-5px
+			'rgb(0 0 0 / 50%)';
+
+		&:before,
+		&:after {
+			transform: scale(1);
+		}
 	}
 
 	${selected && `
+		border: 2px dotted ${lighten(0.25, styles.colors.misc.coral)};
+
+		// &:before,
+		// &:after {
+		// 	transform: scale(1);
+		// }
+
 		&:before {
 			opacity: 0.001;
 		}

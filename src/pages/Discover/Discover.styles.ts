@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const discoverPageStyles = (styles: TStyles): SerializedStyles => css`
 	display: flex;
@@ -14,7 +14,7 @@ export const discoverPageStyles = (styles: TStyles): SerializedStyles => css`
 
 export const filterContainerStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.panelise('')}
-	flex: 0 0 400px;
+	flex: 0 0 300px;
 	height: 100%;
 	padding: 20px;
 `;

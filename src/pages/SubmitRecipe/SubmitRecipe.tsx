@@ -4,18 +4,18 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 // import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
-import { atomApi } from '../../atoms/atomApi';
-import { atomAuthentication } from '../../atoms/atomAuthentication';
+import { atomApi } from 'atoms/atomApi';
+import { useAuthenticated } from 'hooks/useAuthenticated';
+import { StylesContext } from 'context/Styles';
 import {
 	TRecipeData,
 	TRecipeIngredientSections,
 	TRecipeStepSections,
-} from '../../components/DataLayer';
-import { StylesContext } from '../../context/Styles';
-import { ContentPage } from '../../components/ContentPage';
-import { Loader } from '../../components/Loader';
-import { Field } from '../../components/Field';
-import { Button } from '../../components/Button';
+} from 'middleware/DataLayer';
+import { ContentPage } from 'middleware/ContentPage';
+import { Loader } from 'components/Loader';
+import { Field } from 'components/Field';
+import { Button } from 'components/Button';
 /** @jsxImportSource @emotion/react */
 import {
 	submitRecipeStyles,
@@ -44,9 +44,9 @@ export type TRecipeFormData = {
 const SubmitRecipe = () => {
 	const { styles } = React.useContext(StylesContext);
 	const api = Recoil.useRecoilValue(atomApi);
-	const authData = Recoil.useRecoilValue(atomAuthentication);
 	const [isLoading, setLoading] = React.useState<boolean>(false);
 	const [outputData, setOutputData] = React.useState<TRecipeData>();
+	const [authenticated,, authData] = useAuthenticated();
 	const {
 		register,
 		handleSubmit,
@@ -63,7 +63,7 @@ const SubmitRecipe = () => {
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
-				authorizationToken: authData.authentication.access_token,
+				authorizationToken: authData.access_token,
 			},
 			body: JSON.stringify(recipe),
 		};
@@ -153,7 +153,7 @@ const SubmitRecipe = () => {
 		setOutputData(sanitisedData);
 
 		// If the user is logged in
-		if (authData.loginState) {
+		if (authenticated) {
 			postRecipe(sanitisedData);
 		}
 	};
@@ -283,9 +283,9 @@ const SubmitRecipe = () => {
 										<textarea
 											rows={5}
 											placeholder={`!Recipe Section 1 Name
-		500/grams/flour
-		300/ml/water
-		100/grams/cocoa powder`}
+500/grams/flour
+300/ml/water
+100/grams/cocoa powder`}
 											{...register('ingredients', { required: true })}
 										/>
 									</Field>
@@ -298,10 +298,10 @@ const SubmitRecipe = () => {
 									>
 										<textarea
 											rows={5}
-											placeholder={`!Recipe Section 1 Name
-	500/grams/flour
-	300/ml/water
-	100/grams/cocoa powder`}
+											placeholder={`!Step Section 1 Name
+This is the first step
+This is the second step
+This is the third step`}
 											{...register('stepsSimple', { required: true })}
 										/>
 									</Field>
@@ -315,9 +315,9 @@ const SubmitRecipe = () => {
 										<textarea
 											rows={5}
 											placeholder={`!Step Section 1 Name
-	This is the first step
-	This is the second step
-	This is the third step`}
+This is the first step
+This is the second step
+This is the third step`}
 											{...register('stepsDetailed', { required: true })}
 										/>
 									</Field>
@@ -344,7 +344,7 @@ const SubmitRecipe = () => {
 
 				{outputData && (
 					<div css={submitRecipeFormWrapperStyles(styles)}>
-						{authData.loginState ? (
+						{authenticated ? (
 							<p>Recipe submitted.</p>
 						) : (
 							<>

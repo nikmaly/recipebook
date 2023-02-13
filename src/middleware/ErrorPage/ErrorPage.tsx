@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { NavBar } from '../NavBar';
-import { StylesContext } from '../../context/Styles';
+import { NavBar } from 'components/NavBar';
+import { StylesContext } from 'context/Styles';
 /** @jsxImportSource @emotion/react */
 import { errorPageStyles } from './ErrorPage.styles';
 

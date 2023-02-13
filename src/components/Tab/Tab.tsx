@@ -5,7 +5,7 @@ import MuiTab from '@mui/material/Tab';
 import MuiTabContext from '@mui/lab/TabContext';
 import MuiTabList from '@mui/lab/TabList';
 import MuiTabPanel from '@mui/lab/TabPanel';
-import { StylesContext } from '../../context/Styles';
+import { StylesContext } from 'context/Styles';
 import {
 	tabStyles,
 	tabButtonStyles,

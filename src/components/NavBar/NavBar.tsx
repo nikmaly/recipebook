@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { StylesContext } from '../../context/Styles';
+import { useAuthenticated } from 'hooks/useAuthenticated';
+import { StylesContext } from 'context/Styles';
 /** @jsxImportSource @emotion/react */
 import {
 	navbarStyles,
@@ -13,6 +14,7 @@ import {
 
 const NavBar: React.FunctionComponent = () => {
 	const { styles } = React.useContext(StylesContext);
+	const [authenticated] = useAuthenticated();
 	const [isMenuOpen, setMenuOpen] = React.useState(false);
 	const navMenuRef = React.useRef(null);
 	const { pathname } = useLocation();
@@ -68,14 +70,16 @@ const NavBar: React.FunctionComponent = () => {
 				<ul
 					css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}
 				>
-					<li>
-						<NavLink
-							to="/login"
-							onClick={() => setMenuOpen(false)}
-						>
-							Login
-						</NavLink>
-					</li>
+					{!authenticated && (
+						<li>
+							<NavLink
+								to="/login"
+								onClick={() => setMenuOpen(false)}
+							>
+								Login
+							</NavLink>
+						</li>
+					)}
 					<li>
 						<NavLink
 							to="/settings"

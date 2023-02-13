@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const recipeRowStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.panelise('')}
+	flex: 1;
 	display: flex;
 	flex-flow: row nowrap;
 	text-decoration: none;

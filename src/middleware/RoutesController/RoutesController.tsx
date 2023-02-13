@@ -5,19 +5,19 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import Recoil from 'recoil';
-import { atomRecipeNameList } from '../../atoms/atomRecipeNameList';
-import { RecipePage } from '../RecipePage';
+import { atomRecipeNameList } from 'atoms/atomRecipeNameList';
+import { RecipePage } from 'middleware/RecipePage';
 
 // Pages
-import { Landing } from '../../pages/Landing';
-import { Search } from '../../pages/Search';
-import { Discover } from '../../pages/Discover';
-import { Favourites } from '../../pages/Favourites';
-import { Settings } from '../../pages/Settings';
-import { Login } from '../../pages/Login';
-import { SubmitRecipe } from '../../pages/SubmitRecipe';
-import Error404 from '../ErrorPage/Errors/404';
-import Error405 from '../ErrorPage/Errors/405';
+import { Landing } from 'pages/Landing';
+import { Search } from 'pages/Search';
+import { Discover } from 'pages/Discover';
+import { Favourites } from 'pages/Favourites';
+import { Settings } from 'pages/Settings';
+import { Login } from 'pages/Login';
+import { SubmitRecipe } from 'pages/SubmitRecipe';
+import Error404 from 'middleware/ErrorPage/Errors/404';
+import Error405 from 'middleware/ErrorPage/Errors/405';
 
 const RoutesController: React.FunctionComponent = () => {
 	const recipes: string[] = Recoil.useRecoilValue(atomRecipeNameList);

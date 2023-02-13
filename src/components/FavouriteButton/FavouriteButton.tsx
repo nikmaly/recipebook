@@ -1,11 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import Recoil from 'recoil';
-import { atomFavourites } from '../../atoms/atomFavourites';
-import { StylesContext } from '../../context/Styles';
-import {
-	favouriteButtonStyles,
-} from './FavouriteButton.styles';
+import { atomFavourites } from 'atoms/atomFavourites';
+import { useFavourites } from 'hooks/useFavourites';
+import { PureFavouriteButton } from '.';
 
 type TFavouriteButtonProps = {
 	recipe: string;
@@ -14,12 +12,12 @@ type TFavouriteButtonProps = {
 const FavouriteButton: React.FunctionComponent<TFavouriteButtonProps> = ({
 	recipe,
 }) => {
-	const { styles } = React.useContext(StylesContext);
-	const [favourites, setFavourites] = Recoil.useRecoilState(atomFavourites);
-	const [isSelected, setSelected] = React.useState(true);
+	const favourites = Recoil.useRecoilValue(atomFavourites);
+	const setFavourites = useFavourites();
+	const [isSelected, setSelected] = React.useState<boolean>(false);
 
 	const clickHandler = () => {
-		if (favourites.includes(recipe)) {
+		if (isSelected) {
 			setFavourites(favourites.filter((item) => item !== recipe));
 		} else {
 			setFavourites([
@@ -27,20 +25,15 @@ const FavouriteButton: React.FunctionComponent<TFavouriteButtonProps> = ({
 				recipe,
 			]);
 		}
+
+		setSelected(!isSelected);
 	};
 
-	React.useEffect(() => {
-		setSelected(favourites.includes(recipe));
-	}, [favourites]);
-
 	return (
-		<button
-			css={favouriteButtonStyles(styles, isSelected)}
-			type="button"
-			onClick={() => clickHandler()}
-		>
-			favourite
-		</button>
+		<PureFavouriteButton
+			isSelected={isSelected}
+			clickHandler={clickHandler}
+		/>
 	);
 };
 

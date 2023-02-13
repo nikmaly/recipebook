@@ -5,18 +5,18 @@ import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
-import { atomApi } from '../../atoms/atomApi';
-import { atomRecipeNameList, TRecipeNameList } from '../../atoms/atomRecipeNameList';
-import { atomLoadedRecipes } from '../../atoms/atomLoadedRecipes';
-import { useLoadRecipes } from '../../hooks/useLoadRecipes';
-import { TRecipeData } from '../DataLayer';
-import { Loader } from '../Loader';
-import { NavBar } from '../NavBar';
-import { Pill } from '../Pill';
-import { Accordion } from '../Accordion';
-import { Tab, ITabContent } from '../Tab';
-import { FavouriteButton } from '../FavouriteButton';
-import { StylesContext } from '../../context/Styles';
+import { StylesContext } from 'context/Styles';
+import { atomApi } from 'atoms/atomApi';
+import { atomRecipeNameList, TRecipeNameList } from 'atoms/atomRecipeNameList';
+import { atomLoadedRecipes } from 'atoms/atomLoadedRecipes';
+import { useLoadRecipes } from 'hooks/useLoadRecipes';
+import { TRecipeData } from 'middleware/DataLayer';
+import { Loader } from 'components/Loader';
+import { NavBar } from 'components/NavBar';
+import { Pill } from 'components/Pill';
+import { Accordion } from 'components/Accordion';
+import { Tab, ITabContent } from 'components/Tab';
+import { FavouriteButton } from 'components/FavouriteButton';
 import {
 	recipePageStyles,
 	recipePageNextLinkStyles,

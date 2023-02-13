@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
-import { StylesContext } from '../../context/Styles';
+import { StylesContext } from 'context/Styles';
 import { loaderStyles } from './Loader.styles';
 
 type TLoaderProps = {

@@ -9,9 +9,9 @@ import {
 	StylesContextType,
 	TTheme,
 } from './context/Styles';
-import { RoutesController } from './components/RoutesController';
-import { DataLayer } from './components/DataLayer';
-import { DevTooling } from './components/DevTooling';
+import { RoutesController } from './middleware/RoutesController';
+import { DataLayer } from './middleware/DataLayer';
+import { DevTooling } from './middleware/DevTooling';
 import './App.css';
 
 const App = () => {

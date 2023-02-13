@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const contentPageContentStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.fadeIn(styles.animations.durationFade)};

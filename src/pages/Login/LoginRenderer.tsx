@@ -1,27 +1,24 @@
 import React from 'react';
-import Recoil from 'recoil';
-import { atomAuthentication } from '../../atoms/atomAuthentication';
-import { StylesContext } from '../../context/Styles';
-import { ContentPage } from '../../components/ContentPage';
+import { StylesContext } from 'context/Styles';
+import { ContentPage } from 'middleware/ContentPage';
 /** @jsxImportSource @emotion/react */
 import { loginStyles } from '.';
 
 type TLoginRendererProps = {
 	loginUrl: string;
-}
+	isLoggedIn: boolean;
+};
 
 const LoginRenderer: React.FunctionComponent<TLoginRendererProps> = ({
 	loginUrl,
+	isLoggedIn,
 }) => {
 	const { styles } = React.useContext(StylesContext);
-	const authData = Recoil.useRecoilValue(atomAuthentication);
 
 	return (
 		<ContentPage title="Login">
 			<div css={loginStyles(styles)}>
-				<h2>Coming Soon</h2>
-
-				{!authData.loginState ? (
+				{!isLoggedIn ? (
 					<a href={loginUrl}>
 						Login
 					</a>

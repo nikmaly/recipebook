@@ -1,6 +1,6 @@
 import React from 'react';
-import { StylesContext } from '../../context/Styles';
-import { ContentPage } from '../../components/ContentPage';
+import { StylesContext } from 'context/Styles';
+import { ContentPage } from 'middleware/ContentPage';
 /** @jsxImportSource @emotion/react */
 import { settingsStyles } from './Settings.styles';
 

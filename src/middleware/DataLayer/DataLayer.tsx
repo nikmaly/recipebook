@@ -1,9 +1,10 @@
 import React from 'react';
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
-import { atomApi } from '../../atoms/atomApi';
-import { atomRecipeNameList } from '../../atoms/atomRecipeNameList';
-import { Loader } from '../Loader';
+import { atomApi } from 'atoms/atomApi';
+import { atomRecipeNameList } from 'atoms/atomRecipeNameList';
+import { atomRecipeFilterList } from 'atoms/atomRecipeFilterList';
+import { Loader } from 'components/Loader';
 
 export type TRecipeMetaData = {
 	prepTime: string,
@@ -48,21 +49,44 @@ type DataLayerProps = {
 const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 	children,
 }) => {
-	// eslint-disable-next-line no-unused-vars
-	const [recipeNameList, setRecipeNameList] = Recoil.useRecoilState(atomRecipeNameList);
+	const [, setRecipeNameList] = Recoil.useRecoilState(atomRecipeNameList);
+	const [, setRecipeFilterList] = Recoil.useRecoilState(atomRecipeFilterList);
 	const [isLoading, setLoading] = React.useState(true);
 	const api = Recoil.useRecoilValue(atomApi);
 	const [errors, setErrors] = React.useState([]);
 
-	const fetchRecipeData = () => {
-		fetch(`${api.url}/${api.version}/${api.endpoints.listNames}/`)
+	const fetchRecipeNameData = () => {
+		fetch(`${api.url}/${api.version}/${api.endpoints.listByAttribute}/recipeName,tags,ingredients/`)
 			.then((response) => response.json())
 			.then((data) => (async () => {
 				await new Promise((resolve) => { setTimeout(resolve, 1000); });
-				setLoading(false);
-				setRecipeNameList(data.Items.map((item: any) => (
+
+				const recipeNameItems = data.Items.map((item: any) => (
 					DynamoDB.Converter.output({ M: item }).recipeName
-				)));
+				));
+
+				let recipeFilterItems = data.Items.map((item: any) => (
+					DynamoDB.Converter.output({ M: item })
+				));
+
+				recipeFilterItems = recipeFilterItems.map((recipe: any) => {
+					const sanitisedRecipe = recipe;
+
+					sanitisedRecipe.ingredients = sanitisedRecipe.ingredients.map(
+						(ingredientSection: any) => (
+							ingredientSection.sectionIngredients.map((ingredient: any) => (
+								ingredient.ingredient
+							))
+						),
+					).flat();
+
+					return sanitisedRecipe;
+				});
+
+				setRecipeNameList(recipeNameItems);
+				setRecipeFilterList(recipeFilterItems);
+
+				setLoading(false);
 			})()).catch((_error) => {
 				setLoading(false);
 				setErrors(_error);
@@ -70,7 +94,7 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 	};
 
 	React.useEffect(() => {
-		fetchRecipeData();
+		fetchRecipeNameData();
 	}, []);
 
 	return (

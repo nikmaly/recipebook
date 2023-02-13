@@ -1,7 +1,7 @@
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
-import { atomApi } from '../atoms/atomApi';
-import { atomLoadedRecipes } from '../atoms/atomLoadedRecipes';
+import { atomApi } from 'atoms/atomApi';
+import { atomLoadedRecipes } from 'atoms/atomLoadedRecipes';
 
 export const useLoadRecipes = () => {
 	const api = Recoil.useRecoilValue(atomApi);

@@ -2,9 +2,9 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { TRecipeData } from '../DataLayer';
-import { Pill } from '../Pill';
-import { StylesContext } from '../../context/Styles';
+import { TRecipeData } from 'middleware/DataLayer';
+import { Pill } from 'components/Pill';
+import { StylesContext } from 'context/Styles';
 import {
 	recipeRowStyles,
 	recipeRowImageStyles,

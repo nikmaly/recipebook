@@ -7,8 +7,16 @@ export const atomApi = atom({
 		version: 'v1',
 		endpoints: {
 			recipe: 'recipes',
-			listNames: 'recipes/list/recipeName',
+			listByAttribute: 'recipes/list',
 			favourites: 'favourites',
+		},
+		auth: {
+			url: 'https://auth.malyaris.com/oauth2',
+			clientId: '56u2njrnvps7r2dcirvk6otjnl',
+			endpoints: {
+				login: 'authorize?response_type=code',
+				token: 'token',
+			},
 		},
 	},
 });

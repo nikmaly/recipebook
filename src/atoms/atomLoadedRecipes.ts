@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { TRecipeData } from '../components/DataLayer';
+import { TRecipeData } from 'middleware/DataLayer';
 
 export const atomLoadedRecipes = atom({
 	key: 'loadedRecipes',

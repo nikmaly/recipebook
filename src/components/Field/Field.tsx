@@ -1,11 +1,7 @@
+/* eslint-disable arrow-body-style */
 /** @jsxImportSource @emotion/react */
 import React from 'react';
-import { StylesContext } from '../../context/Styles';
-import {
-	fieldWrapperStyles,
-	fieldLabelStyles,
-	fieldErrorStyles,
-} from './Field.styles';
+import { PureField } from '.';
 
 type TFieldProps = {
 	labelText: string;
@@ -22,29 +18,15 @@ const Field: React.FunctionComponent<TFieldProps> = ({
 	hasError = false,
 	children,
 }) => {
-	const { styles } = React.useContext(StylesContext);
-
 	return (
-		<label
-			css={fieldWrapperStyles(
-				styles,
-				hasInput,
-				hasError,
-			)}
-			htmlFor={fieldName}
+		<PureField
+			hasInput={hasInput}
+			hasError={hasError}
+			fieldName={fieldName}
+			labelText={labelText}
 		>
 			{children}
-
-			<span css={fieldLabelStyles(styles)}>
-				{labelText}
-			</span>
-
-			{hasError && (
-				<span css={fieldErrorStyles(styles)}>
-					* This field is required
-				</span>
-			)}
-		</label>
+		</PureField>
 	);
 };
 

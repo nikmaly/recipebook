@@ -1,78 +1,177 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Recoil from 'recoil';
-import { atomAuthentication } from '../atoms/atomAuthentication';
+import { atomApi } from 'atoms/atomApi';
+
+type TStateObject = {
+	login_state: boolean,
+	auth_token: string,
+	access_token: string,
+	id_token: string,
+	refresh_token: string,
+	expires_in: number,
+	token_type: string,
+	valid_until: number,
+}
+
+const emptyAuth = {
+	login_state: false,
+	auth_token: '',
+	access_token: '',
+	id_token: '',
+	refresh_token: '',
+	expires_in: 0,
+	token_type: '',
+	valid_until: 0,
+};
 
 export const useAuthenticated = () => {
-	const [authData, setAuthData] = Recoil.useRecoilState(atomAuthentication);
-	const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
+	const api = Recoil.useRecoilValue(atomApi);
+	const [authData, setAuthData] = React.useState<TStateObject>(emptyAuth);
+	const [authenticated, setAuthenticated] = React.useState<boolean>(false);
+	const [searchParams] = useSearchParams();
 
-	const logOutHandler = () => {
-		setAuthData({
-			...authData,
-			error: '',
-			loginState: false,
-			authentication: {
-				auth_token: '',
-				access_token: '',
-				id_token: '',
-				refresh_token: '',
-				expires_in: 0,
-				token_type: '',
-				valid_until: 0,
-			},
-		});
+	const logOut = () => {
+		// Update State
+		setAuthData(emptyAuth);
 
-		localStorage.setItem('authentication', '');
+		// Udpate Session
+		// localStorage.setItem(
+		// 	'authentication',
+		// 	JSON.stringify(emptyAuth),
+		// );
 	};
 
-	// If the app thinks we should be logged in and we have credentials, attempt to do so
-	const updateAuthentication = () => {
-		// TODO:
-		// Attempt to acquire new tokens
-
-		// If success, update auth obect and set auth to true
-		// FIXME:
-		setAuthenticated(false);
-
-		// Else set auth to false
-	};
-
-	const checkAuthentication = () => {
-		const auth = authData.authentication;
-		const authExpired = Date.now() < (auth.valid_until || 0);
-		const authPopulated = !!auth.auth_token
-			&& !!auth.access_token
-			&& !!auth.id_token
-			&& !!auth.refresh_token
-			&& !!auth.expires_in
-			&& !!auth.token_type
-			&& !!auth.valid_until;
-
-		// If we're not supposed to be logged in, or we're in an invalid state,
-		// log out and reset authentication state
+	/**
+	 * Validates a state object
+	 * A negative or zero result represents invalid authentication
+	 *
+	 * @param {TStateObject} state - the state to validate
+	 * @returns {number} - the seconds until expiry
+	 */
+	const validateStateObject = (state: TStateObject): number => {
+		// Check auth exists and isn't explicitly logged out
 		if (
-			!authData.loginState
-			|| !authPopulated
+			!state
+			|| !state.login_state
 		) {
-			logOutHandler();
-			return;
+			return 0;
 		}
 
-		// If auth is expired, update it
-		if (authExpired) {
-			updateAuthentication();
-			return;
+		// Check state is complete and valid
+		if (
+			!state.auth_token
+			|| !state.access_token
+			|| !state.id_token
+			|| !state.refresh_token
+			|| !state.expires_in
+			|| state.expires_in === 0
+			|| !state.token_type
+			|| !state.valid_until
+			|| state.valid_until === 0
+		) {
+			return 0;
 		}
 
-		// Otherwise if everything is good, we're logged in
-		setAuthenticated(true);
+		// If it passes checks, look at expiry time
+		// This will return a positive value for valid,
+		// or negative for expired
+		return state.valid_until - Date.now();
+	};
+
+	/**
+	 * Check if the app is in an authenticated state
+	 *
+	 * @returns {boolean} - state validity
+	 */
+	const checkAuthentication = (): boolean => {
+		// Retrieve session auth source
+		const localAuth = localStorage.getItem('authentication')
+			? JSON.parse(localStorage.getItem('authentication') || '{}')
+			: emptyAuth;
+
+		/*
+			We prefer to use state auth, because whilst the app is running
+			that is our source of truth. If it's valid, auth is valid.
+		*/
+		if (validateStateObject(authData) > 0) {
+			return true;
+		}
+
+		// If state auth isn't valid, try session auth
+		if (validateStateObject(localAuth) > 0) {
+			setAuthData(localAuth);
+
+			return true;
+		}
+
+		// If none of it was valid, formally log out and return false
+		logOut();
+
+		return false;
+	};
+
+	/**
+	 * Request an authentication attempt
+	 */
+	const requestAuthentication = () => {
+		// Check if we're already authed
+		if (checkAuthentication()) { return; }
+
+		const code = searchParams.get('code')?.toString() || '';
+
+		// We need an auth code to even attempt authentication
+		if (!code) { return; }
+
+		// Exchange the auth token for access tokens
+		const tokenUrl = `${api.auth.url}/${api.auth.endpoints.token}`;
+		const tokenOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				Accept: '*/*',
+			},
+			body: `grant_type=authorization_code&client_id=${api.auth.clientId}&code=${code}&redirect_uri=${encodeURIComponent(process.env.NODE_ENV !== 'development' ? 'https://recipebook.malyaris.com/login' : 'http://localhost:3000/login')}`,
+		};
+
+		fetch(tokenUrl, tokenOptions)
+			.then((response) => response.json())
+			.then((data) => (async () => {
+				// expires_in is measured in seconds, Date is in milliseconds
+				const expiryTime = Date.now() + (data.expires_in * 1000);
+
+				if (data.error) {
+					throw new Error(data.error);
+				}
+
+				const retrievedAuthentication = {
+					...data,
+					login_state: true,
+					auth_token: code,
+					valid_until: expiryTime,
+				};
+
+				setAuthData({
+					...authData,
+					...retrievedAuthentication,
+				});
+
+				localStorage.setItem(
+					'authentication',
+					JSON.stringify(retrievedAuthentication),
+				);
+			})()).catch((err) => {
+				if (process.env.NODE_ENV === 'development') {
+					console.warn('error', err);
+				}
+			});
 	};
 
 	React.useEffect(() => {
-		checkAuthentication();
-	}, []);
+		setAuthenticated(checkAuthentication);
+	}, [authData]);
 
-	return isAuthenticated;
+	return [authenticated, requestAuthentication, authData] as const;
 };
 
 export default useAuthenticated;

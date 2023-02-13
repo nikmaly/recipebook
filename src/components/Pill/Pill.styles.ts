@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 import { TPillThemes } from './Pill';
 
 export const pillListItemStyles = (styles: TStyles): SerializedStyles => css`

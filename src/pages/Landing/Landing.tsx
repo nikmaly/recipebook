@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { NavBar } from '../../components/NavBar';
-import { StylesContext } from '../../context/Styles';
+import { NavBar } from 'components/NavBar';
+import { StylesContext } from 'context/Styles';
 /** @jsxImportSource @emotion/react */
 import {
 	landingStyles,
@@ -9,7 +9,7 @@ import {
 } from './Landing.styles';
 
 import Telescope from '../../assets/icons/telescope-color.svg';
-import Compass from '../../assets/icons/compass-color.svg';
+import Heart from '../../assets/icons/heart-color.svg';
 import Die from '../../assets/icons/die-color.svg';
 import Search from '../../assets/icons/search-color.svg';
 
@@ -37,13 +37,13 @@ const Landing = () => {
 					<li>
 						<NavLink to="/discover">
 							Discover
-							<img src={Compass} alt="search-icon-compass" />
+							<img src={Telescope} alt="search-icon-telescope" />
 						</NavLink>
 					</li>
 					<li>
 						<NavLink to="/favourites">
 							Favourites
-							<img src={Telescope} alt="search-icon-telescope" />
+							<img src={Heart} alt="search-icon-heart" />
 						</NavLink>
 					</li>
 				</ul>

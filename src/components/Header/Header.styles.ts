@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const headerStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.fontHeader('')};

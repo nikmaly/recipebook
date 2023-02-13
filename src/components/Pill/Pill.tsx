@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
-import { StylesContext } from '../../context/Styles';
+import { StylesContext } from 'context/Styles';
 import {
 	pillStyles,
 	pillListItemStyles,
@@ -36,6 +36,9 @@ const Pill: React.FunctionComponent<TPillProps> = ({
 	} else {
 		ElementType = 'div';
 	}
+
+	// FIXME: remove
+	ElementType = 'div';
 
 	const tagFactory = () => (
 		<ElementType

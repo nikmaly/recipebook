@@ -1,18 +1,46 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
-import { atomApi } from '../../atoms/atomApi';
-import { atomRecipeNameList, TRecipeNameList } from '../../atoms/atomRecipeNameList';
-import { TRecipeData } from '../../components/DataLayer';
-import { DiscoverRenderer } from '.';
+import { atomApi } from 'atoms/atomApi';
+import { atomRecipeNameList, TRecipeNameList } from 'atoms/atomRecipeNameList';
+import { atomRecipeFilterList, TRecipeFilterList } from 'atoms/atomRecipeFilterList';
+import { TRecipeData } from 'middleware/DataLayer';
+import { PureDiscover } from '.';
+
+export type TFilterFormData = {
+	search: string;
+	tags: string[];
+	ingredients: string[];
+};
 
 const Discover = () => {
 	const api = Recoil.useRecoilValue(atomApi);
 	const recipeNameList: TRecipeNameList = Recoil.useRecoilValue(atomRecipeNameList);
-	const [inputVal, setInputVal] = React.useState('');
+	const recipeFilterList: TRecipeFilterList = Recoil.useRecoilValue(atomRecipeFilterList);
+	const [searchInputVal, setsearchInputVal] = React.useState('');
+	const [formData, setFormData] = React.useState<TFilterFormData>();
 	const [loadedRecipeData, setLoadedRecipeData] = React.useState<TRecipeData[]>([]);
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: {
+			errors,
+		},
+	} = useForm<TFilterFormData>();
+
+	const onSubmit: SubmitHandler<TFilterFormData> = (data) => {
+		const sanitisedData: TFilterFormData = {
+			search: data.search.trim(),
+			tags: data.tags,
+			ingredients: data.ingredients,
+		};
+
+		setFormData(sanitisedData);
+	};
 
 	const fetchRecipes = (recipes: string[]) => {
 		Promise.all(
@@ -32,13 +60,17 @@ const Discover = () => {
 	const handleDiscoverInput = (e: React.FormEvent<HTMLInputElement>) => {
 		// TODO: debounce
 		const discoverValue = e.currentTarget.value;
-		setInputVal(discoverValue);
+		setsearchInputVal(discoverValue);
 	};
 
+	React.useEffect(() => {
+		console.log(recipeFilterList);
+	}, []);
+
 	return (
-		<DiscoverRenderer
-			inputVal={inputVal}
-			inputHandler={handleDiscoverInput}
+		<PureDiscover
+			searchInputVal={searchInputVal}
+			searchInputHandler={handleDiscoverInput}
 			loadedRecipes={loadedRecipeData}
 		/>
 	);

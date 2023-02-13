@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { SerializedStyles } from '@emotion/react';
-import { StylesContext } from '../../context/Styles';
-import { NavBar } from '../NavBar';
-import { Header } from '../Header';
+import { StylesContext } from 'context/Styles';
+import { NavBar } from 'components/NavBar';
+import { Header } from 'components/Header';
 import { contentPageContentStyles } from './ContentPage.styles';
 
 type ContentProps = {

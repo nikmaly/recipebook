@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const settingsStyles = (styles: TStyles): SerializedStyles => css`
 	p {

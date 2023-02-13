@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const errorPageStyles = (styles: TStyles): SerializedStyles => css`
 	display: flex;

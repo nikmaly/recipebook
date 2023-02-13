@@ -2,14 +2,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import Recoil from 'recoil';
-import { atomLoadedRecipes } from '../../atoms/atomLoadedRecipes';
-import { atomRecipeNameList, TRecipeNameList } from '../../atoms/atomRecipeNameList';
-import { useLoadRecipes } from '../../hooks/useLoadRecipes';
-import { TRecipeData } from '../../components/DataLayer';
-import { ContentPage } from '../../components/ContentPage';
-import { Field } from '../../components/Field';
-import { RecipeRow } from '../../components/RecipeRow';
-import { StylesContext } from '../../context/Styles';
+import { atomLoadedRecipes } from 'atoms/atomLoadedRecipes';
+import { atomRecipeNameList, TRecipeNameList } from 'atoms/atomRecipeNameList';
+import { useLoadRecipes } from 'hooks/useLoadRecipes';
+import { TRecipeData } from 'middleware/DataLayer';
+import { ContentPage } from 'middleware/ContentPage';
+import { Field } from 'components/Field';
+import { RecipeRow } from 'components/RecipeRow';
+import { StylesContext } from 'context/Styles';
 /** @jsxImportSource @emotion/react */
 import {
 	searchPageStyles,

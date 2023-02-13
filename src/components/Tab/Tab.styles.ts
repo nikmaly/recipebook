@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { TStyles } from '../../context/Styles';
+import { TStyles } from 'context/Styles';
 
 export const tabStyles = (styles: TStyles): SerializedStyles => css`
 ${styles.mixins.resetList('')}
@@ -14,12 +14,24 @@ border: 1px solid ${styles.colors.grey[0]};
 `;
 
 export const tabButtonStyles = (styles: TStyles): SerializedStyles => css`
+flex-flow: column nowrap;
+justify-content: space-evenly;
+row-gap: ${styles.spacing[0]};
+
+${styles.breakpoints.ms.min(`
+	flex-flow: row nowrap;
+	justify-content: center;
+`)}
+
 img {
 	position: relative;
 	top: -2px;
-	margin-right: ${styles.spacing[1]};
 	height: ${styles.spacing[4]};
 	width: ${styles.spacing[4]};
+
+	${styles.breakpoints.ms.min(`
+		margin-right: ${styles.spacing[2]};
+	`)}
 }
 `;
 
