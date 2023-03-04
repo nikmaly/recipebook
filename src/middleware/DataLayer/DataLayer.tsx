@@ -4,7 +4,16 @@ import Recoil from 'recoil';
 import { atomApi } from 'atoms/atomApi';
 import { atomRecipeNameList } from 'atoms/atomRecipeNameList';
 import { atomRecipeFilterList } from 'atoms/atomRecipeFilterList';
+import {
+	atomMetaData,
+	TMetaTags,
+} from 'atoms/atomMetaData';
 import { Loader } from 'components/Loader';
+
+type TSantitisedMetaDDB = {
+	type: string,
+	content: string[],
+};
 
 export type TRecipeMetaData = {
 	prepTime: string,
@@ -51,9 +60,39 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 }) => {
 	const [, setRecipeNameList] = Recoil.useRecoilState(atomRecipeNameList);
 	const [, setRecipeFilterList] = Recoil.useRecoilState(atomRecipeFilterList);
+	const [metadata, setMetadata] = Recoil.useRecoilState(atomMetaData);
 	const [isLoading, setLoading] = React.useState(true);
 	const api = Recoil.useRecoilValue(atomApi);
 	const [errors, setErrors] = React.useState([]);
+
+	const fetchRecipeMetaData = () => {
+		fetch(`${api.url}/${api.version}/${api.endpoints.data}/`)
+			.then((response) => response.json())
+			.then((data) => (async () => {
+				const sanitisedData: TSantitisedMetaDDB[] = data.Items.map((item: any) => (
+					DynamoDB.Converter.output({ M: item })
+				));
+
+				const outputData: TMetaTags = sanitisedData.reduce(
+					(previous: TMetaTags, item: TSantitisedMetaDDB) => (
+						{
+							...previous,
+							[item.type]: item.content,
+						}
+					),
+					{},
+				);
+
+				setMetadata({
+					tags: {
+						...metadata.tags,
+						...outputData,
+					},
+				});
+			})()).catch((_error) => {
+				setErrors(_error);
+			});
+	};
 
 	const fetchRecipeNameData = () => {
 		fetch(`${api.url}/${api.version}/${api.endpoints.listByAttribute}/recipeName,tags,ingredients/`)
@@ -94,6 +133,7 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 	};
 
 	React.useEffect(() => {
+		fetchRecipeMetaData();
 		fetchRecipeNameData();
 	}, []);
 

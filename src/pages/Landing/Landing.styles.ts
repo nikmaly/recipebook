@@ -7,7 +7,7 @@ export const landingStyles = (styles: TStyles): SerializedStyles => css`
 	background: ${styles.colors.white.base};
 
 	main {
-		height: 100%;
+		height: 100vh;
 	}
 `;
 

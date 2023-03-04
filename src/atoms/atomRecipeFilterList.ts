@@ -2,6 +2,7 @@ import { atom } from 'recoil';
 
 export type TRecipeFilterItem = {
 	recipeName: string;
+	ingredients: string[];
 	tags: string[];
 };
 

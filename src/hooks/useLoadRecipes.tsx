@@ -31,7 +31,9 @@ export const useLoadRecipes = () => {
 			!loadedRecipes.index.includes(recipe)
 		));
 
-		fetchRecipes(sanitisedRecipeList);
+		if (sanitisedRecipeList.length > 0) {
+			fetchRecipes(sanitisedRecipeList);
+		}
 	};
 
 	return sanitiseRequest;

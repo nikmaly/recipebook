@@ -26,20 +26,28 @@ const Search = () => {
 	const loadRecipes = useLoadRecipes();
 
 	React.useEffect(() => {
-		if (!searchTerm) {
+		const sanitisedSearchTerm = searchTerm.toLowerCase().trim();
+
+		if (!sanitisedSearchTerm) {
 			setDisplayedRecipes([]);
-		} else if (searchTerm && searchTerm.length > 2) {
+		} else if (sanitisedSearchTerm && sanitisedSearchTerm.length > 2) {
 			setDisplayedRecipes(
-				loadedRecipes.data.filter((recipe) => recipe.recipeName.includes(searchTerm)),
+				loadedRecipes.data.filter((recipe) => (
+					recipe.recipeName.includes(sanitisedSearchTerm)
+				)),
 			);
 		}
 	}, [loadedRecipes, searchTerm]);
 
 	React.useEffect(() => {
-		sessionStorage.setItem('searchTerm', searchTerm);
+		const sanitisedSearchTerm = searchTerm.toLowerCase().trim();
+
+		sessionStorage.setItem('searchTerm', sanitisedSearchTerm);
 
 		if (searchTerm.length > 2) {
-			const targets = recipeNameList.filter((recipeName) => recipeName.includes(searchTerm));
+			const targets = recipeNameList.filter((recipeName) => (
+				recipeName.includes(sanitisedSearchTerm)
+			));
 
 			loadRecipes(targets);
 		}

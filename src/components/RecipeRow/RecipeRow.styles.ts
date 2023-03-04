@@ -7,6 +7,7 @@ export const recipeRowStyles = (styles: TStyles): SerializedStyles => css`
 	flex: 1;
 	display: flex;
 	flex-flow: row nowrap;
+	width: 100%;
 	text-decoration: none;
 	border: 1px solid transparent;
 	color: ${styles.colors.grey[3]};

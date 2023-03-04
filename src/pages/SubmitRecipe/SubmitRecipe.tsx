@@ -104,9 +104,9 @@ const SubmitRecipe = () => {
 					const items = item.trim().split('/');
 
 					return {
-						amount: items[0].trim(),
-						unit: items[1].trim(),
-						ingredient: items[2].trim(),
+						amount: items[0].trim().toLowerCase(),
+						unit: items[1].trim().toLowerCase(),
+						ingredient: items[2].trim().toLowerCase(),
 					};
 				});
 
@@ -132,13 +132,13 @@ const SubmitRecipe = () => {
 
 	const onSubmit: SubmitHandler<TRecipeFormData> = (data) => {
 		const sanitisedData: TRecipeData = {
-			recipeName: data.title.trim().replace(' ', '-'),
+			recipeName: data.title.trim().replace(' ', '-').toLowerCase(),
 			title: data.title.trim(),
 			// image: data.image[0],
 			image: data.image.trim(),
 			shortDescription: data.shortDescription.trim(),
 			description: data.description.trim().split('\n'),
-			tags: data.tags.trim().split(','),
+			tags: data.tags.trim().toLowerCase().split(','),
 			metaData: {
 				prepTime: data.prepTime.trim(),
 				cookTime: data.cookTime.trim(),

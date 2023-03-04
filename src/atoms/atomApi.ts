@@ -6,6 +6,7 @@ export const atomApi = atom({
 		url: 'https://0hgyyrn329.execute-api.ap-southeast-2.amazonaws.com',
 		version: 'v1',
 		endpoints: {
+			data: 'data',
 			recipe: 'recipes',
 			listByAttribute: 'recipes/list',
 			favourites: 'favourites',
