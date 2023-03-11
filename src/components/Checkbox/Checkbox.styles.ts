@@ -16,6 +16,11 @@ border-radius: ${styles.spacing[2]};
 cursor: pointer;
 transition: background-color 0.2s;
 
+&,
+> * {
+	cursor: pointer;
+}
+
 &:hover {
 	background-color: ${styles.colors.primary.base};
 	color: ${styles.colors.primary.light};

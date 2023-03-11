@@ -8,6 +8,8 @@ export const useLoadRecipes = () => {
 	const [loadedRecipes, setLoadedRecipes] = Recoil.useRecoilState(atomLoadedRecipes);
 
 	const fetchRecipes = (fetchTargets: string[]) => {
+		// TODO: only load next 10 targets
+
 		Promise.all(
 			fetchTargets.map((recipe) => (
 				fetch(`${api.url}/${api.version}/${api.endpoints.recipe}/${recipe}`)

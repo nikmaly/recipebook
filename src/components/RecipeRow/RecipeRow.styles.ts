@@ -4,7 +4,7 @@ import { TStyles } from 'context/Styles';
 
 export const recipeRowStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.panelise('')}
-	flex: 1;
+	flex: 0 1 auto;
 	display: flex;
 	flex-flow: row nowrap;
 	width: 100%;
