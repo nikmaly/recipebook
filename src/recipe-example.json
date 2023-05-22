@@ -17,7 +17,7 @@
  "image": "",
  "ingredients": [
   {
-   "sectionIngredients": [
+   "sectionItems": [
     {
      "amount": "",
      "ingredient": "",
@@ -32,7 +32,7 @@
    "sectionName": ""
   },
   {
-   "sectionIngredients": [
+   "sectionItems": [
     {
      "amount": "",
      "ingredient": "",
@@ -56,7 +56,7 @@
  "stepsDetailed": [
   {
    "sectionName": "",
-   "sectionSteps": [
+   "sectionItems": [
     "",
     "",
     "",
@@ -65,7 +65,7 @@
   },
   {
    "sectionName": "",
-   "sectionSteps": [
+   "sectionItems": [
     "",
     "",
     "",
@@ -76,7 +76,7 @@
  "stepsSimple": [
   {
    "sectionName": "",
-   "sectionSteps": [
+   "sectionItems": [
     "",
     "",
     "",
@@ -85,7 +85,7 @@
   },
   {
    "sectionName": "",
-   "sectionSteps": [
+   "sectionItems": [
     "",
     "",
     "",

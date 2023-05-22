@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 /** @jsxImportSource @emotion/react */
 import React from 'react';
@@ -127,6 +127,13 @@ const RecipePage: React.FunctionComponent = () => {
 			),
 		},
 	];
+
+	if (
+		!recipeData?.stepsDetailed
+		|| recipeData.stepsDetailed.length < 1
+	) {
+		tabContent.splice(2, 3);
+	}
 
 	return (
 		<>

@@ -1,5 +1,5 @@
 import React from 'react';
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* fixes a TS issue thinking the enum is undefined */
 export enum TTheme {
     Dark = 'Dark',
@@ -170,8 +170,9 @@ export const Styles: TStyles = {
 		},
 		secondary: {
 			base: 'rgba(245, 160, 80, 1)',
+			transparent: 'rgba(251, 234, 192, 0.7)',
 			light: 'rgba(251, 234, 192, 1)',
-			mid: 'rgba(200, 130, 50, 1)',
+			mid: 'rgba(230, 170, 90, 1)',
 			dark: 'rgba(166, 105, 36, 1)',
 		},
 		misc: {

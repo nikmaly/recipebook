@@ -118,9 +118,9 @@ const SubmitRecipe = () => {
 	};
 
 	const stepMapper = (steps: string): TRecipeStepSections[] => {
-		const stepsections = steps.split('!').filter((step) => !!step);
+		const stepSections = steps.split('!').filter((step) => !!step);
 
-		return stepsections.map((section) => {
+		return stepSections.map((section) => {
 			const splitSection = section.trim().split('\n');
 
 			return {

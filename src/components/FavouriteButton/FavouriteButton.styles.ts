@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { lighten } from 'polished';
 import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from 'context/Styles';

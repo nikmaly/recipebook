@@ -15,9 +15,9 @@ import { DevTooling } from './middleware/DevTooling';
 import './App.css';
 
 const App = () => {
-	// eslint-disable-next-line no-unused-vars
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoading, setLoading] = React.useState<boolean>(true);
-	// eslint-disable-next-line no-unused-vars
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [errors, setErrors] = React.useState<string>('');
 	const [, setRecipeList] = React.useState();
 	const [styles, setStyles] = React.useState(Styles);

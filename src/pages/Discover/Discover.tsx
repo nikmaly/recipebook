@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 /** @jsxImportSource @emotion/react */
 import React from 'react';
@@ -199,7 +199,7 @@ const Discover = () => {
 							>
 								<h4 css={filterTagTitleStyles(styles)}>{type}</h4>
 
-								<div css={filterTagStyles(styles)}>
+								<div css={filterTagStyles(styles, false)}>
 									{metaData.tags[type].map((tag: string) => (
 										<Checkbox
 											labelText={tag}

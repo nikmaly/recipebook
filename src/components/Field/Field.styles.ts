@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from 'context/Styles';
 
@@ -7,6 +7,7 @@ export const fieldWrapperStyles = (
 	styles: TStyles,
 	hasContent: boolean,
 	hasError: boolean,
+	largeVariant: boolean,
 ): SerializedStyles => css`
 position: relative;
 display: flex;
@@ -21,6 +22,8 @@ ${styles.breakpoints.s.min(`
 ${styles.breakpoints.m.min(`
 	margin: 10px 0 35px;
 `)}
+
+${largeVariant && 'font-size: 1.5em;'}
 
 input,
 textarea {

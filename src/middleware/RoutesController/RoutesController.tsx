@@ -16,6 +16,7 @@ import { Favourites } from 'pages/Favourites';
 import { Settings } from 'pages/Settings';
 import { Login } from 'pages/Login';
 import { SubmitRecipe } from 'pages/SubmitRecipe';
+import { SubmissionJourney } from 'pages/SubmissionJourney';
 import Error404 from 'middleware/ErrorPage/Errors/404';
 import Error405 from 'middleware/ErrorPage/Errors/405';
 
@@ -76,6 +77,11 @@ const RoutesController: React.FunctionComponent = () => {
 			<Route
 				path="/submit-recipe"
 				element={<SubmitRecipe />}
+			/>
+
+			<Route
+				path="/submit"
+				element={<SubmissionJourney />}
 			/>
 
 			<Route

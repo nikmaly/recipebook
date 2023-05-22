@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from 'context/Styles';
@@ -46,11 +46,40 @@ text-transform: capitalize;
 font-weight: 300;
 `;
 
-export const filterTagStyles = (styles: TStyles): SerializedStyles => css`
+export const filterTagStyles = (
+	styles: TStyles,
+	visible: boolean = true,
+): SerializedStyles => css`
+position: relative;
 display: flex;
 flex-flow: row wrap;
 row-gap: ${styles.spacing[1]};
 column-gap: ${styles.spacing[1]};
+max-height: 67px;
+overflow: hidden;
+
+&:after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 10px;
+	background: linear-gradient(
+		to bottom,
+		rgba(100, 100, 100, 0.0),
+		rgba(100, 100, 100, 0.3)
+	);
+	transition: height 0.2s;
+}
+
+${visible && `
+	max-height: unset;
+
+	&:after {
+		height: 0;
+	}
+`}
 `;
 
 export const discoverSubmitStyles = (styles: TStyles): SerializedStyles => css`

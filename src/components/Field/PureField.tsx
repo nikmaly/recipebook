@@ -12,6 +12,7 @@ type TPureFieldProps = {
 	fieldName: string;
 	hasInput?: boolean;
 	hasError?: boolean;
+	largeVariant?: boolean;
 	children: React.ReactNode;
 }
 
@@ -20,6 +21,7 @@ const PureField: React.FunctionComponent<TPureFieldProps> = ({
 	fieldName,
 	hasInput = false,
 	hasError = false,
+	largeVariant = false,
 	children,
 }) => {
 	const { styles } = React.useContext(StylesContext);
@@ -30,6 +32,7 @@ const PureField: React.FunctionComponent<TPureFieldProps> = ({
 				styles,
 				hasInput,
 				hasError,
+				largeVariant,
 			)}
 			htmlFor={fieldName}
 		>

@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 import { css, SerializedStyles } from '@emotion/react';
 import { TStyles } from 'context/Styles';

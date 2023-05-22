@@ -1,5 +1,22 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import HomeIcon from '@mui/icons-material/Home';
+import CallIcon from '@mui/icons-material/Call';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SearchIcon from '@mui/icons-material/Search';
+import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import { useAuthenticated } from 'hooks/useAuthenticated';
 import { StylesContext } from 'context/Styles';
 /** @jsxImportSource @emotion/react */
@@ -9,8 +26,21 @@ import {
 	navbarLogoLinkStyles,
 	navbarLinkMenuWrapperStyles,
 	navbarLinkMenuButtonStyles,
-	navbarLinkMenuStyles,
+	// navbarLinkMenuStyles,
 } from './NavBar.styles';
+
+const SimplifiedLink = React.forwardRef<any, any>((props, ref) => (
+	<Link
+		ref={ref}
+		to={props.to}
+		style={{
+			color: '#000',
+			textDecoration: 'none',
+		}}
+	>
+		{props.children}
+	</Link>
+));
 
 const NavBar: React.FunctionComponent = () => {
 	const { styles } = React.useContext(StylesContext);
@@ -45,13 +75,13 @@ const NavBar: React.FunctionComponent = () => {
 		>
 			{/* Navbar Logo / Home */}
 			<div css={navbarLogoStyles(styles)}>
-				<NavLink
+				<Link
 					css={navbarLogoLinkStyles(styles)}
 					to="/"
 					className="v-hidden"
 				>
 					Home Icon Link
-				</NavLink>
+				</Link>
 			</div>
 
 			{/* Navbar Menu */}
@@ -67,41 +97,102 @@ const NavBar: React.FunctionComponent = () => {
 					Open Menu
 				</button>
 
-				<ul
+				<Drawer
+					anchor="right"
+					open={isMenuOpen}
+					// onClose={setMenuOpen(false)}
+				>
+					<Box
+						role="presentation"
+						sx={{ minWidth: '200px' }}
+					>
+						<List>
+							{/* Internal Links */}
+							{[
+								{ text: 'Home', link: '', icon: <HomeIcon /> },
+								{ text: 'Random', link: 'random', icon: <ShuffleIcon /> },
+								{ text: 'Search', link: 'search', icon: <SearchIcon /> },
+								{ text: 'Discover', link: 'discover', icon: <LocationSearchingIcon /> },
+								{ text: 'Favourites', link: 'favourites', icon: <FavoriteIcon /> },
+								{ text: 'Settings', link: 'settings', icon: <SettingsIcon /> },
+								{ text: 'Submit', link: 'submit-recipe', icon: <InboxIcon /> },
+							].map((nav) => (
+								<ListItem
+									key={nav.text}
+									disablePadding
+									component={SimplifiedLink}
+									to={nav.link}
+									onClick={() => setMenuOpen(false)}
+								>
+									<ListItemButton>
+										<ListItemIcon>
+											{nav.icon}
+										</ListItemIcon>
+
+										<ListItemText
+											primary={nav.text}
+											sx={{ color: styles.colors.black.base }}
+										/>
+									</ListItemButton>
+								</ListItem>
+							))}
+						</List>
+
+						<Divider />
+
+						<List>
+							{/* External Links */}
+							{[
+								{ text: 'Contact', link: 'https://nik.malyaris.com', icon: <CallIcon /> },
+							].map((nav) => (
+								<ListItem
+									key={nav.text}
+									disablePadding
+									component="a"
+									href={nav.link}
+									onClick={() => setMenuOpen(false)}
+								>
+									<ListItemButton>
+										<ListItemIcon>
+											{nav.icon}
+										</ListItemIcon>
+
+										<ListItemText
+											primary={nav.text}
+											sx={{ color: styles.colors.black.base }}
+										/>
+									</ListItemButton>
+								</ListItem>
+							))}
+
+							{!authenticated && (
+								<ListItem
+									disablePadding
+									component={SimplifiedLink}
+									to="/login"
+									onClick={() => setMenuOpen(false)}
+								>
+									<ListItemButton>
+										<ListItemIcon>
+											<LockOpenIcon />
+										</ListItemIcon>
+
+										<ListItemText
+											primary="Login"
+											sx={{ color: styles.colors.black.base }}
+										/>
+									</ListItemButton>
+								</ListItem>
+							)}
+						</List>
+					</Box>
+				</Drawer>
+
+				{/* <ul
 					css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}
 				>
-					{!authenticated && (
-						<li>
-							<NavLink
-								to="/login"
-								onClick={() => setMenuOpen(false)}
-							>
-								Login
-							</NavLink>
-						</li>
-					)}
-					<li>
-						<NavLink
-							to="/settings"
-							onClick={() => setMenuOpen(false)}
-						>
-							Settings
-						</NavLink>
-					</li>
-					<li>
-						<NavLink
-							to="/submit-recipe"
-							onClick={() => setMenuOpen(false)}
-						>
-							Submit
-						</NavLink>
-					</li>
-					<li>
-						<a href="https://nik.malyaris.com">
-							Contact
-						</a>
-					</li>
-				</ul>
+
+				</ul> */}
 			</div>
 		</nav>
 	);

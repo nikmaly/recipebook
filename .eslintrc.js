@@ -15,6 +15,9 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
+	globals: {
+		JSX: 'readonly',
+	},
 	settings: {
 		'import/resolver': {
 			node: {
@@ -28,6 +31,8 @@ module.exports = {
 		'@typescript-eslint',
 	],
 	rules: {
+		'no-unused-vars': 'off',
+		'@typescript-eslint/no-unused-vars': ['error'],
 		indent: [2, 'tab'],
 		'no-plusplus': 0,
 		'no-tabs': 0,
