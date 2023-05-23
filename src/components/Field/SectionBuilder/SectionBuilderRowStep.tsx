@@ -6,12 +6,14 @@ import TextField from '@mui/material/TextField';
 
 type TSectionBuilderRowStepProps = {
 	name: string;
+	label: string;
 	step: string;
 	emitChange: (value: string) => void;
 };
 
 const SectionBuilderRowStep: React.FunctionComponent<TSectionBuilderRowStepProps> = ({
 	name,
+	label,
 	step,
 	emitChange,
 }) => (
@@ -22,7 +24,7 @@ const SectionBuilderRowStep: React.FunctionComponent<TSectionBuilderRowStepProps
 	>
 		<Grid xs={12}>
 			<TextField
-				label="Step"
+				label={label}
 				name={`${name}-step-name`}
 				variant="outlined"
 				sx={{ width: '100%' }}
@@ -30,6 +32,7 @@ const SectionBuilderRowStep: React.FunctionComponent<TSectionBuilderRowStepProps
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => (
 					emitChange(e.target.value)
 				)}
+				required
 			/>
 		</Grid>
 	</Grid>

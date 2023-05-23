@@ -10,7 +10,7 @@ import { atomApi } from 'atoms/atomApi';
 import { atomRecipeNameList, TRecipeNameList } from 'atoms/atomRecipeNameList';
 import { atomLoadedRecipes } from 'atoms/atomLoadedRecipes';
 import { useLoadRecipes } from 'hooks/useLoadRecipes';
-import { TRecipeData } from 'middleware/DataLayer';
+import { TRecipeData, TRecipeIngredients } from 'middleware/DataLayer';
 import { Loader } from 'components/Loader';
 import { NavBar } from 'components/NavBar';
 import { Pill } from 'components/Pill';
@@ -80,11 +80,15 @@ const RecipePage: React.FunctionComponent = () => {
 					<div key={i}>
 						<h4>{section.sectionName}</h4>
 						<ul>
-							{section.sectionIngredients.map((ingredient, j) => (
-								<li key={`${i}-${j}`}>
-									{`${ingredient.amount} ${ingredient.unit} ${ingredient.ingredient}`}
-								</li>
-							))}
+							{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
+								const { amount, unit, ingredient } = item as TRecipeIngredients;
+
+								return (
+									<li key={`${i}-${j}`}>
+										{`${amount} ${unit} ${ingredient}`}
+									</li>
+								);
+							})}
 						</ul>
 					</div>
 				))
@@ -98,11 +102,15 @@ const RecipePage: React.FunctionComponent = () => {
 					<div key={i}>
 						<h4>{section.sectionName}</h4>
 						<ol>
-							{section.sectionSteps.map((step, j) => (
-								<li key={`${i}-${j}`}>
-									{step}
-								</li>
-							))}
+							{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
+								const step = item as string;
+
+								return (
+									<li key={`${i}-${j}`}>
+										{step}
+									</li>
+								);
+							})}
 						</ol>
 					</div>
 				))
@@ -116,11 +124,15 @@ const RecipePage: React.FunctionComponent = () => {
 					<div key={i}>
 						<h4>{section.sectionName}</h4>
 						<ol>
-							{section.sectionSteps.map((step, j) => (
-								<li key={`${i}-${j}`}>
-									{step}
-								</li>
-							))}
+							{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
+								const step = item as string;
+
+								return (
+									<li key={`${i}-${j}`}>
+										{step}
+									</li>
+								);
+							})}
 						</ol>
 					</div>
 				))

@@ -27,14 +27,9 @@ export type TRecipeIngredients = {
 	amount: string,
 };
 
-export type TRecipeIngredientSections = {
+export type TRecipeSections = {
 	sectionName: string;
-	sectionIngredients: TRecipeIngredients[];
-};
-
-export type TRecipeStepSections = {
-	sectionName: string;
-	sectionSteps: string[];
+	sectionItems: string[] | TRecipeIngredients[];
 };
 
 export type TRecipeData = {
@@ -45,9 +40,9 @@ export type TRecipeData = {
 	description: string[];
 	metaData: TRecipeMetaData;
 	tags: string[];
-	ingredients: TRecipeIngredientSections[];
-	stepsSimple: TRecipeStepSections[];
-	stepsDetailed: TRecipeStepSections[];
+	ingredients: TRecipeSections[];
+	stepsSimple: TRecipeSections[];
+	stepsDetailed: TRecipeSections[];
 	furtherInfo: string[];
 };
 
@@ -113,7 +108,7 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 
 					sanitisedRecipe.ingredients = sanitisedRecipe.ingredients.map(
 						(ingredientSection: any) => (
-							ingredientSection.sectionIngredients.map((ingredient: any) => (
+							ingredientSection.sectionItems.map((ingredient: any) => (
 								ingredient.ingredient
 							))
 						),

@@ -36,9 +36,13 @@ const App = () => {
 		palette: {
 			primary: {
 				main: styles.colors.primary.base,
+				light: styles.colors.primary.light,
+				dark: styles.colors.primary.dark,
 			},
 			secondary: {
 				main: styles.colors.secondary.base,
+				light: styles.colors.secondary.light,
+				dark: styles.colors.secondary.dark,
 			},
 		},
 		typography: {

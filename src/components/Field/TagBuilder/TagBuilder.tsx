@@ -6,6 +6,7 @@ type TTagBuilderProps = {
 	name: string;
 	label: string;
 	value: string;
+	required?: boolean;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -13,6 +14,7 @@ const TagBuilder: React.FunctionComponent<TTagBuilderProps> = ({
 	name,
 	label,
 	value,
+	required = false,
 	onChange,
 }) => (
 	<TextField
@@ -23,6 +25,7 @@ const TagBuilder: React.FunctionComponent<TTagBuilderProps> = ({
 			onChange(e);
 		}}
 		value={value}
+		required={required}
 	/>
 );
 

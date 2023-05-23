@@ -9,8 +9,7 @@ import { useAuthenticated } from 'hooks/useAuthenticated';
 import { StylesContext } from 'context/Styles';
 import {
 	TRecipeData,
-	TRecipeIngredientSections,
-	TRecipeStepSections,
+	TRecipeSections,
 } from 'middleware/DataLayer';
 import { ContentPage } from 'middleware/ContentPage';
 import { Loader } from 'components/Loader';
@@ -91,7 +90,7 @@ const SubmitRecipe = () => {
 			});
 	};
 
-	const ingredientMapper = (ingredients: string): TRecipeIngredientSections[] => {
+	const ingredientMapper = (ingredients: string): TRecipeSections[] => {
 		const ingredientSections = ingredients.split('!').filter((item) => !!item);
 
 		return ingredientSections.map((section) => {
@@ -112,12 +111,12 @@ const SubmitRecipe = () => {
 
 			return {
 				sectionName: cleaned[0].trim(),
-				sectionIngredients: ingredientData,
+				sectionItems: ingredientData,
 			};
 		});
 	};
 
-	const stepMapper = (steps: string): TRecipeStepSections[] => {
+	const stepMapper = (steps: string): TRecipeSections[] => {
 		const stepSections = steps.split('!').filter((step) => !!step);
 
 		return stepSections.map((section) => {
@@ -125,7 +124,7 @@ const SubmitRecipe = () => {
 
 			return {
 				sectionName: splitSection[0].trim(),
-				sectionSteps: [...splitSection.splice(1, splitSection.length)],
+				sectionItems: [...splitSection.splice(1, splitSection.length)],
 			};
 		});
 	};

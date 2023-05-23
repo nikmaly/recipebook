@@ -3,6 +3,5 @@ export type {
 	TRecipeData,
 	TRecipeMetaData,
 	TRecipeIngredients,
-	TRecipeIngredientSections,
-	TRecipeStepSections,
+	TRecipeSections,
 } from './DataLayer';

@@ -296,9 +296,9 @@ Styles.components = {
 		innerBorderSpacing: '55px',
 	},
 	header: {
-		height: '60px',
+		heightBase: '60px',
 		heightS: '90px',
-		heightMs: '100px',
+		heightMS: '100px',
 	},
 	landingHeader: {
 		logoSize: '50px',

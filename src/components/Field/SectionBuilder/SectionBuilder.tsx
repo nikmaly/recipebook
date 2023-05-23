@@ -2,14 +2,14 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import Button from '@mui/material/Button';
-import { TRecipeIngredientSections, TRecipeStepSections } from 'middleware/DataLayer';
+import { TRecipeSections } from 'middleware/DataLayer';
 import { SectionBuilderSection } from '.';
 
 type TSectionBuilderProps = {
 	name: string;
 	type: 'ingredient' | 'method';
-	onChange: (data: TRecipeIngredientSections[]) => void;
-	value: string | TRecipeIngredientSections[] | TRecipeStepSections[];
+	onChange: (data: TRecipeSections[]) => void;
+	value: string | TRecipeSections[] | TRecipeSections[];
 };
 
 const SectionBuilder: React.FunctionComponent<TSectionBuilderProps> = ({
@@ -20,23 +20,25 @@ const SectionBuilder: React.FunctionComponent<TSectionBuilderProps> = ({
 }) => {
 	const fieldTemplate = {
 		sectionName: '',
-		sectionIngredients: [{
-			ingredient: '',
-			unit: '',
-			amount: '',
-		}],
+		sectionItems: [
+			type === 'ingredient' ? {
+				ingredient: '',
+				unit: '',
+				amount: '',
+			} : '',
+		],
 	};
 
 	return (
 		<>
 			{Array.isArray(value) && value.map(
-				(section: TRecipeIngredientSections | TRecipeStepSections, i: number) => (
+				(section: TRecipeSections | TRecipeSections, i: number) => (
 					<SectionBuilderSection
 						name={name + i}
-						key={`${name}-i`}
+						key={`${name}-${i}`}
 						type={type}
 						section={section}
-						emitChange={(data: TRecipeIngredientSections | TRecipeStepSections) => {
+						emitChange={(data: TRecipeSections | TRecipeSections) => {
 							const newStepData = JSON.parse(JSON.stringify(value));
 
 							newStepData[i] = data;

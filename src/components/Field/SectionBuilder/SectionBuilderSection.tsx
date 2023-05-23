@@ -5,14 +5,14 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Fab from '@mui/material/Fab';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import { TRecipeIngredientSections, TRecipeStepSections, TRecipeIngredients } from 'middleware/DataLayer';
-import { SectionBuilderRowIngredient } from '.';
+import { TRecipeSections, TRecipeIngredients } from 'middleware/DataLayer';
+import { SectionBuilderRowIngredient, SectionBuilderRowStep } from '.';
 
 type TSectionBuilderSectionProps = {
 	name: string;
 	type: 'method' | 'ingredient';
-	section: TRecipeIngredientSections | TRecipeStepSections;
-	emitChange: (data: TRecipeIngredientSections | TRecipeStepSections) => void;
+	section: TRecipeSections | TRecipeSections;
+	emitChange: (data: TRecipeSections | TRecipeSections) => void;
 };
 
 const SectionBuilderSection: React.FunctionComponent<TSectionBuilderSectionProps> = ({
@@ -21,11 +21,12 @@ const SectionBuilderSection: React.FunctionComponent<TSectionBuilderSectionProps
 	section,
 	emitChange,
 }) => {
-	const rowTemplate = {
-		ingredient: '',
-		unit: '',
-		amount: '',
-	};
+	const rowTemplate = type === 'ingredient'
+		? {
+			ingredient: '',
+			unit: '',
+			amount: '',
+		} : '';
 
 	return (
 		<Paper
@@ -41,25 +42,43 @@ const SectionBuilderSection: React.FunctionComponent<TSectionBuilderSectionProps
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					emitChange({ ...JSON.parse(JSON.stringify(section)), sectionName: e.target.value });
 				}}
+				required
 			/>
 
 			{
-				type === 'ingredient'
-				&& 'sectionIngredients' in section
-				&& section.sectionIngredients.map(
-					(ingredientRow: TRecipeIngredients, i: number) => (
-						<SectionBuilderRowIngredient
-							name={`${name}-row-${i}`}
-							key={i}
-							ingredient={ingredientRow}
-							emitChange={(field: string, value: string) => {
-								const newSectionData = JSON.parse(JSON.stringify(section));
+				section.sectionItems.map(
+					(sectionItem: TRecipeIngredients | string, i: number) => {
+						if (type === 'method') {
+							return (
+								<SectionBuilderRowStep
+									label={`Step ${i + 1}`}
+									name={`${name}-row-${i}`}
+									key={i}
+									step={sectionItem as string}
+									emitChange={(value: string) => {
+										const newSectionData = JSON.parse(JSON.stringify(section));
 
-								newSectionData.sectionIngredients[i][field] = value;
-								emitChange(newSectionData);
-							}}
-						/>
-					),
+										newSectionData.sectionItems[i] = value;
+										emitChange(newSectionData);
+									}}
+								/>
+							);
+						}
+
+						return (
+							<SectionBuilderRowIngredient
+								name={`${name}-row-${i}`}
+								key={i}
+								ingredient={sectionItem as TRecipeIngredients}
+								emitChange={(field: string, value: string) => {
+									const newSectionData = JSON.parse(JSON.stringify(section));
+
+									newSectionData.sectionItems[i][field] = value;
+									emitChange(newSectionData);
+								}}
+							/>
+						);
+					},
 				)
 			}
 
@@ -68,7 +87,7 @@ const SectionBuilderSection: React.FunctionComponent<TSectionBuilderSectionProps
 				onClick={() => {
 					const newSectionData = JSON.parse(JSON.stringify(section));
 
-					newSectionData.sectionIngredients.push(rowTemplate);
+					newSectionData.sectionItems.push(rowTemplate);
 					emitChange(newSectionData);
 				}}
 				aria-label="add ingredient"

@@ -4,7 +4,7 @@ import { TStyles } from 'context/Styles';
 export const headerStyles = (styles: TStyles): SerializedStyles => css`
 	${styles.mixins.fontHeader('')};
 	position: relative;
-	height: ${styles.components.header.height};
+	height: ${styles.components.header.heightBase};
 	width: 100%;
 	overflow: hidden;
 
@@ -13,7 +13,7 @@ export const headerStyles = (styles: TStyles): SerializedStyles => css`
 	`)}
 
 	${styles.breakpoints.ms.min(`
-		height: ${styles.components.header.heightMs};
+		height: ${styles.components.header.heightMS};
 	`)}
 `;
 

@@ -45,6 +45,7 @@ const SectionBuilderRowIngredient: React.FunctionComponent<TSectionBuilderRowIng
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => (
 						emitChange('amount', e.target.value)
 					)}
+					required
 				/>
 			</Grid>
 
@@ -60,6 +61,7 @@ const SectionBuilderRowIngredient: React.FunctionComponent<TSectionBuilderRowIng
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => (
 						emitChange('unit', e.target.value)
 					)}
+					required
 				>
 					{units.map((unit: any) => (
 						<MenuItem key={unit.value} value={unit.value}>
@@ -79,6 +81,7 @@ const SectionBuilderRowIngredient: React.FunctionComponent<TSectionBuilderRowIng
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => (
 						emitChange('ingredient', e.target.value)
 					)}
+					required
 				/>
 			</Grid>
 		</Grid>

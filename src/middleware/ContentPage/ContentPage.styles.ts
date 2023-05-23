@@ -8,4 +8,13 @@ export const contentPageContentStyles = (styles: TStyles): SerializedStyles => c
 	max-width: 1080px;
 	margin: 0 auto;
 	padding: 0 10px;
+	min-height: calc(100% - ${styles.components.header.heightBase});
+
+	${styles.breakpoints.s.min(`
+		min-height: calc(100% - ${styles.components.header.heightS});
+	`)}
+
+	${styles.breakpoints.ms.min(`
+		min-height: calc(100% - ${styles.components.header.heightMS});
+	`)}
 `;

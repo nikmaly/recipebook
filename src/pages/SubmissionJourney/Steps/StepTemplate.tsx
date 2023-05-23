@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import InputAdornment from '@mui/material/InputAdornment';
 import { TagBuilder, SectionBuilder } from 'components/Field';
-import { TRecipeIngredientSections } from 'middleware/DataLayer';
+import { TRecipeSections } from 'middleware/DataLayer';
 import { StylesContext } from 'context/Styles';
 import {
 	TRecipeFormData,
@@ -13,31 +13,30 @@ import {
 } from '..';
 
 type TStepTemplateProps = {
+	stepName: string;
+	stepNumber: number;
 	fields: TFieldConfig[];
 	emitFieldData: (fieldData: Partial<TRecipeFormData>) => void;
 	emitNext: () => void;
 };
 
 const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
+	stepName,
+	stepNumber,
 	fields,
 	emitFieldData,
 	emitNext,
 }) => {
 	const { styles } = React.useContext(StylesContext);
 	const [fieldData, setFieldData] = React.useState<Partial<TRecipeFormData>>({
-		ingredients: [{
-			sectionName: '',
-			sectionIngredients: [{
-				ingredient: '',
-				unit: '',
-				amount: '',
-			}],
-		}],
+		ingredients: [],
+		stepsSimple: [],
+		stepsDetailed: [],
 	});
 
 	const handleFieldChange = (
 		field: TRecipeFormKeys,
-		value: string | number | TRecipeIngredientSections[],
+		value: string | number | TRecipeSections[],
 	) => {
 		const newFieldData = {
 			...fieldData,
@@ -68,6 +67,7 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 							handleFieldChange(name, e.target.value);
 						}}
 						value={fieldData[name] || ''}
+						required
 					/>
 				),
 				number: (
@@ -93,6 +93,7 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 							handleFieldChange(name, e.target.value);
 						}}
 						value={fieldData[field.name] || ''}
+						required
 					/>
 				),
 				textarea: (
@@ -107,6 +108,7 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 						value={fieldData[name] || ''}
 						multiline
 						minRows={4}
+						required
 					/>
 				),
 				select: (
@@ -119,6 +121,7 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 							handleFieldChange(name, e.target.value);
 						}}
+						required
 					>
 						{(data || []).map((option: string) => (
 							<MenuItem key={option} value={option}>
@@ -141,6 +144,7 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 							handleFieldChange(name, e.target.value);
 						}}
 						value={fieldData[name]?.toString() || ''}
+						required
 					/>
 				),
 				ingredients: (
@@ -148,19 +152,32 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 						key={type + name}
 						name={name}
 						type="ingredient"
-						onChange={(ingredientData: TRecipeIngredientSections[]) => {
+						onChange={(ingredientData: TRecipeSections[]) => {
 							handleFieldChange(name, ingredientData);
 						}}
 						value={fieldData[name] || '{}'}
 					/>
 				),
-				method: <h1 key={name}>h1</h1>,
+				method: (
+					<SectionBuilder
+						key={type + name}
+						name={name}
+						type="method"
+						onChange={(stepData: TRecipeSections[]) => {
+							handleFieldChange(name, stepData);
+						}}
+						value={fieldData[name] || '{}'}
+					/>
+				),
+				skip: (
+					<></>
+				),
 			}[type]
 		);
 	};
 
 	return (
-		<div>
+		<>
 			<Box
 				component="form"
 				sx={{
@@ -172,13 +189,17 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 				autoComplete="off"
 				onSubmit={() => emitNext()}
 			>
+				<h2>
+					{`Step: ${stepNumber} - ${stepName}`}
+				</h2>
+
 				{fields.map((field: TFieldConfig) => (
 					<React.Fragment key={field.name}>
 						{fieldBuilder(field)}
 					</React.Fragment>
 				))}
 			</Box>
-		</div>
+		</>
 	);
 };
 
