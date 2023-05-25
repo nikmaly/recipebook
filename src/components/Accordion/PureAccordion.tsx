@@ -22,38 +22,28 @@ const Accordion: React.FunctionComponent<TAccordionProps> = ({
 	const { styles } = React.useContext(StylesContext);
 
 	const accordionBuilder = () => (
-		content.map((item: TAccordionContent, i: number) => {
-			const summary = (
-				<AccordionSummary
-					expandIcon={<ExpandMoreIcon />}
-					aria-controls={`accordion-${i}-content`}
-					id={`accordion-${i}-controller`}
-					key={`accordion-${i}-controller`}
-					css={accordionSummaryStyles(styles)}
-					sx={{
-						fontSize: '0.875em',
-						color: styles.colors.primary.base,
-						textTransform: 'uppercase',
-					}}
-				>
-					{item.itemTitle}
-				</AccordionSummary>
-			);
-
-			const detail = (
-				<AccordionDetails
-					key={`accordion-${i}-content`}
-					css={accordionDetailStyles(styles)}
-				>
-					{item.itemContent}
-				</AccordionDetails>
-			);
-
-			return ([
-				summary,
-				detail,
-			]);
-		})
+		content.map((item: TAccordionContent, i: number) => ([
+			<AccordionSummary
+				expandIcon={<ExpandMoreIcon />}
+				aria-controls={`accordion-${i}-content`}
+				id={`accordion-${i}-controller`}
+				key={`accordion-${i}-controller`}
+				css={accordionSummaryStyles(styles)}
+				sx={{
+					fontSize: '0.875em',
+					color: styles.colors.primary.base,
+					textTransform: 'uppercase',
+				}}
+			>
+				{item.itemTitle}
+			</AccordionSummary>,
+			<AccordionDetails
+				key={`accordion-${i}-content`}
+				css={accordionDetailStyles(styles)}
+			>
+				{item.itemContent}
+			</AccordionDetails>,
+		]))
 	);
 
 	return (
