@@ -10,7 +10,7 @@ const Settings = () => {
 	return (
 		<ContentPage title="Settings">
 			<div css={settingsStyles(styles)}>
-				<h2>Coming Soon</h2>
+				<h2 style={{ textAlign: 'center' }}>Coming Soon</h2>
 			</div>
 		</ContentPage>
 	);

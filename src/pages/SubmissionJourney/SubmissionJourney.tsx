@@ -8,6 +8,7 @@ import {
 	Collapse,
 	Fab,
 	Button,
+	Fade,
 } from '@mui/material';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
@@ -311,6 +312,26 @@ const SubmissionJourney = () => {
 								{...formSteps[currentStep]}
 							/>
 
+							{/* Form: Submit */}
+							<Fade
+								in={
+									currentStep === formSteps.length - 1
+									&& isStepValid(formSteps[currentStep])
+								}
+							>
+								<Button
+									variant="text"
+									onClick={() => handleFormSubmit()}
+									sx={{
+										display: 'block',
+										marginTop: '20px',
+										marginLeft: 'auto',
+									}}
+								>
+									Submit
+								</Button>
+							</Fade>
+
 							<div style={{
 								display: 'flex',
 								flexFlow: 'row',
@@ -319,7 +340,7 @@ const SubmissionJourney = () => {
 							}}
 							>
 								{/* Form: Back Button */}
-								{ currentStep > 0 && (
+								<Fade in={currentStep > 0}>
 									<Fab
 										color="primary"
 										onClick={() => handleStepChange(currentStep - 1)}
@@ -328,10 +349,15 @@ const SubmissionJourney = () => {
 									>
 										<ArrowBackIosNew />
 									</Fab>
-								)}
+								</Fade>
 
-								{/* FOrm: Forward Button */}
-								{ currentStep < formSteps.length - 1 && (
+								{/* Form: Forward Button */}
+								<Fade
+									in={
+										currentStep < formSteps.length - 1
+										&& isStepValid(formSteps[currentStep])
+									}
+								>
 									<Fab
 										color="primary"
 										onClick={() => handleStepChange(currentStep + 1)}
@@ -341,22 +367,7 @@ const SubmissionJourney = () => {
 									>
 										<ArrowForwardIos />
 									</Fab>
-								)}
-
-								{/* Form: Submit */}
-								{ currentStep === formSteps.length - 1 && (
-									<Button
-										variant="text"
-										onClick={() => handleFormSubmit()}
-										sx={{
-											display: 'block',
-											marginTop: '20px',
-											marginLeft: 'auto',
-										}}
-									>
-										Submit
-									</Button>
-								)}
+								</Fade>
 							</div>
 						</section>
 

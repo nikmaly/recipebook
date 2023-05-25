@@ -61,7 +61,7 @@ const Favourites = () => {
 							</div>
 						))
 				) : (
-					<div>You have no favourites!</div>
+					<div style={{ textAlign: 'center' }}>You have no favourites!</div>
 				)}
 				{/* )} */}
 			</div>
