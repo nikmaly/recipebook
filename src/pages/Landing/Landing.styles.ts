@@ -38,14 +38,11 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 			text-transform: capitalize;
 			letter-spacing: 2px;
 			background: ${styles.colors.white[0]};
-			transform: scale(1);
 			cursor: pointer;
-
 			transition:
 				box-shadow 0.4s,
 				background 0.2s,
 				filter 0.8s,
-				transform 0.6s,
 				background 0.6s;
 
 			${styles.breakpoints.ms.min(`
@@ -55,13 +52,19 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 			&:hover {
 				filter: grayscale(0);
 				background: ${styles.colors.grey[0]};
-				transform: scale(1.05);
+
+				img {
+					transform: scale(1.1) translateX(-50%) translateY(-50%);
+				}
 			}
 
 			img {
 				${styles.mixins.absoluteCentre('')}
 				height: 100px;
 				width: 100px;
+				transform: scale(1) translateX(-50%) translateY(-50%);
+				transform-origin: 0 0;
+				transition: transform 0.6s;
 
 				${styles.breakpoints.ms.min(`
 					height: 150px;
@@ -72,7 +75,6 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 
 		${styles.breakpoints.ms.min(`
 			&:nth-of-type(1) a {
-				transform-origin: 100% 100%;
 				border-top-right-radius: 100px;
 				border-bottom-left-radius: 100px;
 
@@ -82,7 +84,6 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 			}
 
 			&:nth-of-type(2) a {
-				transform-origin: 0 100%;
 				border-top-left-radius: 100px;
 				border-bottom-right-radius: 100px;
 
@@ -92,7 +93,6 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 			}
 
 			&:nth-of-type(3) a {
-				transform-origin: 100% 0;
 				border-top-left-radius: 100px;
 				border-bottom-right-radius: 100px;
 
@@ -102,7 +102,6 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 			}
 
 			&:nth-of-type(4) a {
-				transform-origin: 0 0;
 				border-top-right-radius: 100px;
 				border-bottom-left-radius: 100px;
 
