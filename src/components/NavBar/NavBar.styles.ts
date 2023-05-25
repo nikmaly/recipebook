@@ -16,6 +16,7 @@ export const navbarStyles = (
 	align-items: center;
 	background-color: transparent;
 	transition: background 1s;
+	pointer-events: none;
 
 	${isLanding && `
 		top: 50%;
@@ -29,6 +30,7 @@ export const navbarLogoStyles = (styles: TStyles): SerializedStyles => css`
 	height: ${styles.components.navbar.height};
 	width: ${styles.components.navbar.height};
 	padding: 4px;
+	pointer-events: all;
 
 	&:before {
 		content: "";
@@ -40,7 +42,7 @@ export const navbarLogoStyles = (styles: TStyles): SerializedStyles => css`
 		width: 55px;
 		background-color: ${styles.colors.primary.base};
 		transform-origin: left center;
-		transition: transform 0.2s;
+		transition: transform 0.3s;
 		--mask:
 			radial-gradient(32px at calc(100% - 32.00px) 50%,#000 99%,#0000 103%) 0 calc(50% - 0px)/100% 120px,
 			radial-gradient(28px at calc(100% + 3.00px) 50%,#0000 99%,#000 103%) calc(100% - 30px) 350%/100% 120px repeat-y;
@@ -129,6 +131,7 @@ export const navbarLinkMenuWrapperStyles = (
 	styles: TStyles,
 ): SerializedStyles => css`
 	transition: background-image ${styles.animations.duration};
+	pointer-events: all;
 `;
 
 export const navbarLinkMenuButtonStyles = (
@@ -155,7 +158,7 @@ export const navbarLinkMenuButtonStyles = (
 		width: 55px;
 		background-color: ${styles.colors.secondary.base};
 		transform-origin: left center;
-		transition: transform 0.2s;
+		transition: transform 0.3s;
 		--mask:
 			radial-gradient(32px at calc(100% - 32.00px) 50%,#000 99%,#0000 103%) 0 calc(50% - 0px)/100% 120px,
 			radial-gradient(28px at calc(100% + 3.00px) 50%,#0000 99%,#000 103%) calc(100% - 30px) 350%/100% 120px repeat-y;

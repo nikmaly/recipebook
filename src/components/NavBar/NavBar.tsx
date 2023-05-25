@@ -26,7 +26,6 @@ import {
 	navbarLogoLinkStyles,
 	navbarLinkMenuWrapperStyles,
 	navbarLinkMenuButtonStyles,
-	// navbarLinkMenuStyles,
 } from './NavBar.styles';
 
 const SimplifiedLink = React.forwardRef<any, any>((props, ref) => (
@@ -50,7 +49,7 @@ const NavBar: React.FunctionComponent = () => {
 	const { pathname } = useLocation();
 	const isLanding: boolean = pathname === '/';
 
-	const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+	const handleClickOutsideMenu = (e: MouseEvent | TouchEvent) => {
 		if (navMenuRef?.current) {
 			const el: Node = navMenuRef?.current;
 
@@ -62,10 +61,10 @@ const NavBar: React.FunctionComponent = () => {
 
 	React.useEffect(() => {
 		if (isMenuOpen) {
-			window.addEventListener('mousedown', handleClickOutside);
+			window.addEventListener('mousedown', handleClickOutsideMenu);
 		}
 
-		return () => { window.removeEventListener('mousedown', handleClickOutside); };
+		return () => { window.removeEventListener('mousedown', handleClickOutsideMenu); };
 	}, [isMenuOpen]);
 
 	return (
@@ -85,10 +84,7 @@ const NavBar: React.FunctionComponent = () => {
 			</div>
 
 			{/* Navbar Menu */}
-			<div
-				css={navbarLinkMenuWrapperStyles(styles)}
-				ref={navMenuRef}
-			>
+			<div css={navbarLinkMenuWrapperStyles(styles)}>
 				<button
 					type="button"
 					css={navbarLinkMenuButtonStyles(styles, isMenuOpen, isLanding)}
@@ -100,29 +96,27 @@ const NavBar: React.FunctionComponent = () => {
 				<Drawer
 					anchor="right"
 					open={isMenuOpen}
-					// onClose={setMenuOpen(false)}
 				>
 					<Box
 						role="presentation"
-						sx={{ minWidth: '200px' }}
+						sx={{ minWidth: '200px', height: '100%' }}
+						ref={navMenuRef}
 					>
 						<List>
 							{/* Internal Links */}
 							{[
-								{ text: 'Home', link: '', icon: <HomeIcon /> },
-								{ text: 'Random', link: 'random', icon: <ShuffleIcon /> },
-								{ text: 'Search', link: 'search', icon: <SearchIcon /> },
-								{ text: 'Discover', link: 'discover', icon: <LocationSearchingIcon /> },
-								{ text: 'Favourites', link: 'favourites', icon: <FavoriteIcon /> },
-								{ text: 'Settings', link: 'settings', icon: <SettingsIcon /> },
-								{ text: 'Submit', link: 'submit-recipe', icon: <InboxIcon /> },
+								{ text: 'Home', link: '/', icon: <HomeIcon /> },
+								{ text: 'Random', link: '/random', icon: <ShuffleIcon /> },
+								{ text: 'Search', link: '/search', icon: <SearchIcon /> },
+								{ text: 'Discover', link: '/discover', icon: <LocationSearchingIcon /> },
+								{ text: 'Favourites', link: '/favourites', icon: <FavoriteIcon /> },
+								{ text: 'Settings', link: '/settings', icon: <SettingsIcon /> },
 							].map((nav) => (
 								<ListItem
 									key={nav.text}
 									disablePadding
 									component={SimplifiedLink}
 									to={nav.link}
-									onClick={() => setMenuOpen(false)}
 								>
 									<ListItemButton>
 										<ListItemIcon>
@@ -136,6 +130,28 @@ const NavBar: React.FunctionComponent = () => {
 									</ListItemButton>
 								</ListItem>
 							))}
+
+							{authenticated && ([
+								{ text: 'Submit', link: '/submit', icon: <InboxIcon /> },
+							].map((nav) => (
+								<ListItem
+									key={nav.text}
+									disablePadding
+									component={SimplifiedLink}
+									to={nav.link}
+								>
+									<ListItemButton>
+										<ListItemIcon>
+											{nav.icon}
+										</ListItemIcon>
+
+										<ListItemText
+											primary={nav.text}
+											sx={{ color: styles.colors.black.base }}
+										/>
+									</ListItemButton>
+								</ListItem>
+							)))}
 						</List>
 
 						<Divider />
@@ -150,7 +166,6 @@ const NavBar: React.FunctionComponent = () => {
 									disablePadding
 									component="a"
 									href={nav.link}
-									onClick={() => setMenuOpen(false)}
 								>
 									<ListItemButton>
 										<ListItemIcon>
@@ -170,7 +185,6 @@ const NavBar: React.FunctionComponent = () => {
 									disablePadding
 									component={SimplifiedLink}
 									to="/login"
-									onClick={() => setMenuOpen(false)}
 								>
 									<ListItemButton>
 										<ListItemIcon>
@@ -187,12 +201,6 @@ const NavBar: React.FunctionComponent = () => {
 						</List>
 					</Box>
 				</Drawer>
-
-				{/* <ul
-					css={navbarLinkMenuStyles(styles, isMenuOpen, isLanding)}
-				>
-
-				</ul> */}
 			</div>
 		</nav>
 	);

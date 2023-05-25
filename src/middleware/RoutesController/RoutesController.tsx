@@ -75,7 +75,7 @@ const RoutesController: React.FunctionComponent = () => {
 			/>
 
 			<Route
-				path="/submit-recipe"
+				path="/submit-old"
 				element={<SubmitRecipe />}
 			/>
 
