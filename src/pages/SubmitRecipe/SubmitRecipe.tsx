@@ -24,7 +24,7 @@ import {
 } from './SubmitRecipe.styles';
 
 // TODO: accept a image and submit it to the s3 CDN
-export type TRecipeFormData = {
+export type TRecipeData = {
 	// image: FileList[];
 	image: string;
 	title: string;
@@ -36,7 +36,7 @@ export type TRecipeFormData = {
 	cookTime: string;
 	difficulty: string;
 	ingredients: string;
-	stepsSimple: string;
+	method: string;
 	stepsDetailed: string;
 };
 
@@ -53,7 +53,7 @@ const SubmitRecipe = () => {
 		formState: {
 			errors,
 		},
-	} = useForm<TRecipeFormData>();
+	} = useForm<TRecipeData>();
 
 	const postRecipe = (recipe: TRecipeData) => {
 		const submissionUrl = `${api.url}/${api.version}/${api.endpoints.recipe}`;
@@ -129,7 +129,7 @@ const SubmitRecipe = () => {
 		});
 	};
 
-	const onSubmit: SubmitHandler<TRecipeFormData> = (data) => {
+	const onSubmit: SubmitHandler<TRecipeData> = (data) => {
 		const sanitisedData: TRecipeData = {
 			recipeName: data.title.trim().replace(' ', '-').toLowerCase(),
 			title: data.title.trim(),
@@ -144,8 +144,8 @@ const SubmitRecipe = () => {
 				difficulty: data.difficulty.trim(),
 			},
 			ingredients: ingredientMapper(data.ingredients),
-			stepsSimple: stepMapper(data.stepsSimple),
-			stepsDetailed: stepMapper(data.stepsSimple),
+			method: stepMapper(data.method),
+			stepsDetailed: stepMapper(data.method),
 			furtherInfo: data.furtherInfo.trim().split('\n'),
 		};
 
@@ -291,9 +291,9 @@ const SubmitRecipe = () => {
 
 									<Field
 										labelText="Steps - Simplified"
-										fieldName="stepsSimple"
-										hasInput={!!watch('stepsSimple')}
-										hasError={!!errors.stepsSimple}
+										fieldName="method"
+										hasInput={!!watch('method')}
+										hasError={!!errors.method}
 									>
 										<textarea
 											rows={5}
@@ -301,7 +301,7 @@ const SubmitRecipe = () => {
 This is the first step
 This is the second step
 This is the third step`}
-											{...register('stepsSimple', { required: true })}
+											{...register('method', { required: true })}
 										/>
 									</Field>
 

@@ -108,7 +108,7 @@ const RecipePage: React.FunctionComponent = () => {
 			tabTitle: 'Steps',
 			tabIcon: <img src={StepsSvg} alt="steps icon" />,
 			tabContent: recipeData && (
-				recipeData.stepsSimple.map((section, i) => (
+				recipeData.method.map((section, i) => (
 					<div key={`step-section-${i}`}>
 						<h4>{section.sectionName}</h4>
 						<ol>
@@ -126,28 +126,28 @@ const RecipePage: React.FunctionComponent = () => {
 				))
 			),
 		},
-		{
-			tabTitle: 'Detailed Steps',
-			tabIcon: <img src={DetailedStepsSvg} alt="detailed steps icon" />,
-			tabContent: recipeData && (
-				recipeData.stepsDetailed.map((section, i) => (
-					<div key={`detailed-step-section-${i}`}>
-						<h4>{section.sectionName}</h4>
-						<ol>
-							{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
-								const step = item as string;
+		// {
+		// 	tabTitle: 'Detailed Steps',
+		// 	tabIcon: <img src={DetailedStepsSvg} alt="detailed steps icon" />,
+		// 	tabContent: recipeData && (
+		// 		recipeData.stepsDetailed.map((section, i) => (
+		// 			<div key={`detailed-step-section-${i}`}>
+		// 				<h4>{section.sectionName}</h4>
+		// 				<ol>
+		// 					{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
+		// 						const step = item as string;
 
-								return (
-									<li key={`detailed-step-section-${i}-step-${j}`}>
-										{step}
-									</li>
-								);
-							})}
-						</ol>
-					</div>
-				))
-			),
-		},
+		// 						return (
+		// 							<li key={`detailed-step-section-${i}-step-${j}`}>
+		// 								{step}
+		// 							</li>
+		// 						);
+		// 					})}
+		// 				</ol>
+		// 			</div>
+		// 		))
+		// 	),
+		// },
 	];
 
 	if (

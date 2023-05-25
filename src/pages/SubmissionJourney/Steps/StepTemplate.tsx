@@ -4,20 +4,18 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import InputAdornment from '@mui/material/InputAdornment';
 import { TagBuilder, SectionBuilder } from 'components/Field';
-import { TRecipeSections } from 'middleware/DataLayer';
+import { TRecipeData, TRecipeSections } from 'middleware/DataLayer';
 import { StylesContext } from 'context/Styles';
 import {
-	TRecipeFormData,
 	TFieldConfig,
-	TRecipeFormKeys,
 } from '..';
 
 type TStepTemplateProps = {
 	stepName: string;
 	stepNumber: number;
 	fields: TFieldConfig[];
-	emitFieldData: (fieldData: Partial<TRecipeFormData>) => void;
-	emitNext: () => void;
+	emitFieldData: (fieldData: Partial<TRecipeData>) => void;
+	// emitNext: () => void;
 };
 
 const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
@@ -25,17 +23,17 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 	stepNumber,
 	fields,
 	emitFieldData,
-	emitNext,
+	// emitNext,
 }) => {
 	const { styles } = React.useContext(StylesContext);
-	const [fieldData, setFieldData] = React.useState<Partial<TRecipeFormData>>({
+	const [fieldData, setFieldData] = React.useState<Partial<TRecipeData>>({
 		ingredients: [],
-		stepsSimple: [],
+		method: [],
 		stepsDetailed: [],
 	});
 
 	const handleFieldChange = (
-		field: TRecipeFormKeys,
+		field: keyof TRecipeData,
 		value: string | number | TRecipeSections[],
 	) => {
 		const newFieldData = {
@@ -177,29 +175,24 @@ const StepTemplate: React.FunctionComponent<TStepTemplateProps> = ({
 	};
 
 	return (
-		<>
-			<Box
-				component="form"
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					rowGap: styles.spacing[3],
-				}}
-				noValidate
-				autoComplete="off"
-				onSubmit={() => emitNext()}
-			>
-				<h2>
-					{`Step: ${stepNumber} - ${stepName}`}
-				</h2>
+		<Box
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				rowGap: styles.spacing[3],
+			}}
+			// onSubmit={() => emitNext()}
+		>
+			<h2>
+				{`Step: ${stepNumber} - ${stepName}`}
+			</h2>
 
-				{fields.map((field: TFieldConfig) => (
-					<React.Fragment key={field.name}>
-						{fieldBuilder(field)}
-					</React.Fragment>
-				))}
-			</Box>
-		</>
+			{fields.map((field: TFieldConfig) => (
+				<React.Fragment key={field.name}>
+					{fieldBuilder(field)}
+				</React.Fragment>
+			))}
+		</Box>
 	);
 };
 

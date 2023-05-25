@@ -1,4 +1,11 @@
 export { default as SubmissionJourney } from './SubmissionJourney';
 export * from './SubmissionJourney';
 export * from './SubmissionJourney.styles';
-export { default as StepTemplate } from './Steps/StepTemplate';
+// export { default as StepTemplate } from './Steps/StepTemplate';
+export { default as Step1 } from './Steps/Step1';
+export { default as Step2 } from './Steps/Step2';
+export { default as Step3 } from './Steps/Step3';
+export { default as Step4 } from './Steps/Step4';
+export { default as Step5 } from './Steps/Step5';
+export { default as Step6 } from './Steps/Step6';
+export { default as Step7 } from './Steps/Step7';

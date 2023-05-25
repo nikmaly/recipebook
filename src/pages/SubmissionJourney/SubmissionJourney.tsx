@@ -19,44 +19,22 @@ import { ContentPage } from 'middleware/ContentPage';
 import { Loader } from 'components/Loader';
 import { Accordion } from 'components/Accordion';
 import { StepCounter } from 'components/StepCounter';
-import { TRecipeData, TRecipeSections } from 'middleware/DataLayer';
-import { StepTemplate } from '.';
+import { TRecipeData } from 'middleware/DataLayer';
+import {
+	Step1,
+	Step2,
+	Step3,
+	Step4,
+	Step5,
+	Step6,
+	Step7,
+} from '.';
+
 /** @jsxImportSource @emotion/react */
 import {
 	SubmissionJourneyStyles,
 	SubmissionJourneyFormContentStyles,
 } from './SubmissionJourney.styles';
-
-// TODO: accept a image and submit it to the s3 CDN
-export type TRecipeFormData = {
-	// image: FileList[];
-	image: string;
-	title: string;
-	shortDescription: string;
-	description: string;
-	tags: string
-	furtherInfo: string;
-	prepTime: string;
-	cookTime: string;
-	difficulty: string;
-	ingredients: TRecipeSections[];
-	stepsSimple: TRecipeSections[];
-	stepsDetailed?: TRecipeSections[];
-};
-
-export type TRecipeFormKeys = keyof TRecipeFormData;
-
-export type TFieldConfig = {
-	name: TRecipeFormKeys;
-	text: string;
-	type: 'skip' | 'text' | 'textarea' | 'number' | 'select' | 'image' | 'ingredients' | 'method' | 'tags';
-	data?: any;
-};
-
-type TStepData = {
-	stepName: string;
-	fields: TFieldConfig[];
-};
 
 const SubmissionJourney = () => {
 	const [authenticated,, authData] = useAuthenticated();
@@ -65,25 +43,61 @@ const SubmissionJourney = () => {
 	const [error, setError] = React.useState<String>('');
 	const [isLoading, setLoading] = React.useState<boolean>(false);
 	const [currentStep, setCurrentStep] = React.useState<number>(0);
-	const [fieldData, setFieldData] = React.useState<Partial<TRecipeFormData>>({});
-	let formSteps: TStepData[] = [];
+	const [fieldData, setFieldData] = React.useState<Partial<TRecipeData>>({});
+	const steps = [
+		<Step1
+			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+				{ ...fieldData, ...data },
+			)}
+		/>,
+		<Step2
+			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+				{ ...fieldData, ...data },
+			)}
+		/>,
+		<Step3
+			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+				{ ...fieldData, ...data },
+			)}
+		/>,
+		<Step4
+			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+				{ ...fieldData, ...data },
+			)}
+		/>,
+		<Step5
+			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+				{ ...fieldData, ...data },
+			)}
+		/>,
+		<Step6
+			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+				{ ...fieldData, ...data },
+			)}
+		/>,
+		<Step7
+			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+				{ ...fieldData, ...data },
+			)}
+		/>,
+	];
 
-	const isStepValid = (step: TStepData): boolean => (
-		step.fields.reduce(
-			(isValid: boolean, field: TFieldConfig) => {
-				if (!isValid) { return false; }
+	// const isStepValid = (step: TStepData): boolean => (
+	// 	step.fields.reduce(
+	// 		(isValid: boolean, field: TFieldConfig) => {
+	// 			if (!isValid) { return false; }
 
-				return (
-					field.type === 'skip'
-					|| (
-						field.name in fieldData
-						&& !!fieldData[field.name]
-					)
-				);
-			},
-			true,
-		)
-	);
+	// 			return (
+	// 				field.type === 'skip'
+	// 				|| (
+	// 					field.name in fieldData
+	// 					&& !!fieldData[field.name]
+	// 				)
+	// 			);
+	// 		},
+	// 		true,
+	// 	)
+	// );
 
 	const postRecipe = (recipe: TRecipeData) => {
 		const submissionUrl = `${api.url}/${api.version}/${api.endpoints.recipe}`;
@@ -121,40 +135,40 @@ const SubmissionJourney = () => {
 	};
 
 	const handleFormSubmit = () => {
-		const formStepValidity = formSteps.map((step) => isStepValid(step));
+		// const formStepValidity = steps.map((step) => isStepValid(step));
 		const formData: TRecipeData = {
 			recipeName: (fieldData.title || '').replace(/ /g, '-').toLowerCase(),
 			title: fieldData.title || '',
 			image: fieldData.image || '',
 			shortDescription: fieldData.shortDescription || '',
-			description: (fieldData.description || '').split('\n'),
-			tags: (fieldData.tags || '').split(','),
-			metaData: {
-				prepTime: fieldData.prepTime || '',
-				cookTime: fieldData.cookTime || '',
-				difficulty: fieldData.difficulty || '',
+			description: fieldData.description || [''],
+			tags: fieldData.tags || [''],
+			metaData: fieldData.metaData || {
+				prepTime: '',
+				cookTime: '',
+				difficulty: '',
 			},
-			furtherInfo: (fieldData.furtherInfo || '').split('\n'),
-			stepsSimple: fieldData.stepsSimple || [],
+			furtherInfo: fieldData.furtherInfo || [],
+			method: fieldData.method || [],
 			stepsDetailed: fieldData.stepsDetailed || [],
 			ingredients: fieldData.ingredients || [],
 		};
 
-		if (formStepValidity.includes(false)) {
-			const invalidSteps = formStepValidity
-				.map((item, i: number) => (!item ? i : null))
-				.filter((item) => typeof item === 'number');
+		// if (formStepValidity.includes(false)) {
+		// 	const invalidSteps = formStepValidity
+		// 		.map((item, i: number) => (!item ? i : null))
+		// 		.filter((item) => typeof item === 'number');
 
-			if (formStepValidity.length > 0) {
-				setError(
-					`Some fields are missing information on steps: ${
-						invalidSteps.map((step) => ` ${step && step + 1}`)
-					}`,
-				);
-			}
+		// 	if (formStepValidity.length > 0) {
+		// 		setError(
+		// 			`Some fields are missing information on steps: ${
+		// 				invalidSteps.map((step) => ` ${step && step + 1}`)
+		// 			}`,
+		// 		);
+		// 	}
 
-			return;
-		}
+		// 	return;
+		// }
 
 		// If the user is logged in
 		if (authenticated) {
@@ -166,117 +180,19 @@ const SubmissionJourney = () => {
 		if (
 			!noValidate
 			&& targetStep > currentStep
-			&& !isStepValid(formSteps[currentStep])
+			// FIXME:
+			// && !isStepValid(steps[currentStep])
 		) { return; }
 
 		if (
 			targetStep < 0
-			|| targetStep > formSteps.length - 1
+			|| targetStep > steps.length - 1
 		) {
 			return;
 		}
 
 		setCurrentStep(targetStep);
 	};
-
-	formSteps = [
-		{
-			stepName: 'Title',
-			fields: [
-				{
-					name: 'title',
-					text: 'Recipe Title',
-					type: 'text',
-				},
-				{
-					name: 'image',
-					text: 'Recipe Image',
-					type: 'skip',
-				},
-			],
-		},
-		{
-			stepName: 'Description',
-			fields: [
-				{
-					name: 'shortDescription',
-					text: 'Summary',
-					type: 'text',
-				},
-				{
-					name: 'description',
-					text: 'Description',
-					type: 'textarea',
-				},
-			],
-		},
-		{
-			stepName: 'Info',
-			fields: [
-				{
-					name: 'prepTime',
-					text: 'Preparation Time (mins)',
-					type: 'number',
-				},
-				{
-					name: 'cookTime',
-					text: 'Cooking Time (mins)',
-					type: 'number',
-				},
-				{
-					name: 'difficulty',
-					text: 'Difficulty',
-					type: 'select',
-					data: ['easy', 'medium', 'hard', 'sorcery'],
-				},
-			],
-		},
-		{
-			stepName: 'Ingredients',
-			fields: [
-				{
-					name: 'ingredients',
-					text: 'Ingredients',
-					type: 'ingredients',
-				},
-			],
-		},
-		{
-			stepName: 'Method',
-			fields: [
-				{
-					name: 'stepsSimple',
-					text: 'Steps - Simplified',
-					type: 'method',
-				},
-				{
-					name: 'stepsDetailed',
-					text: 'Steps - Details',
-					type: 'skip',
-				},
-			],
-		},
-		{
-			stepName: 'Tags',
-			fields: [
-				{
-					name: 'tags',
-					text: 'Recipe Tags',
-					type: 'tags',
-				},
-			],
-		},
-		{
-			stepName: 'Further Info',
-			fields: [
-				{
-					name: 'furtherInfo',
-					text: 'Additional Notes',
-					type: 'textarea',
-				},
-			],
-		},
-	];
 
 	return (
 		<ContentPage title="Submit Recipe">
@@ -287,7 +203,7 @@ const SubmissionJourney = () => {
 					<>
 						{/* Uplift to show accessible, inaccessible and error state steps */}
 						<StepCounter
-							formSteps={formSteps.map((step) => step.stepName)}
+							steps={steps.map((step) => step.stepName)}
 							currentStep={currentStep}
 							setStep={(targetStep: number) => handleStepChange(targetStep)}
 						/>
@@ -303,22 +219,10 @@ const SubmissionJourney = () => {
 								</Alert>
 							</Collapse>
 
-							<StepTemplate
-								emitFieldData={(data: Partial<TRecipeFormData>) => setFieldData(
-									{ ...fieldData, ...data },
-								)}
-								emitNext={() => handleStepChange(currentStep + 1)}
-								stepNumber={currentStep + 1}
-								{...formSteps[currentStep]}
-							/>
+							{ steps[currentStep] }
 
 							{/* Form: Submit */}
-							<Fade
-								in={
-									currentStep === formSteps.length - 1
-									&& isStepValid(formSteps[currentStep])
-								}
-							>
+							<Fade in={currentStep === steps.length - 1}>
 								<Button
 									variant="text"
 									onClick={() => handleFormSubmit()}
@@ -353,10 +257,7 @@ const SubmissionJourney = () => {
 
 								{/* Form: Forward Button */}
 								<Fade
-									in={
-										currentStep < formSteps.length - 1
-										&& isStepValid(formSteps[currentStep])
-									}
+									in={currentStep < steps.length - 1}
 								>
 									<Fab
 										color="primary"

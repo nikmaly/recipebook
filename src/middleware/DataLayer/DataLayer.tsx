@@ -41,10 +41,12 @@ export type TRecipeData = {
 	metaData: TRecipeMetaData;
 	tags: string[];
 	ingredients: TRecipeSections[];
-	stepsSimple: TRecipeSections[];
+	method: TRecipeSections[];
 	stepsDetailed: TRecipeSections[];
 	furtherInfo: string[];
 };
+
+export type TRecipeDataKeys = keyof TRecipeData;
 
 type DataLayerProps = {
 	children: React.ReactNode;
