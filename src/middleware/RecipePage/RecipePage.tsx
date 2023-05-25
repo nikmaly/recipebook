@@ -2,7 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 /** @jsxImportSource @emotion/react */
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
 import { StylesContext } from 'context/Styles';
@@ -42,6 +42,16 @@ const RecipePage: React.FunctionComponent = () => {
 	const { styles } = React.useContext(StylesContext);
 	const loadRecipes = useLoadRecipes();
 	const { recipeName } = useParams();
+	const location = useLocation();
+
+	const nextRecipe = (): string => {
+		const currentRecipeIndex = recipeNames.indexOf(recipeName || '');
+		const nextRecipeIndex = currentRecipeIndex + 1 < recipeNames.length
+			? currentRecipeIndex + 1
+			: 0;
+
+		return recipeNames[nextRecipeIndex];
+	};
 
 	const findRecipe = (onLoad: boolean = false) => {
 		if (
@@ -68,7 +78,7 @@ const RecipePage: React.FunctionComponent = () => {
 	React.useEffect(() => {
 		setLoading(true);
 		findRecipe(true);
-	}, []);
+	}, [location]);
 
 	const tabContent: ITabContent[] = [
 		{
@@ -233,9 +243,10 @@ const RecipePage: React.FunctionComponent = () => {
 
 								<section css={recipePagePanelRightStyles(styles)}>
 									<NavLink
-										to={`/recipe/${recipeName || 0 + 1}`}
+										to={`/recipe/${nextRecipe()}`}
 										className="next-recipe-link"
 										css={recipePageNextLinkStyles(styles)}
+										onClick={() => console.log('Next click')}
 									>
 										Next Recipe
 										<img
