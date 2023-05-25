@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
+import Recoil from 'recoil';
 import {
 	Alert,
 	AlertTitle,
@@ -11,11 +12,13 @@ import {
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
 import { StylesContext } from 'context/Styles';
+import { atomApi } from 'atoms/atomApi';
+import { useAuthenticated } from 'hooks/useAuthenticated';
 import { ContentPage } from 'middleware/ContentPage';
 import { Loader } from 'components/Loader';
 import { Accordion } from 'components/Accordion';
 import { StepCounter } from 'components/StepCounter';
-import { TRecipeSections } from 'middleware/DataLayer';
+import { TRecipeData, TRecipeSections } from 'middleware/DataLayer';
 import { StepTemplate } from '.';
 /** @jsxImportSource @emotion/react */
 import {
@@ -55,16 +58,17 @@ type TStepData = {
 };
 
 const SubmissionJourney = () => {
+	const [authenticated,, authData] = useAuthenticated();
+	const api = Recoil.useRecoilValue(atomApi);
 	const { styles } = React.useContext(StylesContext);
 	const [error, setError] = React.useState<String>('');
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoading, setLoading] = React.useState<boolean>(false);
 	const [currentStep, setCurrentStep] = React.useState<number>(0);
 	const [fieldData, setFieldData] = React.useState<Partial<TRecipeFormData>>({});
 	let formSteps: TStepData[] = [];
 
-	const isStepValid = (step: TStepData): boolean => {
-		const valid = step.fields.reduce(
+	const isStepValid = (step: TStepData): boolean => (
+		step.fields.reduce(
 			(isValid: boolean, field: TFieldConfig) => {
 				if (!isValid) { return false; }
 
@@ -77,15 +81,63 @@ const SubmissionJourney = () => {
 				);
 			},
 			true,
-		);
+		)
+	);
 
-		// console.log(`Step ${formSteps.indexOf(step)} is valid: ${valid}.`);
+	const postRecipe = (recipe: TRecipeData) => {
+		const submissionUrl = `${api.url}/${api.version}/${api.endpoints.recipe}`;
+		const submissionOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				authorizationToken: authData.access_token,
+			},
+			body: JSON.stringify(recipe),
+		};
 
-		return valid;
+		setLoading(true);
+
+		fetch(submissionUrl, submissionOptions)
+			.then((response) => response.json())
+			.then((data) => (async () => {
+				await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+				if (data.__type === 'com.amazon.coral.service#SerializationException') {
+					throw new Error(data.__type);
+				}
+
+				if (!data.error) {
+					console.log('Submitted');
+				}
+			})())
+			.catch((err) => {
+				console.error('error', err);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
 	};
 
 	const handleFormSubmit = () => {
 		const formStepValidity = formSteps.map((step) => isStepValid(step));
+		const formData: TRecipeData = {
+			recipeName: (fieldData.title || '').replace(/ /g, '-').toLowerCase(),
+			title: fieldData.title || '',
+			image: fieldData.image || '',
+			shortDescription: fieldData.shortDescription || '',
+			description: (fieldData.description || '').split('\n'),
+			tags: (fieldData.tags || '').split(','),
+			metaData: {
+				prepTime: fieldData.prepTime || '',
+				cookTime: fieldData.cookTime || '',
+				difficulty: fieldData.difficulty || '',
+			},
+			furtherInfo: (fieldData.furtherInfo || '').split('\n'),
+			stepsSimple: fieldData.stepsSimple || [],
+			stepsDetailed: fieldData.stepsDetailed || [],
+			ingredients: fieldData.ingredients || [],
+		};
 
 		if (formStepValidity.includes(false)) {
 			const invalidSteps = formStepValidity
@@ -103,7 +155,10 @@ const SubmissionJourney = () => {
 			return;
 		}
 
-		console.log('Submit!');
+		// If the user is logged in
+		if (authenticated) {
+			postRecipe(formData);
+		}
 	};
 
 	const handleStepChange = (targetStep: number, noValidate: boolean = false) => {
