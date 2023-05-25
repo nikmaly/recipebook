@@ -25,9 +25,9 @@ const Accordion: React.FunctionComponent<TAccordionProps> = ({
 		content.map((item: TAccordionContent, i: number) => ([
 			<AccordionSummary
 				expandIcon={<ExpandMoreIcon />}
-				aria-controls={`accordion-${i}-content`}
-				id={`accordion-${i}-controller`}
-				key={`accordion-${i}-controller`}
+				aria-controls={`accordion-${i + item.itemTitle}-content`}
+				id={`accordion-${i + item.itemTitle}-controller`}
+				key={`accordion-${i + item.itemTitle}-controller`}
 				css={accordionSummaryStyles(styles)}
 				sx={{
 					fontSize: '0.875em',
@@ -38,7 +38,7 @@ const Accordion: React.FunctionComponent<TAccordionProps> = ({
 				{item.itemTitle}
 			</AccordionSummary>,
 			<AccordionDetails
-				key={`accordion-${i}-content`}
+				key={`accordion-${i + item.itemTitle}-content`}
 				css={accordionDetailStyles(styles)}
 			>
 				{item.itemContent}

@@ -77,14 +77,14 @@ const RecipePage: React.FunctionComponent = () => {
 			tabSplit: true,
 			tabContent: recipeData && (
 				recipeData.ingredients.map((section, i) => (
-					<div key={i}>
+					<div key={`ingredient-section-${i}`}>
 						<h4>{section.sectionName}</h4>
 						<ul>
 							{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
 								const { amount, unit, ingredient } = item as TRecipeIngredients;
 
 								return (
-									<li key={`${i}-${j}`}>
+									<li key={`ingredient-section-${i}-ingredient-${j}`}>
 										{`${amount} ${unit} ${ingredient}`}
 									</li>
 								);
@@ -99,14 +99,14 @@ const RecipePage: React.FunctionComponent = () => {
 			tabIcon: <img src={StepsSvg} alt="steps icon" />,
 			tabContent: recipeData && (
 				recipeData.stepsSimple.map((section, i) => (
-					<div key={i}>
+					<div key={`step-section-${i}`}>
 						<h4>{section.sectionName}</h4>
 						<ol>
 							{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
 								const step = item as string;
 
 								return (
-									<li key={`${i}-${j}`}>
+									<li key={`step-section-${i}-step-${j}`}>
 										{step}
 									</li>
 								);
@@ -121,14 +121,14 @@ const RecipePage: React.FunctionComponent = () => {
 			tabIcon: <img src={DetailedStepsSvg} alt="detailed steps icon" />,
 			tabContent: recipeData && (
 				recipeData.stepsDetailed.map((section, i) => (
-					<div key={i}>
+					<div key={`detailed-step-section-${i}`}>
 						<h4>{section.sectionName}</h4>
 						<ol>
 							{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
 								const step = item as string;
 
 								return (
-									<li key={`${i}-${j}`}>
+									<li key={`detailed-step-section-${i}-step-${j}`}>
 										{step}
 									</li>
 								);
@@ -173,7 +173,7 @@ const RecipePage: React.FunctionComponent = () => {
 												{
 													recipeData.tags.map((tag, i) => (
 														<Pill
-															key={tag}
+															key={`recipe-data-tag-${tag}`}
 															text={tag}
 															href={`/discover/${tag}`}
 															theme={i % 2 ? 'secondary' : 'primary'}
@@ -203,7 +203,9 @@ const RecipePage: React.FunctionComponent = () => {
 										{recipeData.description && (
 											<div css={recipePageDescriptionStyles(styles)}>
 												{recipeData.description.map((item, i) => (
-													<p key={i}>{item}</p>
+													<p key={`description-paragraph-${i}`}>
+														{item}
+													</p>
 												))}
 											</div>
 										)}
@@ -218,7 +220,11 @@ const RecipePage: React.FunctionComponent = () => {
 											<Accordion
 												content={[{
 													itemTitle: 'Further Information',
-													itemContent: recipeData.furtherInfo.map((item) => <p>{item}</p>),
+													itemContent: recipeData.furtherInfo.map((item, i: number) => (
+														<p key={`further-information-${i}`}>
+															{item}
+														</p>
+													)),
 												}]}
 											/>
 										)}
