@@ -29,7 +29,6 @@ import {
 	Step6,
 	Step7,
 } from '.';
-
 /** @jsxImportSource @emotion/react */
 import {
 	SubmissionJourneyStyles,
@@ -193,6 +192,33 @@ const SubmissionJourney = () => {
 
 		setCurrentStep(targetStep);
 	};
+
+	const runValidation = () => {
+		const data = { ...fieldData };
+
+		const fieldValidity = data.map(())
+
+		const isStepValid = (step): boolean => (
+			step.fields.reduce(
+				(isValid: boolean, field: TFieldConfig) => {
+					if (!isValid) { return false; }
+
+					return (
+						field.type === 'skip'
+						|| (
+							field.name in fieldData
+							&& !!fieldData[field.name]
+						)
+					);
+				},
+				true,
+			)
+		);
+	};
+
+	React.useEffect(() => {
+		runValidation();
+	}, [fieldData]);
 
 	return (
 		<ContentPage title="Submit Recipe">
