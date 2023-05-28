@@ -86,7 +86,7 @@ const RecipePage: React.FunctionComponent = () => {
 			tabIcon: <img src={IngredientSvg} alt="ingredient icon" />,
 			tabSplit: true,
 			tabContent: recipeData && (
-				recipeData.ingredients.map((section, i) => (
+				recipeData.ingredients?.map((section, i) => (
 					<div key={`ingredient-section-${i}`}>
 						<h4>{section.sectionName}</h4>
 						<ul>
@@ -108,7 +108,7 @@ const RecipePage: React.FunctionComponent = () => {
 			tabTitle: 'Steps',
 			tabIcon: <img src={StepsSvg} alt="steps icon" />,
 			tabContent: recipeData && (
-				recipeData.method.map((section, i) => (
+				recipeData.method?.map((section, i) => (
 					<div key={`step-section-${i}`}>
 						<h4>{section.sectionName}</h4>
 						<ol>
@@ -126,36 +126,7 @@ const RecipePage: React.FunctionComponent = () => {
 				))
 			),
 		},
-		// {
-		// 	tabTitle: 'Detailed Steps',
-		// 	tabIcon: <img src={DetailedStepsSvg} alt="detailed steps icon" />,
-		// 	tabContent: recipeData && (
-		// 		recipeData.stepsDetailed.map((section, i) => (
-		// 			<div key={`detailed-step-section-${i}`}>
-		// 				<h4>{section.sectionName}</h4>
-		// 				<ol>
-		// 					{section.sectionItems.map((item: string | TRecipeIngredients, j: number) => {
-		// 						const step = item as string;
-
-		// 						return (
-		// 							<li key={`detailed-step-section-${i}-step-${j}`}>
-		// 								{step}
-		// 							</li>
-		// 						);
-		// 					})}
-		// 				</ol>
-		// 			</div>
-		// 		))
-		// 	),
-		// },
 	];
-
-	if (
-		!recipeData?.stepsDetailed
-		|| recipeData.stepsDetailed.length < 1
-	) {
-		tabContent.splice(2, 3);
-	}
 
 	return (
 		<>
@@ -212,7 +183,7 @@ const RecipePage: React.FunctionComponent = () => {
 
 										{recipeData.description && (
 											<div css={recipePageDescriptionStyles(styles)}>
-												{recipeData.description.map((item, i) => (
+												{recipeData.description?.split('\n').map((item, i) => (
 													<p key={`description-paragraph-${i}`}>
 														{item}
 													</p>
@@ -230,7 +201,7 @@ const RecipePage: React.FunctionComponent = () => {
 											<Accordion
 												content={[{
 													itemTitle: 'Further Information',
-													itemContent: recipeData.furtherInfo.map((item, i: number) => (
+													itemContent: recipeData.furtherInfo.split('\n').map((item, i: number) => (
 														<p key={`further-information-${i}`}>
 															{item}
 														</p>

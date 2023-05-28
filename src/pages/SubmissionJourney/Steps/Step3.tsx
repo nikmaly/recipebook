@@ -3,36 +3,44 @@ import {
 	Box,
 	TextField,
 	InputAdornment,
-	MenuItem,
+	Rating,
 } from '@mui/material';
+import CookieIcon from '@mui/icons-material/Cookie';
 import { TRecipeData, TRecipeMetaData } from 'middleware/DataLayer';
 import { StylesContext } from 'context/Styles';
 
 type TStepTemplateProps = {
-	emitFieldData: (fieldData: Partial<TRecipeData>) => void;
+	fieldData: Partial<TRecipeData>;
+	emitFieldData: (localFieldData: Partial<TRecipeData>) => void;
 };
 
 const Step3: React.FunctionComponent<TStepTemplateProps> = ({
+	fieldData,
 	emitFieldData,
 }) => {
 	const { styles } = React.useContext(StylesContext);
-	const [fieldData, setFieldData] = React.useState<TRecipeMetaData>({
-		prepTime: '',
-		cookTime: '',
-		difficulty: '',
+	const [difficultyValue, setDifficultyValue] = React.useState<number | null>(0);
+	const [localFieldData, setLocalFieldData] = React.useState<Partial<TRecipeData>>({
+		metaData: {
+			prepTime: fieldData.metaData?.prepTime || 0,
+			cookTime: fieldData.metaData?.cookTime || 0,
+			difficulty: fieldData.metaData?.difficulty || 0,
+		},
 	});
 
 	const handleFieldChange = (
 		field: keyof TRecipeMetaData,
-		value: string,
+		value: number,
 	) => {
-		const newFieldData: TRecipeMetaData = {
-			...fieldData,
-			[field]: value,
+		const newMetaData = {
+			prepTime: localFieldData.metaData?.prepTime || 0,
+			cookTime: localFieldData.metaData?.cookTime || 0,
+			difficulty: localFieldData.metaData?.difficulty || 0,
+			[field]: value || 0,
 		};
 
-		setFieldData(newFieldData);
-		emitFieldData({ metaData: newFieldData });
+		setLocalFieldData({ metaData: newMetaData });
+		emitFieldData({ metaData: newMetaData });
 	};
 
 	return (
@@ -65,9 +73,9 @@ const Step3: React.FunctionComponent<TStepTemplateProps> = ({
 					endAdornment: <InputAdornment position="end">(m)</InputAdornment>,
 				}}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-					handleFieldChange('prepTime', e.target.value);
+					handleFieldChange('prepTime', parseInt(e.target.value, 10));
 				}}
-				value={fieldData.prepTime}
+				value={localFieldData.metaData?.prepTime}
 				required
 			/>
 
@@ -89,28 +97,47 @@ const Step3: React.FunctionComponent<TStepTemplateProps> = ({
 					endAdornment: <InputAdornment position="end">(m)</InputAdornment>,
 				}}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-					handleFieldChange('cookTime', e.target.value);
+					handleFieldChange('cookTime', parseInt(e.target.value, 10));
 				}}
-				value={fieldData.cookTime}
+				value={localFieldData.metaData?.cookTime}
 				required
 			/>
 
-			<TextField
-				label="Difficulty"
-				name="difficulty"
-				select
-				defaultValue=""
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-					handleFieldChange('difficulty', e.target.value);
+			<Box
+				sx={{
+					display: 'flex',
+					flexFlow: 'row nowrap',
+					alignItems: 'center',
+					padding: '15px',
+					border: '1px solid rgba(0, 0, 0, 0.23)',
+					borderRadius: '4px',
+					color: 'rgba(0, 0, 0, 0.54)',
 				}}
-				required
 			>
-				{['easy', 'medium', 'hard', 'sorcery'].map((option: string) => (
-					<MenuItem key={option} value={option}>
-						{option.toUpperCase()}
-					</MenuItem>
-				))}
-			</TextField>
+				Difficulty:
+
+				<Rating
+					name="difficulty"
+					size="large"
+					value={difficultyValue}
+					onChange={(event, newValue) => {
+						handleFieldChange('difficulty', newValue || 0);
+						setDifficultyValue(newValue);
+					}}
+					icon={<CookieIcon fontSize="inherit" />}
+					emptyIcon={<CookieIcon style={{ opacity: 0.4 }} fontSize="inherit" />}
+					max={5}
+					sx={{
+						marginLeft: '10px',
+						'& .MuiRating-iconFilled': {
+							color: styles.colors.secondary.base,
+						},
+						'& .MuiRating-iconActive': {
+							color: styles.colors.primary.base,
+						},
+					}}
+				/>
+			</Box>
 		</Box>
 	);
 };

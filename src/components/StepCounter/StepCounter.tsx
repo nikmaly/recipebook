@@ -6,8 +6,13 @@ import {
 	stepCounterStepStyles,
 } from '.';
 
+type TStepCounterStepData = {
+	name: string;
+	valid: boolean;
+}
+
 type TStepCounterProps = {
-	formSteps: string[];
+	formSteps: TStepCounterStepData[];
 	currentStep: number;
 	setStep: (targetStep: number) => void;
 };
@@ -24,12 +29,16 @@ const StepCounter: React.FunctionComponent<TStepCounterProps> = ({
 			{
 				formSteps
 					&& formSteps.length > 0
-					&& formSteps.map((step: string, i: number) => (
+					&& formSteps.map((step: TStepCounterStepData, i: number) => (
 						<button
 							type="button"
 							onClick={() => setStep(i)}
 							css={stepCounterStepStyles(styles, currentStep === i)}
-							key={step}
+							key={step.name}
+							disabled={
+								!step.valid
+								&& i !== currentStep
+							}
 						>
 							<h4>
 								{/* Visually display offset index */}
@@ -37,7 +46,7 @@ const StepCounter: React.FunctionComponent<TStepCounterProps> = ({
 							</h4>
 
 							<p>
-								{step}
+								{step.name}
 							</p>
 						</button>
 					))

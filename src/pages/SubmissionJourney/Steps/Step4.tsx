@@ -5,15 +5,17 @@ import { TRecipeData, TRecipeSections } from 'middleware/DataLayer';
 import { StylesContext } from 'context/Styles';
 
 type TStepTemplateProps = {
-	emitFieldData: (fieldData: Partial<TRecipeData>) => void;
+	fieldData: Partial<TRecipeData>;
+	emitFieldData: (localFieldData: Partial<TRecipeData>) => void;
 };
 
 const Step4: React.FunctionComponent<TStepTemplateProps> = ({
+	fieldData,
 	emitFieldData,
 }) => {
 	const { styles } = React.useContext(StylesContext);
-	const [fieldData, setFieldData] = React.useState<Partial<TRecipeData>>({
-		ingredients: [],
+	const [localFieldData, setLocalFieldData] = React.useState<Partial<TRecipeData>>({
+		ingredients: fieldData.ingredients || [],
 	});
 
 	const handleFieldChange = (
@@ -21,11 +23,11 @@ const Step4: React.FunctionComponent<TStepTemplateProps> = ({
 		value: TRecipeSections[],
 	) => {
 		const newFieldData = {
-			...fieldData,
+			...localFieldData,
 			[field]: value,
 		};
 
-		setFieldData(newFieldData);
+		setLocalFieldData(newFieldData);
 		emitFieldData(newFieldData);
 	};
 
@@ -47,7 +49,7 @@ const Step4: React.FunctionComponent<TStepTemplateProps> = ({
 				onChange={(ingredientData: TRecipeSections[]) => {
 					handleFieldChange('ingredients', ingredientData);
 				}}
-				value={fieldData.ingredients || []}
+				value={localFieldData.ingredients || []}
 			/>
 		</Box>
 	);

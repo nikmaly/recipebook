@@ -5,28 +5,30 @@ import { TRecipeData } from 'middleware/DataLayer';
 import { StylesContext } from 'context/Styles';
 
 type TStepTemplateProps = {
+	fieldData: Partial<TRecipeData>;
 	emitFieldData: (fieldData: Partial<TRecipeData>) => void;
 };
 
 const Step2: React.FunctionComponent<TStepTemplateProps> = ({
+	fieldData,
 	emitFieldData,
 }) => {
 	const { styles } = React.useContext(StylesContext);
-	const [fieldData, setFieldData] = React.useState<Partial<TRecipeData>>({
-		description: [],
-		shortDescription: '',
+	const [localFieldData, setLocalFieldData] = React.useState<Partial<TRecipeData>>({
+		description: fieldData.description || '',
+		summary: fieldData.summary || '',
 	});
 
 	const handleFieldChange = (
 		field: keyof TRecipeData,
-		value: string | string[],
+		value: string,
 	) => {
 		const newFieldData = {
-			...fieldData,
+			...localFieldData,
 			[field]: value,
 		};
 
-		setFieldData(newFieldData);
+		setLocalFieldData(newFieldData);
 		emitFieldData(newFieldData);
 	};
 
@@ -44,13 +46,12 @@ const Step2: React.FunctionComponent<TStepTemplateProps> = ({
 
 			<TextField
 				label="Summary"
-				name="shortDescription"
+				name="summary"
 				variant="outlined"
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-					handleFieldChange('shortDescription', e.target.value);
+					handleFieldChange('summary', e.target.value);
 				}}
-				value={fieldData.shortDescription}
-				required
+				value={localFieldData.summary}
 			/>
 
 			<TextField
@@ -58,12 +59,11 @@ const Step2: React.FunctionComponent<TStepTemplateProps> = ({
 				name="description"
 				variant="outlined"
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-					handleFieldChange('description', e.target.value.split('\n'));
+					handleFieldChange('description', e.target.value);
 				}}
-				value={fieldData.description}
+				value={localFieldData.description}
 				multiline
 				minRows={4}
-				required
 			/>
 		</Box>
 	);

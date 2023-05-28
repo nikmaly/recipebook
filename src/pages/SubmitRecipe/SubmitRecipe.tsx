@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
@@ -24,11 +25,11 @@ import {
 } from './SubmitRecipe.styles';
 
 // TODO: accept a image and submit it to the s3 CDN
-export type TRecipeData = {
+export type TRecipeDataSubmit = {
 	// image: FileList[];
 	image: string;
 	title: string;
-	shortDescription: string;
+	summary: string;
 	description: string;
 	tags: string
 	furtherInfo: string;
@@ -37,7 +38,6 @@ export type TRecipeData = {
 	difficulty: string;
 	ingredients: string;
 	method: string;
-	stepsDetailed: string;
 };
 
 const SubmitRecipe = () => {
@@ -135,7 +135,7 @@ const SubmitRecipe = () => {
 			title: data.title.trim(),
 			// image: data.image[0],
 			image: data.image.trim(),
-			shortDescription: data.shortDescription.trim(),
+			summary: data.summary.trim(),
 			description: data.description.trim().split('\n'),
 			tags: data.tags.trim().toLowerCase().split(','),
 			metaData: {
@@ -145,7 +145,6 @@ const SubmitRecipe = () => {
 			},
 			ingredients: ingredientMapper(data.ingredients),
 			method: stepMapper(data.method),
-			stepsDetailed: stepMapper(data.method),
 			furtherInfo: data.furtherInfo.trim().split('\n'),
 		};
 
@@ -199,13 +198,13 @@ const SubmitRecipe = () => {
 
 									<Field
 										labelText="Short Description"
-										fieldName="shortDescription"
-										hasInput={!!watch('shortDescription')}
-										hasError={!!errors.shortDescription}
+										fieldName="summary"
+										hasInput={!!watch('summary')}
+										hasError={!!errors.summary}
 									>
 										<input
 											placeholder="Describe the recipe in a single short paragraph"
-											{...register('shortDescription', { required: true })}
+											{...register('summary', { required: true })}
 										/>
 									</Field>
 
@@ -302,22 +301,6 @@ This is the first step
 This is the second step
 This is the third step`}
 											{...register('method', { required: true })}
-										/>
-									</Field>
-
-									<Field
-										labelText="Steps - Detailed"
-										fieldName="stepsDetailed"
-										hasInput={!!watch('stepsDetailed')}
-										hasError={!!errors.stepsDetailed}
-									>
-										<textarea
-											rows={5}
-											placeholder={`!Step Section 1 Name
-This is the first step
-This is the second step
-This is the third step`}
-											{...register('stepsDetailed', { required: true })}
 										/>
 									</Field>
 

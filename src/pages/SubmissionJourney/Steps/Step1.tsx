@@ -5,16 +5,18 @@ import { TRecipeData } from 'middleware/DataLayer';
 import { StylesContext } from 'context/Styles';
 
 type TStepTemplateProps = {
+	fieldData: Partial<TRecipeData>;
 	emitFieldData: (fieldData: Partial<TRecipeData>) => void;
 };
 
 const Step1: React.FunctionComponent<TStepTemplateProps> = ({
+	fieldData,
 	emitFieldData,
 }) => {
 	const { styles } = React.useContext(StylesContext);
-	const [fieldData, setFieldData] = React.useState<Partial<TRecipeData>>({
-		title: '',
-		image: '',
+	const [localFieldData, setLocalFieldData] = React.useState<Partial<TRecipeData>>({
+		title: fieldData.title || '',
+		image: fieldData.image || '',
 	});
 
 	const handleFieldChange = (
@@ -22,11 +24,11 @@ const Step1: React.FunctionComponent<TStepTemplateProps> = ({
 		value: string,
 	) => {
 		const newFieldData = {
-			...fieldData,
+			...localFieldData,
 			[field]: value,
 		};
 
-		setFieldData(newFieldData);
+		setLocalFieldData(newFieldData);
 		emitFieldData(newFieldData);
 	};
 
@@ -49,18 +51,18 @@ const Step1: React.FunctionComponent<TStepTemplateProps> = ({
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					handleFieldChange('title', e.target.value);
 				}}
-				value={fieldData.title}
+				value={localFieldData.title}
 				required
 			/>
 
 			<TextField
-				label="Image"
+				label="Image URL"
 				name="title"
 				variant="outlined"
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					handleFieldChange('image', e.target.value);
 				}}
-				value={fieldData.image}
+				value={localFieldData.image}
 				required
 			/>
 		</Box>

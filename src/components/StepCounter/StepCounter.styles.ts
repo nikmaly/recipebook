@@ -60,15 +60,25 @@ ${isCurrentStep ? `
 		border-bottom-color: ${styles.colors.primary.base};
 	}
 ` : `
-	&:hover,
-	&:active {
+	&[disabled] {
 		h4 {
-			border-color: ${styles.colors.secondary.dark};
-			color: ${styles.colors.secondary.dark};
+			color: ${styles.colors.grey[3]};
+			background-color: ${styles.colors.grey[1]};
+			border: 2px solid ${styles.colors.grey[1]};
 		}
+	}
 
-		p {
-			border-bottom-color: ${styles.colors.secondary.base};
+	&:not([disabled]) {
+		&:hover,
+		&:active {
+			h4 {
+				border-color: ${styles.colors.secondary.dark};
+				color: ${styles.colors.secondary.dark};
+			}
+
+			p {
+				border-bottom-color: ${styles.colors.secondary.base};
+			}
 		}
 	}
 `}

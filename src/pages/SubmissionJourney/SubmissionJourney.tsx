@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
@@ -12,6 +13,7 @@ import {
 } from '@mui/material';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
+import { objectDeepCopy } from 'utils/objectDeepCopy';
 import { StylesContext } from 'context/Styles';
 import { atomApi } from 'atoms/atomApi';
 import { useAuthenticated } from 'hooks/useAuthenticated';
@@ -19,7 +21,7 @@ import { ContentPage } from 'middleware/ContentPage';
 import { Loader } from 'components/Loader';
 import { Accordion } from 'components/Accordion';
 import { StepCounter } from 'components/StepCounter';
-import { TRecipeData } from 'middleware/DataLayer';
+import { TRecipeData, TRecipeMetaData } from 'middleware/DataLayer';
 import {
 	Step1,
 	Step2,
@@ -27,13 +29,19 @@ import {
 	Step4,
 	Step5,
 	Step6,
-	Step7,
 } from '.';
 /** @jsxImportSource @emotion/react */
 import {
 	SubmissionJourneyStyles,
 	SubmissionJourneyFormContentStyles,
 } from './SubmissionJourney.styles';
+
+export type TStepData = {
+	stepName: string,
+	isValid: boolean,
+	component: React.ReactNode,
+	fields: string[],
+}
 
 const SubmissionJourney = () => {
 	const [authenticated,, authData] = useAuthenticated();
@@ -43,60 +51,143 @@ const SubmissionJourney = () => {
 	const [isLoading, setLoading] = React.useState<boolean>(false);
 	const [currentStep, setCurrentStep] = React.useState<number>(0);
 	const [fieldData, setFieldData] = React.useState<Partial<TRecipeData>>({});
-	const steps = [
-		<Step1
-			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
-				{ ...fieldData, ...data },
-			)}
-		/>,
-		<Step2
-			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
-				{ ...fieldData, ...data },
-			)}
-		/>,
-		<Step3
-			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
-				{ ...fieldData, ...data },
-			)}
-		/>,
-		<Step4
-			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
-				{ ...fieldData, ...data },
-			)}
-		/>,
-		<Step5
-			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
-				{ ...fieldData, ...data },
-			)}
-		/>,
-		<Step6
-			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
-				{ ...fieldData, ...data },
-			)}
-		/>,
-		<Step7
-			emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
-				{ ...fieldData, ...data },
-			)}
-		/>,
+	const [formValidity, setFormValidity] = React.useState<any>();
+	const steps: TStepData[] = [
+		{
+			stepName: 'title',
+			isValid: false,
+			component: <Step1
+				fieldData={fieldData}
+				emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+					{ ...fieldData, ...data },
+				)}
+			/>,
+			fields: [
+				'title',
+				'image',
+			],
+		},
+		{
+			stepName: 'description',
+			isValid: false,
+			component: <Step2
+				fieldData={fieldData}
+				emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+					{ ...fieldData, ...data },
+				)}
+			/>,
+			fields: [
+				'summary',
+				'description',
+			],
+		},
+		{
+			stepName: 'data',
+			isValid: false,
+			component: <Step3
+				fieldData={fieldData}
+				emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+					{ ...fieldData, ...data },
+				)}
+			/>,
+			fields: [
+				'metaData',
+			],
+		},
+		{
+			stepName: 'ingredients',
+			isValid: false,
+			component: <Step4
+				fieldData={fieldData}
+				emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+					{ ...fieldData, ...data },
+				)}
+			/>,
+			fields: [
+				'ingredients',
+			],
+		},
+		{
+			stepName: 'method',
+			isValid: false,
+			component: <Step5
+				fieldData={fieldData}
+				emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+					{ ...fieldData, ...data },
+				)}
+			/>,
+			fields: [
+				'method',
+			],
+		},
+		{
+			stepName: 'info',
+			isValid: false,
+			component: <Step6
+				fieldData={fieldData}
+				emitFieldData={(data: Partial<TRecipeData>) => setFieldData(
+					{ ...fieldData, ...data },
+				)}
+			/>,
+			fields: [
+				'tags',
+				'furtherInfo',
+			],
+		},
 	];
 
-	// const isStepValid = (step: TStepData): boolean => (
-	// 	step.fields.reduce(
-	// 		(isValid: boolean, field: TFieldConfig) => {
-	// 			if (!isValid) { return false; }
+	const isStepValid = (): boolean[] => {
+		const activeFields = steps.map((step) => step.fields);
 
-	// 			return (
-	// 				field.type === 'skip'
-	// 				|| (
-	// 					field.name in fieldData
-	// 					&& !!fieldData[field.name]
-	// 				)
-	// 			);
-	// 		},
-	// 		true,
-	// 	)
-	// );
+		const stepValidity: boolean[] = activeFields.map((stepFields) => (
+			stepFields.reduce(
+				(isValid: boolean, fieldName: string) => {
+					if (
+						!isValid
+						|| !(fieldName in fieldData)
+						|| !fieldData[fieldName as keyof TRecipeData]
+					) { return false; }
+
+					// ==== Special Cases
+					// Meta Data
+					if (fieldName === 'metaData') {
+						const { cookTime, prepTime, difficulty } = fieldData[
+							fieldName as keyof TRecipeData
+						] as TRecipeMetaData;
+
+						if (
+							cookTime > 0
+							&& prepTime > 0
+							&& difficulty > 0
+						) {
+							return true;
+						}
+
+						return false;
+					}
+
+					// Tags
+					if (fieldName === 'tags') {
+						const tags = fieldData[fieldName as keyof TRecipeData] as string[];
+
+						if (tags.length > 0) {
+							return true;
+						}
+
+						return false;
+					}
+
+					// TODO: Ingredients
+					// TODO: Method
+
+					return true;
+				},
+				true,
+			)
+		));
+
+		return stepValidity;
+	};
 
 	const postRecipe = (recipe: TRecipeData) => {
 		const submissionUrl = `${api.url}/${api.version}/${api.endpoints.recipe}`;
@@ -139,17 +230,16 @@ const SubmissionJourney = () => {
 			recipeName: (fieldData.title || '').replace(/ /g, '-').toLowerCase(),
 			title: fieldData.title || '',
 			image: fieldData.image || '',
-			shortDescription: fieldData.shortDescription || '',
-			description: fieldData.description || [''],
+			summary: fieldData.summary || '',
+			description: fieldData.description || '',
 			tags: fieldData.tags || [''],
 			metaData: fieldData.metaData || {
-				prepTime: '',
-				cookTime: '',
-				difficulty: '',
+				prepTime: 0,
+				cookTime: 0,
+				difficulty: 0,
 			},
-			furtherInfo: fieldData.furtherInfo || [],
+			furtherInfo: fieldData.furtherInfo || '',
 			method: fieldData.method || [],
-			stepsDetailed: fieldData.stepsDetailed || [],
 			ingredients: fieldData.ingredients || [],
 		};
 
@@ -176,49 +266,34 @@ const SubmissionJourney = () => {
 	};
 
 	const handleStepChange = (targetStep: number, noValidate: boolean = false) => {
+		console.log('handle step change');
 		if (
 			!noValidate
 			&& targetStep > currentStep
-			// FIXME:
-			// && !isStepValid(steps[currentStep])
+			&& !isStepValid()[currentStep]
 		) { return; }
+
+		console.log('1');
 
 		if (
 			targetStep < 0
-			|| targetStep > steps.length - 1
+			// || targetStep > steps.length - 1
 		) {
 			return;
 		}
 
+		console.log('2');
+
 		setCurrentStep(targetStep);
 	};
 
-	const runValidation = () => {
-		const data = { ...fieldData };
-
-		const fieldValidity = data.map(())
-
-		const isStepValid = (step): boolean => (
-			step.fields.reduce(
-				(isValid: boolean, field: TFieldConfig) => {
-					if (!isValid) { return false; }
-
-					return (
-						field.type === 'skip'
-						|| (
-							field.name in fieldData
-							&& !!fieldData[field.name]
-						)
-					);
-				},
-				true,
-			)
-		);
-	};
-
 	React.useEffect(() => {
-		runValidation();
-	}, [fieldData]);
+		setFormValidity(
+			steps.map((step) => (
+				step.fields.map((field) => ({ [field]: false }))
+			)),
+		);
+	}, []);
 
 	return (
 		<ContentPage title="Submit Recipe">
@@ -229,12 +304,19 @@ const SubmissionJourney = () => {
 					<>
 						{/* Uplift to show accessible, inaccessible and error state steps */}
 						<StepCounter
-							steps={steps.map((step) => step.stepName)}
+							formSteps={steps.map((step: TStepData, i: number) => ({
+								name: step.stepName,
+								valid: isStepValid()[i],
+							}))}
 							currentStep={currentStep}
-							setStep={(targetStep: number) => handleStepChange(targetStep)}
+							setStep={(targetStep: number) => {
+								console.log('step counter change', targetStep);
+								handleStepChange(targetStep);
+							}}
 						/>
 
 						<section css={SubmissionJourneyFormContentStyles(styles)}>
+							{/* Form: Error Status */}
 							<Collapse in={error.length > 0}>
 								<Alert
 									severity="error"
@@ -245,10 +327,16 @@ const SubmissionJourney = () => {
 								</Alert>
 							</Collapse>
 
-							{ steps[currentStep] }
+							{/* Form: Current Step */}
+							{ steps[currentStep].component }
 
 							{/* Form: Submit */}
-							<Fade in={currentStep === steps.length - 1}>
+							<Fade
+								in={
+									currentStep === steps.length - 1
+									&& isStepValid().splice(0, currentStep + 1).every(Boolean)
+								}
+							>
 								<Button
 									variant="text"
 									onClick={() => handleFormSubmit()}
@@ -262,6 +350,7 @@ const SubmissionJourney = () => {
 								</Button>
 							</Fade>
 
+							{/* Form: Controls */}
 							<div style={{
 								display: 'flex',
 								flexFlow: 'row',
@@ -283,11 +372,14 @@ const SubmissionJourney = () => {
 
 								{/* Form: Forward Button */}
 								<Fade
-									in={currentStep < steps.length - 1}
+									in={
+										currentStep < steps.length - 1
+										&& isStepValid().splice(0, currentStep + 1).every(Boolean)
+									}
 								>
 									<Fab
 										color="primary"
-										onClick={() => handleStepChange(currentStep + 1)}
+										onClick={() => handleStepChange(currentStep + 1, true)}
 										aria-label="next"
 										sx={{ marginLeft: 'auto' }}
 										size="small"
@@ -304,7 +396,14 @@ const SubmissionJourney = () => {
 									itemTitle: 'Recipe Data',
 									itemContent: (
 										<pre>
-											{JSON.stringify(fieldData, null, '\t')}
+											<p>
+												Validity:
+												{JSON.stringify(isStepValid(), null, '\t')}
+											</p>
+											<p>
+												Output Data:
+												{JSON.stringify(fieldData, null, '\t')}
+											</p>
 										</pre>
 									),
 								}]}

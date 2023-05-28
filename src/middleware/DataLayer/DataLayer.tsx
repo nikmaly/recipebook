@@ -16,9 +16,9 @@ type TSantitisedMetaDDB = {
 };
 
 export type TRecipeMetaData = {
-	prepTime: string,
-	cookTime: string,
-	difficulty: string,
+	prepTime: number,
+	cookTime: number,
+	difficulty: number,
 };
 
 export type TRecipeIngredients = {
@@ -36,14 +36,13 @@ export type TRecipeData = {
 	recipeName: string;
 	image: string;
 	title: string;
-	shortDescription: string;
-	description: string[];
+	summary: string;
+	description: string;
 	metaData: TRecipeMetaData;
 	tags: string[];
 	ingredients: TRecipeSections[];
 	method: TRecipeSections[];
-	stepsDetailed: TRecipeSections[];
-	furtherInfo: string[];
+	furtherInfo: string;
 };
 
 export type TRecipeDataKeys = keyof TRecipeData;

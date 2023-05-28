@@ -11,6 +11,9 @@ export const arrayComparator = (array1: any[], array2: any[]) => {
 		&& comparisonReducer(array2, array1)
 	);
 
-	console.log('doArraysMatch: ', doArraysMatch);
+	if (process.env.NODE_ENV === 'development') {
+		console.log('doArraysMatch: ', doArraysMatch);
+	}
+
 	return doArraysMatch;
 };

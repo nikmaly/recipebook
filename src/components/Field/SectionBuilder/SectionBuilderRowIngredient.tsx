@@ -2,8 +2,10 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import {
+	TextField,
+	Autocomplete,
+} from '@mui/material';
 import { TRecipeIngredients } from 'middleware/DataLayer';
 
 type TSectionBuilderRowIngredientProps = {
@@ -18,15 +20,15 @@ const SectionBuilderRowIngredient: React.FunctionComponent<TSectionBuilderRowIng
 	emitChange,
 }) => {
 	const units = [
-		{ text: 'Teaspoon', value: 'tspn' },
-		{ text: 'Tablespoon', value: 'tbls' },
-		{ text: 'Cup', value: 'cup' },
-		{ text: 'Millilitre', value: 'ml' },
-		{ text: 'Litre', value: 'l' },
-		{ text: 'Gram', value: 'g' },
-		{ text: 'Kilogram', value: 'kg' },
-		{ text: 'Pinch', value: 'pinch' },
-		{ text: 'Slice', value: 'slice' },
+		'Teaspoon',
+		'Tablespoon',
+		'Cup',
+		'Millilitre',
+		'Litre',
+		'Gram',
+		'Kilogram',
+		'Pinch',
+		'Slice',
 	];
 
 	return (
@@ -50,25 +52,27 @@ const SectionBuilderRowIngredient: React.FunctionComponent<TSectionBuilderRowIng
 			</Grid>
 
 			<Grid xs={3.5}>
-				<TextField
-					label="Unit"
-					name={`${name}-ingredient-unit`}
-					variant="outlined"
-					select
-					defaultValue=""
+				<Autocomplete
 					sx={{ width: '100%' }}
-					value={ingredient.unit}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => (
-						emitChange('unit', e.target.value)
+					disablePortal
+					options={units}
+					renderInput={(params) => (
+						<TextField
+							// eslint-disable-next-line react/jsx-props-no-spreading
+							{...params}
+							label="Unit (opt)"
+							name={`${name}-ingredient-unit`}
+							variant="outlined"
+							value={ingredient.unit}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => (
+								emitChange('unit', e.target.value)
+							)}
+							InputLabelProps={{
+								shrink: true,
+							}}
+						/>
 					)}
-					required
-				>
-					{units.map((unit: any) => (
-						<MenuItem key={unit.value} value={unit.value}>
-							{unit.text.toUpperCase()}
-						</MenuItem>
-					))}
-				</TextField>
+				/>
 			</Grid>
 
 			<Grid xs={6}>

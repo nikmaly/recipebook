@@ -20,7 +20,7 @@ const RecipeRow: React.FunctionComponent<TRecipeData> = ({
 	image,
 	title,
 	description,
-	shortDescription,
+	summary,
 	tags,
 }) => {
 	const { styles } = React.useContext(StylesContext);
@@ -53,7 +53,7 @@ const RecipeRow: React.FunctionComponent<TRecipeData> = ({
 					</div>
 				</div>
 
-				<p css={recipeRowDescriptionStyles(styles)}>{shortDescription || description[0]}</p>
+				<p css={recipeRowDescriptionStyles(styles)}>{summary || description[0]}</p>
 			</div>
 		</NavLink>
 	);
