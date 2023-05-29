@@ -3,9 +3,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { TRecipeData } from 'middleware/DataLayer';
-import {
-	Chip,
-} from '@mui/material';
+import { Chip } from '@mui/material';
 import { StylesContext } from 'context/Styles';
 import {
 	recipeRowStyles,

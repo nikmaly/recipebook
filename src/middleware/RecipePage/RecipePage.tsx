@@ -5,6 +5,8 @@ import React from 'react';
 import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { DynamoDB } from 'aws-sdk';
 import Recoil from 'recoil';
+import { Rating, Chip } from '@mui/material';
+import CookieIcon from '@mui/icons-material/Cookie';
 import { StylesContext } from 'context/Styles';
 import { atomApi } from 'atoms/atomApi';
 import { atomRecipeNameList, TRecipeNameList } from 'atoms/atomRecipeNameList';
@@ -153,12 +155,17 @@ const RecipePage: React.FunctionComponent = () => {
 											<ul>
 												{
 													recipeData.tags.map((tag, i) => (
-														<Pill
-															key={`recipe-data-tag-${tag}`}
-															text={tag}
-															href={`/discover/${tag}`}
-															theme={i % 2 ? 'secondary' : 'primary'}
-														/>
+														<>
+															<Chip
+																key={`recipe-data-tag-${tag}-${i}`}
+																label={tag}
+																component="a"
+																href={`/discover/${tag}`}
+																variant="outlined"
+																color={i % 2 ? 'primary' : 'secondary'}
+																clickable
+															/>
+														</>
 													))
 												}
 											</ul>
@@ -176,7 +183,19 @@ const RecipePage: React.FunctionComponent = () => {
 												</li>
 												<li>
 													<p>Difficulty:</p>
-													<p>{recipeData.metaData.difficulty}</p>
+													<Rating
+														name="difficulty"
+														size="large"
+														value={recipeData.metaData.difficulty}
+														icon={<CookieIcon fontSize="inherit" />}
+														emptyIcon={<CookieIcon style={{ opacity: 0.4 }} fontSize="inherit" />}
+														sx={{
+															'& .MuiRating-iconFilled': {
+																color: styles.colors.secondary.base,
+															},
+														}}
+														readOnly
+													/>
 												</li>
 											</ul>
 										</div>
@@ -184,7 +203,7 @@ const RecipePage: React.FunctionComponent = () => {
 										{recipeData.description && (
 											<div css={recipePageDescriptionStyles(styles)}>
 												{recipeData.description?.split('\n').map((item, i) => (
-													<p key={`description-paragraph-${i}`}>
+													<p key={`description-paragraph-${item}-${i}`}>
 														{item}
 													</p>
 												))}

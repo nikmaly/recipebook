@@ -25,10 +25,10 @@ export const favouriteButtonStyles = (
 	&:before,
 	&:after {
 		${styles.mixins.pseudoDisplay('')}
-		height: 60%;
-		width: 60%;
-		left: 20%;
-		top: 20%;
+		height: 80%;
+		width: 80%;
+		left: 10%;
+		top: 10%;
 		background-size: contain;
 		background-repeat: no-repeat;
 		transform: scale(0.9);
