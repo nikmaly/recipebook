@@ -78,9 +78,8 @@ const SubmitRecipe = () => {
 					throw new Error(data.__type);
 				}
 
-				if (!data.error) {
-					console.log('Submitted');
-				}
+				// if (!data.error) {
+				// }
 			})())
 			.catch((err) => {
 				console.error('error', err);

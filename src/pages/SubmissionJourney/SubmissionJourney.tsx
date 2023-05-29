@@ -52,6 +52,7 @@ const SubmissionJourney = () => {
 	const [currentStep, setCurrentStep] = React.useState<number>(0);
 	const [fieldData, setFieldData] = React.useState<Partial<TRecipeData>>({});
 	const [formValidity, setFormValidity] = React.useState<any>();
+	const formRef = React.useRef(null);
 	const steps: TStepData[] = [
 		{
 			stepName: 'title',
@@ -266,25 +267,27 @@ const SubmissionJourney = () => {
 	};
 
 	const handleStepChange = (targetStep: number, noValidate: boolean = false) => {
-		console.log('handle step change');
 		if (
 			!noValidate
 			&& targetStep > currentStep
 			&& !isStepValid()[currentStep]
 		) { return; }
 
-		console.log('1');
-
 		if (
 			targetStep < 0
-			// || targetStep > steps.length - 1
+			|| targetStep > steps.length - 1
 		) {
 			return;
 		}
 
-		console.log('2');
-
 		setCurrentStep(targetStep);
+	};
+
+	const handleKeyboardEntry = (e: KeyboardEvent) => {
+		// TODO:
+		// if (['Enter'].includes(e.key)) {
+		// 	handleStepChange(currentStep + 1);
+		// }
 	};
 
 	React.useEffect(() => {
@@ -293,6 +296,10 @@ const SubmissionJourney = () => {
 				step.fields.map((field) => ({ [field]: false }))
 			)),
 		);
+
+		window.addEventListener('keydown', handleKeyboardEntry);
+
+		return () => { window.removeEventListener('keydown', handleKeyboardEntry); };
 	}, []);
 
 	return (
@@ -310,12 +317,11 @@ const SubmissionJourney = () => {
 							}))}
 							currentStep={currentStep}
 							setStep={(targetStep: number) => {
-								console.log('step counter change', targetStep);
 								handleStepChange(targetStep);
 							}}
 						/>
 
-						<section css={SubmissionJourneyFormContentStyles(styles)}>
+						<section css={SubmissionJourneyFormContentStyles(styles)} ref={formRef}>
 							{/* Form: Error Status */}
 							<Collapse in={error.length > 0}>
 								<Alert

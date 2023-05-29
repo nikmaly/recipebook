@@ -97,7 +97,7 @@ const DataLayer: React.FunctionComponent<DataLayerProps> = ({
 				await new Promise((resolve) => { setTimeout(resolve, 1000); });
 
 				const recipeNameItems = data.Items.map((item: any) => (
-					DynamoDB.Converter.output({ M: item }).recipeName
+					DynamoDB.Converter.output({ M: item }).recipeName.toLowerCase()
 				));
 
 				let recipeFilterItems = data.Items.map((item: any) => (

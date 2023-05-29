@@ -115,7 +115,6 @@ const Discover = () => {
 	);
 
 	const onFormDataChange: SubmitHandler<any> = (data) => {
-		console.log('in form data change', data);
 		const sanitisedData: any = {
 			search: data.search ? data.search.trim() : '',
 			ingredient: data.ingredient ? data.ingredient.trim() : '',

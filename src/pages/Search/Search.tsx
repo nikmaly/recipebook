@@ -33,7 +33,7 @@ const Search = () => {
 		} else if (sanitisedSearchTerm && sanitisedSearchTerm.length > 2) {
 			setDisplayedRecipes(
 				loadedRecipes.data.filter((recipe) => (
-					recipe.recipeName.includes(sanitisedSearchTerm)
+					recipe?.recipeName?.includes(sanitisedSearchTerm)
 				)),
 			);
 		}

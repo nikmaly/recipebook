@@ -22,7 +22,7 @@ export const useLoadRecipes = () => {
 			index: [...loadedRecipes.index, ...fetchTargets],
 			data: [
 				...loadedRecipes.data,
-				...returnedRecipes,
+				...returnedRecipes.filter((recipe) => recipe !== 'undefined'),
 			],
 		}));
 	};

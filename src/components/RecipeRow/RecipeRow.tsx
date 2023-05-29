@@ -3,7 +3,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { TRecipeData } from 'middleware/DataLayer';
-import { Pill } from 'components/Pill';
+import {
+	Chip,
+} from '@mui/material';
 import { StylesContext } from 'context/Styles';
 import {
 	recipeRowStyles,
@@ -35,22 +37,25 @@ const RecipeRow: React.FunctionComponent<TRecipeData> = ({
 			<div css={recipeRowContentStyles(styles)}>
 				<div css={recipeRowHeaderStyles(styles)}>
 					<h4 css={recipeRowTitleStyles(styles)}>{title}</h4>
+				</div>
 
-					<div css={recipeRowTagStyles(styles)}>
-						<ul>
-							{
-								tags.map((tag, i) => (
-									<Pill
-										key={tag}
-										text={tag}
-										href={`/discover/${tag}`}
-										theme={i % 2 ? 'secondary' : 'primary'}
-										compact
-									/>
-								))
-							}
-						</ul>
-					</div>
+				<div css={recipeRowTagStyles(styles)}>
+					<ul>
+						{
+							tags.map((tag, i: number) => (
+								<Chip
+									key={tag}
+									label={tag}
+									component="a"
+									href={`/discover/${tag}`}
+									variant="outlined"
+									size="small"
+									color={i % 2 ? 'primary' : 'secondary'}
+									clickable
+								/>
+							))
+						}
+					</ul>
 				</div>
 
 				<p css={recipeRowDescriptionStyles(styles)}>{summary || description[0]}</p>

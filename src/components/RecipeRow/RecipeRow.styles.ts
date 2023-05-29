@@ -18,6 +18,11 @@ export const recipeRowStyles = (styles: TStyles): SerializedStyles => css`
 		background-color: ${styles.colors.primary.light};
 		color: ${styles.colors.black.base};
 	}
+
+	height: 102px;
+	${styles.breakpoints.ms.min(`
+		height: 126px;
+	`)}
 `;
 
 export const recipeRowImageStyles = (
@@ -36,7 +41,6 @@ export const recipeRowImageStyles = (
 	${styles.breakpoints.ms.min(`
 		flex: 0 0 20%;
 		min-height: 120px;
-		margin-right: 10px;
 	`)}
 `;
 
@@ -96,6 +100,6 @@ export const recipeRowDescriptionStyles = (styles: TStyles): SerializedStyles =>
 		margin: ${styles.spacing[0]} 0 -2px;
 		font-size: 0.8em;
 		line-height: 1.4em;
-		max-height: unset;
+		max-height: 35px;
 	`)}
 `;

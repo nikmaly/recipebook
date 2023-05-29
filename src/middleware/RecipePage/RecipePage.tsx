@@ -217,7 +217,6 @@ const RecipePage: React.FunctionComponent = () => {
 										to={`/recipe/${nextRecipe()}`}
 										className="next-recipe-link"
 										css={recipePageNextLinkStyles(styles)}
-										onClick={() => console.log('Next click')}
 									>
 										Next Recipe
 										<img

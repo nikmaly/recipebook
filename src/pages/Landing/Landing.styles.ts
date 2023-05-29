@@ -24,7 +24,7 @@ export const landingTileStyles = (styles: TStyles): SerializedStyles => css`
 		grid-template-rows: 1fr 1fr;
 		column-gap: 20px;
 		row-gap: 20px;
-		padding: 10px 20px 20px 20px;
+		padding: 20px;
 	`)}
 
 	li {
