@@ -20,7 +20,7 @@ export const navbarStyles = (
 
 	${isLanding && `
 		top: 50%;
-		transform: translateY(-59%);
+		transform: translateY(-50%);
 		padding: 40px 0;
 	`}
 `;
@@ -181,48 +181,5 @@ export const navbarLinkMenuButtonStyles = (
 		? `background-image: url("/assets/images/svg/menu-close-${isLanding ? 'black' : 'black'}.svg");`
 		: 'background-image: url("/assets/images/svg/menu-black.svg");'
 }
-	}
-`;
-
-export const navbarLinkMenuStyles = (
-	styles: TStyles,
-	isOpen: boolean,
-	isLanding: boolean,
-): SerializedStyles => css`
-	${styles.mixins.resetList('')}
-	z-index: ${styles.z.navbar + 1};
-	display: flex;
-	position: absolute;
-	flex-flow: column wrap;
-	justify-content: space-around;
-	right: 0;
-	height: 400px;
-	width: 300px;
-	background: rgb(190, 135, 50);
-	transform: translate(100%, -56.5%);
-	overflow: hidden;
-	transition: transform 1s;
-
-	${!isLanding && `
-		top: 50vh;
-	`}
-
-	${isOpen && `
-		transform: translate(0, -56.5%);
-	`};
-
-	a {
-		${styles.mixins.resetLink('')}
-		display: block;
-		margin: 10px 10px 10px 20px;
-		padding: 10px;
-		color: ${styles.colors.white.base};
-		font-weight: bold;
-		font-size: 2em;
-		letter-spacing: 2px;
-
-		&:hover {
-			text-decoration: underline;
-		}
 	}
 `;

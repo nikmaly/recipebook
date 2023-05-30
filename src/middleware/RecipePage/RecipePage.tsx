@@ -160,7 +160,7 @@ const RecipePage: React.FunctionComponent = () => {
 																key={`recipe-data-tag-${tag}-${i}`}
 																label={tag}
 																component="a"
-																href={`/discover/${tag}`}
+																href={`/discover?filter=${tag}`}
 																variant="outlined"
 																color={i % 2 ? 'primary' : 'secondary'}
 																clickable
@@ -174,15 +174,20 @@ const RecipePage: React.FunctionComponent = () => {
 										<div css={recipePageInfoDataStyles(styles)}>
 											<ul>
 												<li>
-													<p>Prep Time:</p>
-													<p>{recipeData.metaData.prepTime}</p>
+													<h4>
+														<span>{recipeData.metaData.prepTime}</span>
+														mins
+													</h4>
+													<p>Preparation</p>
 												</li>
 												<li>
-													<p>Cook Time:</p>
-													<p>{recipeData.metaData.cookTime}</p>
+													<h4>
+														<span>{recipeData.metaData.cookTime}</span>
+														mins
+													</h4>
+													<p>Cooking</p>
 												</li>
 												<li>
-													<p>Difficulty:</p>
 													<Rating
 														name="difficulty"
 														size="large"
@@ -196,6 +201,7 @@ const RecipePage: React.FunctionComponent = () => {
 														}}
 														readOnly
 													/>
+													<p>Difficulty:</p>
 												</li>
 											</ul>
 										</div>

@@ -18,8 +18,8 @@ export const recipePagePanelLeftStyles = (styles: TStyles): SerializedStyles => 
 	${styles.mixins.resetList('')}
 	position: relative;
 	height: 100%;
-    margin-top: 30vh;
-	padding: ${styles.spacing[4]};
+    margin-top: 30%;
+	padding: ${styles.spacing[3]};
     background-color: ${styles.colors.white.base};
     z-index: 1;
 
@@ -28,7 +28,7 @@ export const recipePagePanelLeftStyles = (styles: TStyles): SerializedStyles => 
 	`)}
 
 	${styles.breakpoints.m.min(`
-		flex: 0 0 50vw;
+		flex: 0 0 50%;
 		margin-top: 0;
 		padding-top: 50px;
 		padding-right: ${styles.spacing[6]};
@@ -44,7 +44,7 @@ export const recipePagePanelRightStyles = (styles: TStyles): SerializedStyles =>
     top: 0;
     left: 0;
     width: 100%;
-    height: 30vh;
+    height: 30%;
 
 	a {
 		display: block;
@@ -59,15 +59,15 @@ export const recipePagePanelRightStyles = (styles: TStyles): SerializedStyles =>
 	}
 
 	${styles.breakpoints.m.min(`
-		flex: 0 0 50vw;
+		flex: 0 0 50%;
 		position: relative;
-		height: 100vh;
+		height: 100%;
 		color: ${styles.colors.white.base};
 
 		a {
 			position: fixed;
-			width: 50vw;
-			height: 100vh;
+			width: 50%;
+			height: 100%;
 		}
 	`)}
 `;
@@ -144,31 +144,50 @@ export const recipePageInfoDataStyles = (styles: TStyles): SerializedStyles => c
 	ul {
 		${styles.mixins.resetList('')}
 		display: flex;
-		flex-flow: row wrap;
+		flex-flow: row nowrap;
+		row-gap: ${styles.spacing[2]};
+
+		${styles.breakpoints.m.min(`
+			row-gap: ${styles.spacing[3]};
+		`)}
 
 		li {
 			${styles.mixins.panelise('')}
-			margin-right: ${styles.spacing[3]};
-			padding: ${styles.spacing[0]} ${styles.spacing[1]};
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: space-between;
+			margin-right: ${styles.spacing[2]};
+			padding: 6px 6px 0px;
 			border-radius: 2px;
+			font-size: 0.8em;
+
+			${styles.breakpoints.m.min(`
+				margin-right: ${styles.spacing[3]};
+				padding: 12px 10px 4px;
+				font-size: 1em;
+			`)}
 
 			&:last-child {
 				margin-right: 0;
 			}
 
+			h4 {
+				margin: 0;
+
+				span {
+					${styles.mixins.fontHeader('')}
+					font-size: 1.8em;
+					margin: 8px 4px 0 0px;
+					font-weight: 100;
+				}
+			}
+
 			p {
 				${styles.mixins.fontText('')}
-				margin: 2px 0;
+				margin: 0;
 				text-transform: capitalize;
-
-				&:first-of-type {
-					margin-top: 0;
-					font-size: 0.8em;
-				}
-
-				&:last-of-type {
-					margin-bottom: 0;
-				}
+				font-size: 0.8em;
+				text-align: center;
 			}
 		}
 	}

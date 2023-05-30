@@ -9,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import SettingsIcon from '@mui/icons-material/Settings';
+// import SettingsIcon from '@mui/icons-material/Settings';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import HomeIcon from '@mui/icons-material/Home';
 import CallIcon from '@mui/icons-material/Call';
@@ -110,7 +110,7 @@ const NavBar: React.FunctionComponent = () => {
 								{ text: 'Search', link: '/search', icon: <SearchIcon /> },
 								{ text: 'Discover', link: '/discover', icon: <LocationSearchingIcon /> },
 								{ text: 'Favourites', link: '/favourites', icon: <FavoriteIcon /> },
-								{ text: 'Settings', link: '/settings', icon: <SettingsIcon /> },
+								// { text: 'Settings', link: '/settings', icon: <SettingsIcon /> },
 							].map((nav) => (
 								<ListItem
 									key={nav.text}

@@ -300,14 +300,6 @@ Styles.components = {
 		heightS: '90px',
 		heightMS: '100px',
 	},
-	landingHeader: {
-		logoSize: '50px',
-		backgroundImage: 'https://cdn.malyaris.com/photography/sunsets/highres/DSC_7673.jpg',
-		frostingClipMobileX: '0vh',
-		frostingClipMobileY: '35vh',
-		frostingClipDesktopX: '0vh',
-		frostingClipDesktopY: '30vh',
-	},
 };
 
 Styles.mixins = {

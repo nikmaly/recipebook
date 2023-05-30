@@ -54,12 +54,11 @@ row-gap: 10px;
 > div {
 	font-size: 0.9em;
 	line-height: 1.8em;
+	width: 100%;
 
-	${split ? (
-		'flex: 0 1 calc(50% - 5px);'
-	) : (
-		'width: 100%;'
-	)}
+	${styles.breakpoints.ms.min(`
+		${split && 'flex: 0 1 calc(50% - 5px);'}
+	`)}
 }
 
 h4 {
